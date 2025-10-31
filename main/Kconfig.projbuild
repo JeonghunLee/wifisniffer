@@ -1,0 +1,27 @@
+menu "WiFi Sniffer Configuration"
+
+    config WIFI_SNIFFER_DEFAULT_CHANNEL
+        int "Default WiFi Channel"
+        range 1 13
+        default 1
+        help
+            Default WiFi channel to start sniffing on.
+            Valid range is 1-13 for 2.4GHz WiFi.
+
+    config WIFI_SNIFFER_CHANNEL_SWITCH_INTERVAL
+        int "Channel Switch Interval (ms)"
+        range 1000 60000
+        default 5000
+        help
+            Time in milliseconds between automatic channel switches.
+            Set to 0 to disable channel hopping.
+
+    config WIFI_SNIFFER_MAX_PACKET_SIZE
+        int "Maximum Packet Size to Send"
+        range 32 2048
+        default 64
+        help
+            Maximum number of bytes from each packet to send via USB.
+            Smaller values reduce USB bandwidth usage.
+
+endmenu

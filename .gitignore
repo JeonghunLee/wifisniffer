@@ -1,0 +1,26 @@
+# Build artifacts
+build/
+sdkconfig
+sdkconfig.old
+*.pyc
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Dependencies
+dependencies.lock
+managed_components/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temporary files
+/tmp/
+
+# CodeQL
+_codeql_detected_source_root
