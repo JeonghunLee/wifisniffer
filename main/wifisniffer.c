@@ -26,6 +26,9 @@ static const char *TAG = "WiFiSniffer";
 #define MAX_CHANNEL 13               // Maximum WiFi channel to scan
 #define CHANNEL_HOP_ENABLED 1        // Set to 0 to stay on one channel
 
+// Pcap constants
+#define DLT_IEEE802_11_RADIO 127     // Radiotap + 802.11 link-layer type
+
 // Current channel being monitored
 static uint8_t current_channel = 1;
 
@@ -65,7 +68,7 @@ static void write_pcap_header(void) {
         .thiszone = 0,
         .sigfigs = 0,
         .snaplen = 65535,
-        .network = 127  // 127 = Radiotap header + 802.11
+        .network = DLT_IEEE802_11_RADIO
     };
     
     fwrite(&header, sizeof(header), 1, stdout);
@@ -78,7 +81,7 @@ static void write_pcap_packet(const uint8_t *data, uint32_t len, uint32_t second
     radiotap_header_t radiotap = {
         .it_version = 0,
         .it_pad = 0,
-        .it_len = 8,  // 8 bytes for minimal radiotap header
+        .it_len = sizeof(radiotap_header_t),
         .it_present = 0  // No additional fields
     };
     

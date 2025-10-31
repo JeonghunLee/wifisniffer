@@ -78,11 +78,13 @@ def main():
         print("Starting Wireshark...")
         
         # Start Wireshark with stdin pipe
+        # Note: stderr is captured to a file for debugging if needed
+        wireshark_log = open('/tmp/wireshark_errors.log', 'w')
         wireshark = subprocess.Popen(
             [wireshark_path, "-k", "-i", "-"],
             stdin=subprocess.PIPE,
             stdout=subprocess.DEVNULL,
-            stderr=subprocess.DEVNULL
+            stderr=wireshark_log
         )
         
         print("Capturing packets... Press Ctrl+C to stop.")
@@ -108,7 +110,9 @@ def main():
             if wireshark.poll() is None:
                 wireshark.terminate()
                 wireshark.wait(timeout=5)
+            wireshark_log.close()
             ser.close()
+            print("Wireshark errors (if any) logged to: /tmp/wireshark_errors.log")
             
     except serial.SerialException as e:
         print(f"Error opening serial port: {e}")

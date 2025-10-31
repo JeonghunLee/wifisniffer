@@ -41,19 +41,20 @@ def main():
         
         print("Capturing packets to file... Press Ctrl+C to stop.")
         
-        packet_count = 0
+        bytes_written = 0
         with open(output_file, 'wb') as f:
             try:
                 while True:
                     data = ser.read(1024)
                     if data:
                         f.write(data)
-                        packet_count += 1
-                        if packet_count % 100 == 0:
-                            print(f"Captured {packet_count} packets", end='\r')
+                        bytes_written += len(data)
+                        # Show progress in KB
+                        if bytes_written % 10240 == 0 or bytes_written < 10240:
+                            print(f"Captured {bytes_written} bytes ({bytes_written/1024:.1f} KB)", end='\r')
                         
             except KeyboardInterrupt:
-                print(f"\nCapture stopped. Total packets captured: {packet_count}")
+                print(f"\nCapture stopped. Total bytes captured: {bytes_written} ({bytes_written/1024:.1f} KB)")
         
         ser.close()
         print(f"Capture saved to {output_file}")

@@ -68,9 +68,10 @@ def wait_for_pcap_header(ser):
         header += ser.read(PCAP_HEADER_SIZE - len(header))
     
     magic = struct.unpack('<I', header[0:4])[0]
-    if magic != PCAP_MAGIC:
+    # Check both little-endian (0xa1b2c3d4) and big-endian (0xd4c3b2a1) formats
+    if magic != PCAP_MAGIC and magic != 0xd4c3b2a1:
         print(f"Warning: Invalid pcap magic number: 0x{magic:08x}")
-        print("Expected: 0xa1b2c3d4")
+        print("Expected: 0xa1b2c3d4 (little-endian) or 0xd4c3b2a1 (big-endian)")
         print("Continuing anyway...")
     else:
         print("Valid pcap header received")
