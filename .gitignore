@@ -1,0 +1,10 @@
+
+# Ignore build output files
+build
+
+# Ignore managed components
+managed_components/
+
+# Ignore configuration files
+sdkconfig
+sdkconfig.old
