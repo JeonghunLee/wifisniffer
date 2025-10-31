@@ -9,8 +9,8 @@
 
 static const char *TAG = "main";
 
-#define WIFI_CHANNEL_DEFAULT 1
-#define CHANNEL_SWITCH_INTERVAL_MS 5000
+#define WIFI_CHANNEL_DEFAULT CONFIG_WIFI_SNIFFER_DEFAULT_CHANNEL
+#define CHANNEL_SWITCH_INTERVAL_MS CONFIG_WIFI_SNIFFER_CHANNEL_SWITCH_INTERVAL
 
 static uint8_t current_channel = WIFI_CHANNEL_DEFAULT;
 static uint32_t packet_count = 0;
@@ -35,8 +35,8 @@ static void wifi_packet_handler(const uint8_t *buf, uint32_t len)
         // Send header
         usb_gadget_send((uint8_t *)header, header_len);
 
-        // Send packet data (first 64 bytes for demonstration)
-        uint32_t send_len = (len > 64) ? 64 : len;
+        // Send packet data (limited by configured max packet size)
+        uint32_t send_len = (len > CONFIG_WIFI_SNIFFER_MAX_PACKET_SIZE) ? CONFIG_WIFI_SNIFFER_MAX_PACKET_SIZE : len;
         usb_gadget_send(buf, send_len);
     }
 

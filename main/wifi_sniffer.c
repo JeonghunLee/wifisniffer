@@ -56,12 +56,14 @@ esp_err_t wifi_sniffer_init(uint8_t channel, wifi_sniffer_packet_cb_t packet_cb)
     ESP_ERROR_CHECK(esp_wifi_set_mode(WIFI_MODE_NULL));
     ESP_ERROR_CHECK(esp_wifi_start());
 
-    // Set promiscuous mode
-    esp_wifi_set_promiscuous(true);
+    // Set promiscuous callback first before enabling promiscuous mode
     esp_wifi_set_promiscuous_rx_cb(wifi_sniffer_packet_handler);
-
+    
     // Set channel
     esp_wifi_set_channel(s_current_channel, WIFI_SECOND_CHAN_NONE);
+    
+    // Enable promiscuous mode
+    esp_wifi_set_promiscuous(true);
 
     ESP_LOGI(TAG, "WiFi sniffer initialized on channel %d", s_current_channel);
 
@@ -70,11 +72,9 @@ esp_err_t wifi_sniffer_init(uint8_t channel, wifi_sniffer_packet_cb_t packet_cb)
 
 esp_err_t wifi_sniffer_start(void)
 {
-    esp_err_t ret = esp_wifi_set_promiscuous(true);
-    if (ret == ESP_OK) {
-        ESP_LOGI(TAG, "WiFi sniffer started");
-    }
-    return ret;
+    // Promiscuous mode is already enabled in init, just log status
+    ESP_LOGI(TAG, "WiFi sniffer started");
+    return ESP_OK;
 }
 
 esp_err_t wifi_sniffer_stop(void)

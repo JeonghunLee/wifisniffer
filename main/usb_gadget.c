@@ -67,7 +67,7 @@ esp_err_t usb_gadget_send(const uint8_t *data, uint32_t len)
     tinyusb_cdcacm_write_flush(TINYUSB_CDC_ACM_0, 0);
 
     if (sent != len) {
-        ESP_LOGW(TAG, "USB send incomplete: %d/%lu bytes", sent, len);
+        ESP_LOGW(TAG, "USB send incomplete: %zu/%lu bytes", sent, len);
         return ESP_ERR_TIMEOUT;
     }
 
