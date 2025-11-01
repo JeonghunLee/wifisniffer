@@ -1,3 +1,5 @@
+.vscode/settings.json
+
 
 # Ignore build output files
 build
@@ -8,3 +10,5 @@ managed_components/
 # Ignore configuration files
 sdkconfig
 sdkconfig.old
+
+*.pcap
