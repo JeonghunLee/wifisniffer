@@ -4,8 +4,8 @@ import sys
 import argparse
 from datetime import datetime
 
-SYNC_MAGIC = 0xAA55AA55
-PACKET_HEADER_MAGIC = 0xDEADBEEF
+SYNC_MAGIC = 0xDEADBEEF
+PACKET_HEADER_MAGIC = 0xA5A5A5A5
 
 # PCAP Global Header
 def write_pcap_header(f):
@@ -154,13 +154,13 @@ Examples:
                     print(f"⚠ Invalid length: {rec_len}")
                 continue
             
-            # Read packet prefix (20 bytes)
-            prefix = ser.read(20)
-            if len(prefix) < 20:
+            # Read packet prefix (16 bytes) sniffer header
+            prefix = ser.read(16)
+            if len(prefix) < 16:
                 continue
             
             # Unpack prefix
-            magic, ts_sec, ts_usec, channel, rssi, pkt_len = struct.unpack('<IIIBbHxx', prefix)
+            magic, ts_sec, ts_usec, channel, rssi, pkt_len = struct.unpack('<IIIBbH', prefix)
             
             if magic != PACKET_HEADER_MAGIC:
                 error_count += 1

@@ -25,3 +25,6 @@ COM B (TinyUSB CDC): Wi-Fi 스니퍼 캡처 스트림 (Python 파서로 pcap 저
 
 https://docs.espressif.com/projects/esp-iot-solution/en/latest/usb/usb_overview/tinyusb_guide.html
 
+
+python .\read_packets.py -v -d
+
