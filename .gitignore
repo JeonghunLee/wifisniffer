@@ -5,6 +5,7 @@
 build
 
 # Ignore managed components
+# main/idf_components.yml
 managed_components/
 
 # Ignore configuration files
