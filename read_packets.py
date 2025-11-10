@@ -94,7 +94,7 @@ Examples:
     # Generate default filename if not specified
     if not args.output and not args.display_only:
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        args.output = f"capture_{timestamp}.pcap"
+        args.output = f"./output/capture_{timestamp}.pcap"
     
     # Open serial port
     try:
