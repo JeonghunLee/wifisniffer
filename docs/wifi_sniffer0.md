@@ -2,7 +2,7 @@
 
 <br/>
 
-[Go Back](board.md)
+[Go Back Index](board.md#wifi-sniffer)
 
 <br/>
 
