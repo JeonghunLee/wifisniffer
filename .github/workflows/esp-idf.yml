@@ -1,0 +1,87 @@
+name: "ESP-IDF CI (Docker v5.4)"
+
+on:
+  push:
+    branches: [ main ]
+    # create a release when a tag like v1.2.3 or v2025... is pushed
+    tags: ['v*']
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    name: Build (ESP-IDF v5.4, Docker)
+    runs-on: ubuntu-latest
+    # Run the job inside an ESP-IDF Docker image (change image tag if needed)
+    container:
+      image: espressif/idf:release-v5.4
+
+    env:
+      # Ensure the target is ESP32-S3 as the repository expects
+      IDF_TARGET: esp32s3
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Show container & IDF info
+        run: |
+          echo "Container: $(cat /etc/os-release || true)"
+          echo "idf.py version: $(idf.py --version || true)"
+          echo "IDF_PATH=${IDF_PATH:-/opt/esp/idf}"
+
+      - name: Export ESP-IDF environment
+        run: |
+          # Export the environment for idf.py (export.sh is provided in the image)
+          if [ -n "${IDF_PATH}" ]; then
+            . ${IDF_PATH}/export.sh
+          else
+            . /opt/esp/idf/export.sh
+          fi
+          idf.py --version
+
+      - name: Build project
+        run: |
+          . ${IDF_PATH:-/opt/esp/idf}/export.sh
+          # Ensure the build target matches the board; sdkconfig.defaults already sets esp32s3
+          echo "Using IDF_TARGET=$IDF_TARGET"
+          idf.py build
+
+      - name: Upload build artifact (build directory)
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: esp-idf-build
+          path: build/
+
+  release:
+    name: Create GitHub Release (on tag)
+    needs: build
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/v')
+
+    steps:
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: esp-idf-build
+
+      - name: Create GitHub Release and upload build
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: ${{ github.ref_name }}
+          # Explicitly include the bootloader, partition table, app bin, elf(s) and flash args
+          files: |
+            build/bootloader/bootloader.bin
+            build/partition_table/partition-table.bin
+            build/esp32s3_sniffer.bin
+            build/*.elf
+            build/flash_project_args
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: List release files (for debug)
+        run: |
+          echo "Files included in release:"
+          ls -l build || true
