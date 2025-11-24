@@ -9,6 +9,22 @@
 <br/>
 
 
+## Firmware 
+
+<br/>
+
+
+* Python Setup      
+```
+pip install -r .\requirements.txt
+```
+
+
+* Python Package Backup 
+
+```
+pip freeze > requirements.txt
+```
 
 <br/>
 
