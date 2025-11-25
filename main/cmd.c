@@ -1,6 +1,3 @@
-// cmd.c
-#include "cmd.h"
-
 #include <stdio.h>
 #include <string.h>
 #include <strings.h>
@@ -9,7 +6,12 @@
 #include "esp_err.h"
 #include "esp_log.h"
 #include "sdkconfig.h"
+
+// Project headers
+#include "cmd.h"
 #include "wifi.h"
+#include "sniffer.h"
+
 
 static const char *TAG = "ESP_CMD";
 
@@ -60,7 +62,9 @@ static void print_usage(void)
     printf("  wifi ap ssid \"<ssid>\"\n");
     printf("  wifi ap pw \"<password>\"  (>=8 chars) or empty to open\n");
     printf("  wifi ch <1-13>\n");
+    printf("  wifi ring reset\n");   
     printf("  wifi status\n");
+ 
 }
 
 static int wifi_command(int argc, char **argv)
@@ -69,7 +73,6 @@ static int wifi_command(int argc, char **argv)
         print_usage();
         return 0;
     }
-
     
     // wifi mode <mode>
     if (strcasecmp(argv[1], "mode") == 0) {
@@ -134,6 +137,7 @@ static int wifi_command(int argc, char **argv)
     // wifi status
     if (strcasecmp(argv[1], "status") == 0) {
         wifi_mgr_print_status();
+        sniffer_print_stats();
         return 0;
     }
 
@@ -150,6 +154,18 @@ static int wifi_command(int argc, char **argv)
         }
         return 0;
     }    
+
+    // wifi ring reset 
+    if (strcasecmp(argv[1], "ring") == 0) {
+        
+        if (strcasecmp(argv[2], "reset") == 0) {
+            sniffer_ring_reset();
+            return 0;
+        }
+        // print ring stats        
+        sniffer_print_stats();
+        return 0;
+    }   
 
     printf("Unknown wifi command '%s'\n", argv[1]);
     print_usage();

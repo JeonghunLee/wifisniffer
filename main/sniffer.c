@@ -19,7 +19,6 @@
 static const char *TAG = "SNFFER";
 
 static ring_buf_t *g_rb = NULL;
-
 static uint32_t captured_count = 0;
 static uint32_t dropped_count = 0;
 
@@ -38,7 +37,7 @@ static void wifi_promiscuous_cb(void *buf, wifi_promiscuous_pkt_type_t type) {
     
     // Log every 100 packets
     if (captured_count % 100 == 0) {
-      ESP_LOGI(TAG, "Captured: %lu, Dropped: %lu"
+      ESP_LOGI(TAG, "Captured: %lu, Dropped: %lu  (WIFI Packet)"
           ,captured_count
           ,dropped_count);
     }
@@ -68,8 +67,11 @@ static void wifi_promiscuous_cb(void *buf, wifi_promiscuous_pkt_type_t type) {
         .len   = (uint16_t)(sizeof(ph) + len)
     };
     
+    // Push data to ring buffer
     if (!ring_buf_push(g_rb, &sh, frame)) {
       dropped_count++;
+      uint16_t rb_size = ring_buf_size(g_rb);
+      ESP_LOGW(TAG, "Dropped packet (Ring buffer size: %u)", rb_size);
     }
 }
 
@@ -94,12 +96,16 @@ static void streamer_task(void *arg)
     // Debug: Print status every 5 seconds
     if (loop_count % 2500 == 0) {  // 2500 * 2ms = 5 seconds
       bool cdc_ready = usb_cdc_ready();
-      ESP_LOGI(TAG, "USB CDC ready: %s, Packets sent: %lu", 
-               cdc_ready ? "YES" : "NO", packets_sent);
+      ESP_LOGI(TAG, "USB CDC ready: %s, USB CDC sent: %lu packets"
+              ,cdc_ready ? "YES" : "NO"
+              ,packets_sent);
     }
+    
     loop_count++;
     
+    //read data from ring buffer
     if (ring_buf_pop(g_rb, &sh, ring_data)) {
+      
       // Check USB ready before sending
       if (!usb_cdc_ready()) {
         ESP_LOGW(TAG, "USB CDC not ready, dropping packet");
@@ -124,7 +130,10 @@ static void streamer_task(void *arg)
       if (written > 0) {
         packets_sent++;
         if (packets_sent % 100 == 0) {
-          ESP_LOGI(TAG, "Sent %lu packets", packets_sent);
+          uint16_t rb_size = ring_buf_size(g_rb);
+          ESP_LOGI(TAG, "USB CDC Sent: %lu packets (Ring buffer size: %u)"
+                ,packets_sent
+                ,rb_size);
         }
       }
       
@@ -168,4 +177,21 @@ void sniffer_enable_promiscuous(void)
 }
 
 
+void sniffer_ring_reset(void)
+{
+    if (!g_rb) return;
+    ring_buf_reset(g_rb);
+    captured_count = 0;
+    dropped_count = 0;
+}
 
+void sniffer_print_stats(void)
+{
+    uint32_t sz = ring_buf_size(g_rb);
+    uint32_t cap = ring_buf_cap(g_rb);
+
+    printf("Sniffer (Ring buffer) status:\n");
+    printf("  - Ring Buf: %lu / %lu used\n", sz, cap);
+    printf("  - Captured: %lu\n", captured_count);
+    printf("  - Dropped : %lu\n", dropped_count);
+}

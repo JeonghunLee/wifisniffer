@@ -86,3 +86,16 @@ uint32_t ring_buf_cap(const ring_buf_t *rb)
 {
   return rb ? rb->cap : 0;
 }
+
+void ring_buf_reset(ring_buf_t *rb)
+{
+    if (!rb) return;
+
+    if (xSemaphoreTake(rb->lock, portMAX_DELAY) == pdTRUE) {
+        rb->head = 0;
+        rb->tail = 0;
+        // 필요하면 버퍼 내용도 지우고 싶을 때:
+        // memset(rb->slots, 0, (size_t)rb->cap * rb->slot_size);
+        xSemaphoreGive(rb->lock);
+    }
+}

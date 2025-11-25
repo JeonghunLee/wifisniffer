@@ -5,10 +5,13 @@
 
 // Sniffer Maximum packet size and ring buffer sizes
 #define MAX_PACKET_SIZE         1536
-#define RING_SLOTS_PSRAM        3072
+
+// Ring buffer 슬롯 개수 (PSRAM 유무에 따라 다르게 설정)
+#define RING_SLOTS_PSRAM        3072  // 약 5MB (3072 * 4+16+1536 = 5,018,112B)
 #define RING_SLOTS_INTERNAL     256
 
-// USB CDC 전송용 매직 넘버
+
+// USB CDC Sync Magic and Packet Magic
 #define SYNC_MAGIC             0xDEADBEEF  // Stream and USB CDC Sync Magic
 #define PACKET_HEADER_MAGIC    0xA5A5A5A5  // PACKET_PREFIX Magic number
 
@@ -36,3 +39,5 @@ typedef struct __attribute__((packed)) {
 /* Initialization and start helpers */
 void sniffer_init(void);                 // ring buffer + streamer task
 void sniffer_enable_promiscuous(void);   // filter + callback + promiscuous on
+void sniffer_ring_reset(void);           // ring buffer reset
+void sniffer_print_stats(void);          // print captured/dropped counts (for cmd)
