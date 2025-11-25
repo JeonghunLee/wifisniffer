@@ -3,14 +3,23 @@
 #include "esp_err.h"
 
 
-
-#define MAX_PACKET_SIZE    1536
-#define RING_SLOTS_PSRAM   3072
+// Sniffer Maximum packet size and ring buffer sizes
+#define MAX_PACKET_SIZE         1536
+#define RING_SLOTS_PSRAM        3072
 #define RING_SLOTS_INTERNAL     256
 
+// USB CDC 전송용 매직 넘버
+#define SYNC_MAGIC             0xDEADBEEF  // Stream and USB CDC Sync Magic
+#define PACKET_HEADER_MAGIC    0xA5A5A5A5  // PACKET_PREFIX Magic number
 
-#define SYNC_MAGIC             0xDEADBEEF
-#define PACKET_HEADER_MAGIC    0xA5A5A5A5
+/*
+
+  Ring Buffer + USB_CDC Format: ring_slot_hdr_t
+      - [SYNC_MAGIC(4B)][Ring Buffer(8)][PACKET_HEADER_MAGIC+PACKET_PREFIX(16B)][PAYLOAD] 
+
+  USB_CDC Format: packet_prefix_t
+      - [SYNC_MAGIC(4B)][PACKET_HEADER_MAGIC+PACKET_PREFIX(16B)][PAYLOAD]
+*/ 
 
 /* on-wire prefix = 16B (packed) */
 typedef struct __attribute__((packed)) {
@@ -25,5 +34,5 @@ typedef struct __attribute__((packed)) {
 
 
 /* Initialization and start helpers */
-void sniffer_init(void);
-
+void sniffer_init(void);                 // ring buffer + streamer task
+void sniffer_enable_promiscuous(void);   // filter + callback + promiscuous on

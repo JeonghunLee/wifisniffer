@@ -3,12 +3,18 @@
 
 # ESP32-S3 
 set(SNIFFER_SRCS
+    main.c
+    cmd.c
+    wifi.c
     sniffer.c
     usb_cdc.c
     ring_buf.c
 )
 
+# ESP32-S3 
 set(SNIFFER_HEADERS
+    cmd.h
+    wifi.h    
     sniffer.h
     usb_cdc.h
     ring_buf.h
@@ -24,6 +30,7 @@ idf_component_register(
         nvs_flash
         esp_netif 
         esp_event
+        console
 )
 
 # option
