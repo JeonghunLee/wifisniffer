@@ -143,6 +143,7 @@ static void streamer_task(void *arg)
   }
 }
 
+//---------- Public API implementations ----------
 
 void sniffer_init(void)
 {  
@@ -158,6 +159,7 @@ void sniffer_init(void)
 
 void sniffer_enable_promiscuous(void)
 {
+    //Set Wi-Fi promiscuous filter and callback
     wifi_promiscuous_filter_t filt = {
         .filter_mask = WIFI_PROMIS_FILTER_MASK_MGMT |
                        WIFI_PROMIS_FILTER_MASK_DATA |
@@ -187,11 +189,12 @@ void sniffer_ring_reset(void)
 
 void sniffer_print_stats(void)
 {
-    uint32_t sz = ring_buf_size(g_rb);
+    uint32_t used = ring_buf_size(g_rb);
+    uint32_t free = ring_buf_free(g_rb);
     uint32_t cap = ring_buf_cap(g_rb);
 
     printf("Sniffer (Ring buffer) status:\n");
-    printf("  - Ring Buf: %lu / %lu used\n", sz, cap);
+    printf("  - Ring Buf: %lu used/ %lu free / %lu total (usable=%lu)\n", used, free, cap , cap - 1);
     printf("  - Captured: %lu\n", captured_count);
     printf("  - Dropped : %lu\n", dropped_count);
 }

@@ -94,6 +94,8 @@ static int wifi_command(int argc, char **argv)
             print_usage();
             return 0;
         }
+        
+        // wifi sta ssid <ssid> / pw <password>
         esp_err_t err = ESP_OK;
         if (strcasecmp(argv[2], "ssid") == 0) {
             err = wifi_mgr_set_sta_ssid(argv[3]);
@@ -117,6 +119,7 @@ static int wifi_command(int argc, char **argv)
             print_usage();
             return 0;
         }
+        // wifi ap ssid <ssid> / pw <password>
         esp_err_t err = ESP_OK;
         if (strcasecmp(argv[2], "ssid") == 0) {
             err = wifi_mgr_set_ap_ssid(argv[3]);
@@ -160,11 +163,11 @@ static int wifi_command(int argc, char **argv)
         
         if (strcasecmp(argv[2], "reset") == 0) {
             sniffer_ring_reset();
+            sniffer_print_stats();
             return 0;
         }
-        // print ring stats        
-        sniffer_print_stats();
-        return 0;
+    
+
     }   
 
     printf("Unknown wifi command '%s'\n", argv[1]);

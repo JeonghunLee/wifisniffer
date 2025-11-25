@@ -222,14 +222,15 @@ void wifi_mgr_print_status(void)
         ap = s_ap_config;
     }
 
-    printf("Wi-Fi mode: %s\n", wifi_mgr_mode_to_string(mode));
-    printf("-  STA SSID: %s\n", sta.sta.ssid[0] ? (char *)sta.sta.ssid : "<unset>");
-    printf("-  STA password: %s\n", sta.sta.password[0] ? "<set>" : "<empty>");
-    printf("-  AP SSID: %s\n", ap.ap.ssid[0] ? (char *)ap.ap.ssid : "<unset>");
-    printf("-  AP password: %s\n",
-           (ap.ap.authmode == WIFI_AUTH_OPEN) ? "<open>" :
+    printf("Wi-Fi Status :\n");
+    printf("  - Wi-Fi MODE: %s\n", wifi_mgr_mode_to_string(mode));    
+    printf("  - STA SSID: %s\n", sta.sta.ssid[0] ? (char *)sta.sta.ssid : "<unset>");
+    printf("  - STA password: %s (%s)\n", sta.sta.password[0] ? "<set>" : "<empty>",sta.sta.password);
+    printf("  - AP SSID: %s\n", ap.ap.ssid[0] ? (char *)ap.ap.ssid : "<unset>");
+    printf("  - AP password: %s\n",
+           (ap.ap.authmode == WIFI_AUTH_OPEN) ? "<open>" :          
            (ap.ap.password[0] ? "<set>" : "<invalid>"));
-    printf("-  AP channel: %u\n", ap.ap.channel);
+    printf("  - AP channel: %u\n", ap.ap.channel);
 }
 
 // Wi-Fi 모드 적용 내부 함수

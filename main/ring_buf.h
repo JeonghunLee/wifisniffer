@@ -20,4 +20,5 @@ bool      ring_buf_push(ring_buf_t *rb, const ring_slot_hdr_t *hdr, const uint8_
 bool      ring_buf_pop (ring_buf_t *rb,       ring_slot_hdr_t *hdr,       uint8_t *payload);
 uint32_t  ring_buf_size(const ring_buf_t *rb);   /* 현재 저장된 슬롯 수 */
 uint32_t  ring_buf_cap (const ring_buf_t *rb);   /* 총 슬롯 개수 */
+uint32_t  ring_buf_free(const ring_buf_t *rb);   /* 남은 슬롯 수 */
 void      ring_buf_reset(ring_buf_t *rb);  /* 링 버퍼 초기화 */
