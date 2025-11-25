@@ -4,8 +4,14 @@ import sys
 import argparse
 from datetime import datetime
 
+# sniffer.h 
 SYNC_MAGIC = 0xDEADBEEF
 PACKET_HEADER_MAGIC = 0xA5A5A5A5
+
+# USB-CDC Packet Structure (from sniffer.h)
+#   Packet format:
+#       [SYNC_MAGIC(4)][PACKET_HEADER_MAGIC+PACKET_PREFIX(16)][PAYLOAD]
+#
 
 # PCAP Global Header
 def write_pcap_header(f):

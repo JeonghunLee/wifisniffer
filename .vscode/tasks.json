@@ -6,7 +6,8 @@
         {
             "label": "Capture USB CDC (Not CP210x)",
             "type": "shell",
-            "command": "python read_packets.py -v"
+            "command": "python read_packets.py -v",
+            "problemMatcher": []
         }
     ]
 }
