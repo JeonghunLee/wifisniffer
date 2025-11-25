@@ -159,7 +159,9 @@ void sniffer_init(void)
 
 void sniffer_enable_promiscuous(void)
 {
-    //Set Wi-Fi promiscuous filter and callback
+    // Setup Wi-Fi promiscuous filter
+    //  https://docs.espressif.com/projects/esp-idf/en/release-v5.4/esp32/api-reference/network/esp_wifi.html
+    //  https://docs.espressif.com/projects/esp-idf/en/release-v5.4/esp32/api-reference/network/esp_wifi.html#id5
     wifi_promiscuous_filter_t filt = {
         .filter_mask = WIFI_PROMIS_FILTER_MASK_MGMT |
                        WIFI_PROMIS_FILTER_MASK_DATA |
@@ -170,7 +172,8 @@ void sniffer_enable_promiscuous(void)
     if (err != ESP_OK) {
         ESP_LOGW(TAG, "set_promiscuous(false) failed: %d", err);
     }
-
+    
+    // Setup filter and callback
     ESP_ERROR_CHECK(esp_wifi_set_promiscuous_filter(&filt));
     ESP_ERROR_CHECK(esp_wifi_set_promiscuous_rx_cb(&wifi_promiscuous_cb));
     ESP_ERROR_CHECK(esp_wifi_set_promiscuous(true));
