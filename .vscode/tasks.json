@@ -4,10 +4,16 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "Capture USB CDC (Not CP210x)",
+            "label": "Capture USB CDC (Not CP210x)-Debug",
             "type": "shell",
             "command": "python read_packets.py -v",
             "problemMatcher": []
-        }
+        },
+        {
+            "label": "Capture USB CDC (Not CP210x)-Simple",
+            "type": "shell",
+            "command": "python read_packets.py ",
+            "problemMatcher": []
+        }        
     ]
 }
