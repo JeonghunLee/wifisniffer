@@ -148,8 +148,9 @@ W (1281) SNFFER: USB CDC not ready, dropping packet
 ```
 
 
-* ESP32-S3 확인 후 
- * [Python 으로 Sniffer Capture 진행](wifi_sniffer2.md) 
+* ESP-IDF Monitor 확인 후 
+   * 아래 USB CDC 준비 확인 후 Capture 진행   
+   * [Python 으로 Sniffer Capture 진행](wifi_sniffer2.md)   
 
 ```
 W (76927) SNFFER: USB CDC not ready, dropping packet
@@ -181,7 +182,20 @@ W (79328) SNFFER: USB CDC not ready, dropping packet
 W (79428) SNFFER: USB CDC not ready, dropping packet
 ```
 
-* ESP32-S3 의 Command 지원 
+<br/>
+
+## WIFI Command 
+
+<br/>
+
+[Go Back Index](index.md#wifi-control)
+
+Serial 기반의 Commands 제공  
+
+<br/>
+
+* **ESP-IDF Monitor 기반 Commands**     
+   * WIFI Command 지원 
    * 각 WIFI MODE 설정 (ap/sta/ap+sta/null)
    * 각 CH 변경 
    * 각 상태 확인 
@@ -199,9 +213,5 @@ Usage:
   wifi ring reset
   wifi status
 ```
-
-
-
-
 
 <br/>

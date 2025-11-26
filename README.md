@@ -16,10 +16,11 @@ A WiFi packet sniffer for ESP32-S3 based on ESP-IDF 5.4 that captures WiFi packe
 
 <br/>
 
-- [ESP32-S3 DevkitC1 WIFI Sniffer](docs/index.md)      
+* WIFI Sniffer Manaul   
+    * [ESP32-S3 WIFI Sniffer](docs/index.md)      
 
-- Wireshark 
-    - [Wireshark WIFI Sniffer](docs/wireshark_0.md)      
+* Wireshark Example 
+    * [Wireshark WIFI Sniffer](docs/wireshark_0.md)      
 
 <br/>
 
