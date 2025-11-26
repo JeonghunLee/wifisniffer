@@ -15,8 +15,14 @@
 
 <br/>
 
+WIFI 설정 및 관련 부분 Control 기능    
+
+<br/>
+
+
 * ESP32-S3 WIFI Control 
-   * [WIFI-Control](command.md)
+   * [WIFI-Control](command.md#wifi-command)        
+   * [ESP-IDf Monitor](command.md)     
 
 <br/>
 
@@ -56,7 +62,7 @@ VS Code 기반으로 자동화
 
 <br/>
 
-* Wireshark 분석 예제  
+* Wireshark WIFI 분석 예제     
    * [Wireshark0](wireshark_0.md) 
 
 <br/>
