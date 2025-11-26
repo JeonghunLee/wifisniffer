@@ -1,6 +1,11 @@
-# ESP32-S3
+# ESP32-S3 Board 
 
 <br/>
+
+[Go Back Index](index.md#board)
+
+<br/>
+
 
 * ESP32-S3 DevkitC1     
 반드시 2개의 USB를 사용해서 진행  아래는 오직 TEST 용    
@@ -8,8 +13,22 @@
 
 <br/>
 
+* USB Ports   
+   * Left USB : Serial Interface  (ESP-Flash/Monitor)           
+   * Right USB : USB or JTAG      (Not used JTAG, USB-CDC)         
+
+세부사항을 아래 
+
+<br/>
+
 
 ## Firmware 
+
+<br/>
+
+* Python Capture   
+
+USB-CDC ACM (즉 Serial Monitor 로)로 Packet을 받아 이를 저장하므로, USB 와 같이 Python 으로 Pcap저장        
 
 <br/>
 
@@ -21,7 +40,6 @@ pip install -r .\requirements.txt
 
 
 * Python Package Backup 
-
 ```
 pip freeze > requirements.txt
 ```
@@ -67,30 +85,3 @@ pip freeze > requirements.txt
 
 <br/>
 
-## Wifi Sniffer 
-
-<br/>
-
-* WIFI Sniffer TEST 방법 및 Capture방법           
-   * [Wifi Sniffter only Display](wifi_sniffer0.md) 
-   * [Wifi Sniffer Capture](wifi_sniffer1.md)
-
-<br/>
-
-
-## Wireshark 
-
-<br/>
-
-* Wireshark 분석 방법              
-   1. output의 *.pcap  Wireshark로 분석 
-   2. 현재 STA/AP 설정을 하지 않았으므로, 기본적인 Beacon 과 PR만 확인가능   
-   3. **WLAN(Ethernet2)이 아닌 WIFI Packet으로 분석가능**    
-      * tcpdump로도 할 생각이였으나, WIFI Packet 분석가능하다    
-
-<br/>
-
-* Wireshark 분석 예제  
-   * [Wireshark0](wireshark_0.md) 
-
-<br/>

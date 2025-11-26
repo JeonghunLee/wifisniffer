@@ -12,11 +12,11 @@ A WiFi packet sniffer for ESP32-S3 based on ESP-IDF 5.4 that captures WiFi packe
 - **ESP32-S3 Support**: Optimized for ESP32-S3 with native USB support
 
 
-## Boards
+## Manual
 
 <br/>
 
-- [ESP32-S3 DevkitC1 WIFI Sniffer](docs/board.md)      
+- [ESP32-S3 DevkitC1 WIFI Sniffer](docs/index.md)      
 
 - Wireshark 
     - [Wireshark WIFI Sniffer](docs/wireshark_0.md)      
