@@ -7,7 +7,7 @@ build:
     python: "3.12"
   jobs:
     post_install:
-      - pip install mkdocs mkdocs-material mkdocs-mermaid2-plugin mkdocs-offline pymdown-extensions
+      - pip install mkdocs mkdocs-material mkdocs-mermaid2-plugin pymdown-extensions
 
 mkdocs:
   configuration: mkdocs.yml
