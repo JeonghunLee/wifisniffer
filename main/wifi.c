@@ -29,6 +29,8 @@ static esp_err_t update_ap_ssid(const char *ssid);
 static esp_err_t update_ap_password(const char *password);
 
 // WIFI AP MODE defaults
+
+/** @brief Default SoftAP channel number. */
 #define WIFI_AP_DEFAULT_CHANNEL         1
 #define WIFI_AP_DEFAULT_MAX_CONNECTION  4
 #define WIFI_AP_DEFAULT_BEACON_INTERVAL 100
@@ -53,6 +55,8 @@ static void ensure_ap_defaults(void)
 // 모드 문자열을 Wi-Fi 모드로 변환
 /**
  * @brief Convert Wi-Fi mode enum to a short string for status printing.
+ * @param mode Wi-Fi mode enum value.
+ * @return Short string representation of the Wi-Fi mode.
  */
 const char *wifi_mgr_mode_to_string(wifi_mode_t mode)
 {
@@ -68,6 +72,7 @@ const char *wifi_mgr_mode_to_string(wifi_mode_t mode)
 
 /**
  * @brief Prime cached Wi-Fi configs and record the current mode.
+ * @return ESP_OK on success, or an error code on failure.
  */
 esp_err_t wifi_mgr_init(void)
 {
@@ -93,6 +98,8 @@ esp_err_t wifi_mgr_init(void)
 
 /**
  * @brief Apply a specific Wi-Fi mode using stored STA/AP configurations.
+ * @param mode Desired Wi-Fi mode to set.
+ * @return ESP_OK on success, or an error code on failure.
  */
 esp_err_t wifi_mgr_set_mode(wifi_mode_t mode)
 {
@@ -102,6 +109,8 @@ esp_err_t wifi_mgr_set_mode(wifi_mode_t mode)
 
 /**
  * @brief Parse a textual mode and forward to @ref wifi_mgr_set_mode.
+ * @param mode_str String representation of the desired mode ("null", "sta", "ap", "apsta").
+ * @return ESP_OK on success, or an error code on failure.
  */
 esp_err_t wifi_mgr_set_mode_str(const char *mode_str)
 {
@@ -141,6 +150,8 @@ esp_err_t wifi_mgr_set_mode_str(const char *mode_str)
 
 /**
  * @brief Update STA SSID and refresh promiscuous mode if already active.
+ * @param ssid New SSID string.
+ * @return ESP_OK on success, or an error code on failure.
  */
 esp_err_t wifi_mgr_set_sta_ssid(const char *ssid)
 {
@@ -155,6 +166,8 @@ esp_err_t wifi_mgr_set_sta_ssid(const char *ssid)
 
 /**
  * @brief Update STA password and refresh promiscuous mode if active.
+ * @param password New password string.
+ * @return ESP_OK on success, or an error code on failure.
  */
 esp_err_t wifi_mgr_set_sta_password(const char *password)
 {
@@ -169,6 +182,8 @@ esp_err_t wifi_mgr_set_sta_password(const char *password)
 
 /**
  * @brief Update SoftAP SSID and refresh promiscuous mode if active.
+ * @param ssid New SSID string.
+ * @return ESP_OK on success, or an error code on failure.
  */
 esp_err_t wifi_mgr_set_ap_ssid(const char *ssid)
 {
@@ -183,6 +198,8 @@ esp_err_t wifi_mgr_set_ap_ssid(const char *ssid)
 
 /**
  * @brief Update SoftAP password (empty string toggles open auth) and refresh sniffer.
+ * @param password New password string.
+ * @return ESP_OK on success, or an error code on failure.
  */
 esp_err_t wifi_mgr_set_ap_password(const char *password)
 {
@@ -197,6 +214,8 @@ esp_err_t wifi_mgr_set_ap_password(const char *password)
 
 /**
  * @brief Change the primary channel while respecting mode restrictions.
+ * @param primary Desired primary channel (1-13).
+ * @return ESP_OK on success, or an error code on failure.
  */
 esp_err_t wifi_mgr_set_channel(uint8_t primary)
 {
@@ -269,6 +288,8 @@ void wifi_mgr_print_status(void)
 // Wi-Fi 모드 적용 내부 함수
 /**
  * @brief Internal helper to reconfigure the driver and restart with cached parameters.
+ * @param mode Desired Wi-Fi mode to apply.
+ * @return ESP_OK on success, or an error code on failure.
  */
 static esp_err_t apply_wifi_mode_internal(wifi_mode_t mode)
 {
@@ -329,6 +350,8 @@ static esp_err_t apply_wifi_mode_internal(wifi_mode_t mode)
 
 /**
  * @brief Store a new STA SSID and push it to the driver.
+ * @param ssid New STA SSID string.
+ * @return ESP_OK on success, or an error code on failure.
  */
 static esp_err_t update_sta_ssid(const char *ssid)
 {
@@ -343,6 +366,8 @@ static esp_err_t update_sta_ssid(const char *ssid)
 
 /**
  * @brief Store a new STA password and push it to the driver.
+ * @param password New STA password string.
+ * @return ESP_OK on success, or an error code on failure.
  */
 static esp_err_t update_sta_password(const char *password)
 {
@@ -357,6 +382,8 @@ static esp_err_t update_sta_password(const char *password)
 
 /**
  * @brief Store a new SoftAP SSID and push it to the driver.
+ * @param ssid New SoftAP SSID string.
+ * @return ESP_OK on success, or an error code on failure.
  */
 static esp_err_t update_ap_ssid(const char *ssid)
 {
@@ -373,6 +400,8 @@ static esp_err_t update_ap_ssid(const char *ssid)
 
 /**
  * @brief Store a new SoftAP password (or open mode) and push it to the driver.
+ * @param password New SoftAP password string (empty for open mode).
+ * @return ESP_OK on success, or an error code on failure.
  */
 static esp_err_t update_ap_password(const char *password)
 {

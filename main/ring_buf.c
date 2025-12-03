@@ -21,8 +21,10 @@ struct ring_buf {
 
 
 
-/**
- * @brief Advance an index while wrapping at @p cap.
+/** 
+ * @brief Calculate the next index in a circular manner.
+ * @param i   Current index.
+ * @param cap Total capacity of the ring buffer.
  */
 static inline uint32_t nxt(uint32_t i, uint32_t cap){ 
   return (i+1U) % cap; 
@@ -62,6 +64,11 @@ esp_err_t ring_buf_create(ring_buf_t **out, uint32_t cap, uint32_t slot_size, bo
   return ESP_OK;
 }
 
+/**
+ * @brief Destroy a ring buffer instance and free its resources.
+ * @param[in] rb Ring buffer handle to destroy.
+ * 
+ */
 void ring_buf_destroy(ring_buf_t *rb)
 {
   if (!rb) return;
@@ -70,6 +77,13 @@ void ring_buf_destroy(ring_buf_t *rb)
   free(rb);  
 }
 
+/**
+ * @brief Push a payload into the next free slot.
+ * @details Operates non-blocking and returns false when the buffer is full so callers can track drops.
+ * @param[in] rb      Ring buffer handle.
+ * @param[in] hdr     Pointer to the slot header metadata.
+ * @param[in] payload Pointer to the payload data to store.
+ */
 bool ring_buf_push(ring_buf_t *rb, const ring_slot_hdr_t *hdr, const uint8_t *payload)
 {
   if (!rb || !hdr || !payload) return false;
@@ -89,6 +103,14 @@ bool ring_buf_push(ring_buf_t *rb, const ring_slot_hdr_t *hdr, const uint8_t *pa
   return ok;
 }
 
+/** 
+ * @brief Pop the oldest slot into the supplied buffers.
+ * @details Waits up to 1 ms while acquiring the internal mutex.  
+ * @param[in]  rb      Ring buffer handle.
+ * @param[out] hdr     Location to receive the slot header metadata.
+ * @param[out] payload Location to receive the payload data.
+*/
+
 bool ring_buf_pop(ring_buf_t *rb, ring_slot_hdr_t *hdr, uint8_t *payload)
 {
   if (!rb || !hdr || !payload) return false;
@@ -107,6 +129,11 @@ bool ring_buf_pop(ring_buf_t *rb, ring_slot_hdr_t *hdr, uint8_t *payload)
   return ok;
 }
 
+/**
+ * @brief Get the current number of occupied slots in the ring buffer.
+ * @param[in] rb Ring buffer handle.
+ * @return Number of occupied slots.
+ */
 uint32_t ring_buf_size(const ring_buf_t *rb)
 {
   if (!rb) return 0;
@@ -115,17 +142,31 @@ uint32_t ring_buf_size(const ring_buf_t *rb)
   return (uint32_t)diff;
 }
 
+/**
+ * @brief Get the total capacity of the ring buffer.
+ * @param[in] rb Ring buffer handle.
+ * @return Total capacity of the ring buffer.
+ */
 uint32_t ring_buf_cap(const ring_buf_t *rb)
 {
   return rb ? rb->cap : 0;
 }
 
+/**
+ * @brief Get the number of free slots remaining in the ring buffer.
+ * @param[in] rb Ring buffer handle.
+ * @return Number of free slots.
+ */
 uint32_t ring_buf_free(const ring_buf_t *rb)
 {
     if (!rb) return 0;
     return rb->cap - ring_buf_size(rb) - 1;
 }
 
+/**
+ * @brief Reset head/tail indices to empty the buffer.
+ * @param[in] rb Ring buffer handle.
+ */
 void ring_buf_reset(ring_buf_t *rb)
 {
     if (!rb) return;

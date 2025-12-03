@@ -80,6 +80,9 @@ static void print_usage(void)
 
 /**
  * @brief Handle the top-level `wifi` command and its subcommands.
+ * @param argc Argument count.
+ * @param argv Argument vector.
+ * @return 0 on success.
  */
 static int wifi_command(int argc, char **argv)
 {
