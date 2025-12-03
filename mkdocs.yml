@@ -66,8 +66,6 @@ markdown_extensions:
   - pymdownx.inlinehilite
   - pymdownx.magiclink
   - pymdownx.mark
-  - pymdownx.plantuml:
-      server: https://www.plantuml.com/plantuml
   - pymdownx.smartsymbols
   - pymdownx.tasklist:
       custom_checkbox: true
@@ -76,9 +74,6 @@ markdown_extensions:
       custom_fences:
         - name: mermaid
           class: mermaid
-          format: !!python/name:pymdownx.superfences.fence_code_format
-        - name: plantuml
-          class: plantuml
           format: !!python/name:pymdownx.superfences.fence_code_format
 
 extra_javascript:
