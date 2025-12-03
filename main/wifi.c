@@ -1,3 +1,7 @@
+/**
+ * @file wifi.c
+ * @brief Minimal Wi-Fi configuration manager backing the sniffer console commands.
+ */
 // wifi.c
 #include "wifi.h"
 
@@ -29,8 +33,9 @@ static esp_err_t update_ap_password(const char *password);
 #define WIFI_AP_DEFAULT_MAX_CONNECTION  4
 #define WIFI_AP_DEFAULT_BEACON_INTERVAL 100
 
+// AP 설정 기본값 보장
 /**
- * AP 설정 기본값 보장
+ * @brief Ensure SoftAP configuration has sane defaults when unset.
  */
 static void ensure_ap_defaults(void)
 {
@@ -45,8 +50,9 @@ static void ensure_ap_defaults(void)
     }
 }
 
+// 모드 문자열을 Wi-Fi 모드로 변환
 /**
- * 모드 문자열을 Wi-Fi 모드로 변환
+ * @brief Convert Wi-Fi mode enum to a short string for status printing.
  */
 const char *wifi_mgr_mode_to_string(wifi_mode_t mode)
 {
@@ -60,6 +66,9 @@ const char *wifi_mgr_mode_to_string(wifi_mode_t mode)
 }
 
 
+/**
+ * @brief Prime cached Wi-Fi configs and record the current mode.
+ */
 esp_err_t wifi_mgr_init(void)
 {
     if (s_initialized) {
@@ -82,12 +91,18 @@ esp_err_t wifi_mgr_init(void)
 }
 
 
+/**
+ * @brief Apply a specific Wi-Fi mode using stored STA/AP configurations.
+ */
 esp_err_t wifi_mgr_set_mode(wifi_mode_t mode)
 {
     ESP_ERROR_CHECK(wifi_mgr_init());
     return apply_wifi_mode_internal(mode);
 }
 
+/**
+ * @brief Parse a textual mode and forward to @ref wifi_mgr_set_mode.
+ */
 esp_err_t wifi_mgr_set_mode_str(const char *mode_str)
 {
     if (mode_str == NULL) {
@@ -124,6 +139,9 @@ esp_err_t wifi_mgr_set_mode_str(const char *mode_str)
 }
 
 
+/**
+ * @brief Update STA SSID and refresh promiscuous mode if already active.
+ */
 esp_err_t wifi_mgr_set_sta_ssid(const char *ssid)
 {
     ESP_ERROR_CHECK(wifi_mgr_init());
@@ -135,6 +153,9 @@ esp_err_t wifi_mgr_set_sta_ssid(const char *ssid)
     return err;
 }
 
+/**
+ * @brief Update STA password and refresh promiscuous mode if active.
+ */
 esp_err_t wifi_mgr_set_sta_password(const char *password)
 {
     ESP_ERROR_CHECK(wifi_mgr_init());
@@ -146,6 +167,9 @@ esp_err_t wifi_mgr_set_sta_password(const char *password)
     return err;
 }
 
+/**
+ * @brief Update SoftAP SSID and refresh promiscuous mode if active.
+ */
 esp_err_t wifi_mgr_set_ap_ssid(const char *ssid)
 {
     ESP_ERROR_CHECK(wifi_mgr_init());
@@ -157,6 +181,9 @@ esp_err_t wifi_mgr_set_ap_ssid(const char *ssid)
     return err;
 }
 
+/**
+ * @brief Update SoftAP password (empty string toggles open auth) and refresh sniffer.
+ */
 esp_err_t wifi_mgr_set_ap_password(const char *password)
 {
     ESP_ERROR_CHECK(wifi_mgr_init());
@@ -168,6 +195,9 @@ esp_err_t wifi_mgr_set_ap_password(const char *password)
     return err;
 }
 
+/**
+ * @brief Change the primary channel while respecting mode restrictions.
+ */
 esp_err_t wifi_mgr_set_channel(uint8_t primary)
 {
     wifi_mode_t mode = WIFI_MODE_NULL;
@@ -205,6 +235,9 @@ esp_err_t wifi_mgr_set_channel(uint8_t primary)
 }
 
 
+/**
+ * @brief Print a snapshot of cached and runtime Wi-Fi configuration.
+ */
 void wifi_mgr_print_status(void)
 {
     wifi_mode_t mode = WIFI_MODE_NULL;
@@ -234,6 +267,9 @@ void wifi_mgr_print_status(void)
 }
 
 // Wi-Fi 모드 적용 내부 함수
+/**
+ * @brief Internal helper to reconfigure the driver and restart with cached parameters.
+ */
 static esp_err_t apply_wifi_mode_internal(wifi_mode_t mode)
 {
     esp_err_t err = esp_wifi_stop();
@@ -291,6 +327,9 @@ static esp_err_t apply_wifi_mode_internal(wifi_mode_t mode)
     return ESP_OK;
 }
 
+/**
+ * @brief Store a new STA SSID and push it to the driver.
+ */
 static esp_err_t update_sta_ssid(const char *ssid)
 {
     size_t len = strlen(ssid);
@@ -302,6 +341,9 @@ static esp_err_t update_sta_ssid(const char *ssid)
     return esp_wifi_set_config(WIFI_IF_STA, &s_sta_config);
 }
 
+/**
+ * @brief Store a new STA password and push it to the driver.
+ */
 static esp_err_t update_sta_password(const char *password)
 {
     size_t len = strlen(password);
@@ -313,6 +355,9 @@ static esp_err_t update_sta_password(const char *password)
     return esp_wifi_set_config(WIFI_IF_STA, &s_sta_config);
 }
 
+/**
+ * @brief Store a new SoftAP SSID and push it to the driver.
+ */
 static esp_err_t update_ap_ssid(const char *ssid)
 {
     size_t len = strlen(ssid);
@@ -326,6 +371,9 @@ static esp_err_t update_ap_ssid(const char *ssid)
     return esp_wifi_set_config(WIFI_IF_AP, &s_ap_config);
 }
 
+/**
+ * @brief Store a new SoftAP password (or open mode) and push it to the driver.
+ */
 static esp_err_t update_ap_password(const char *password)
 {
     size_t len = strlen(password);

@@ -4,10 +4,13 @@
 
 
 // Sniffer Maximum packet size and ring buffer sizes
+/** @brief Maximum raw 802.11 payload length captured per frame. */
 #define MAX_PACKET_SIZE         1536
 
 // Ring buffer 슬롯 개수 (PSRAM 유무에 따라 다르게 설정)
+/** @brief Number of ring slots when PSRAM is available. */
 #define RING_SLOTS_PSRAM        3072  // 약 5MB (3072 * 4+16+1536 = 5,018,112B)
+/** @brief Number of ring slots when limited to internal RAM. */
 #define RING_SLOTS_INTERNAL     256
 
 
@@ -25,6 +28,9 @@
 */ 
 
 /* on-wire prefix = 16B (packed) */
+/**
+ * @brief Metadata prepended to each frame written to the USB CDC stream.
+ */
 typedef struct __attribute__((packed)) {
   uint32_t magic;     /* PACKET_HEADER_MAGIC */
   uint32_t ts_sec;    /* epoch seconds */
@@ -37,7 +43,11 @@ typedef struct __attribute__((packed)) {
 
 
 /* Initialization and start helpers */
+/** @brief Set up ring buffer and streamer task. */
 void sniffer_init(void);                 // ring buffer + streamer task
+/** @brief Enable promiscuous capture filters and callback. */
 void sniffer_enable_promiscuous(void);   // filter + callback + promiscuous on
+/** @brief Reset ring buffer indices and statistics. */
 void sniffer_ring_reset(void);           // ring buffer reset
+/** @brief Dump capture/drop counters and current ring usage. */
 void sniffer_print_stats(void);          // print captured/dropped counts (for cmd)

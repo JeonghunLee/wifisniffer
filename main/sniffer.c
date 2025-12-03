@@ -1,3 +1,8 @@
+/**
+ * @file sniffer.c
+ * @brief Wi-Fi promiscuous capture pipeline that feeds frames into the USB CDC streamer.
+ */
+
 #include <string.h>
 #include <sys/time.h>
 #include "esp_wifi.h"
@@ -22,11 +27,16 @@ static ring_buf_t *g_rb = NULL;
 static uint32_t captured_count = 0;
 static uint32_t dropped_count = 0;
 
+/**
+ * @brief Detect whether SPIRAM is available for large ring allocations.
+ */
 static bool have_psram(void){ 
   return heap_caps_get_free_size(MALLOC_CAP_SPIRAM) > 0; 
 }
 
-
+/**
+ * @brief Wi-Fi promiscuous callback that copies frames into the ring buffer.
+ */
 static void wifi_promiscuous_cb(void *buf, wifi_promiscuous_pkt_type_t type) {
     if (type!=WIFI_PKT_MGMT && type!=WIFI_PKT_DATA &&
         type!=WIFI_PKT_CTRL && type!=WIFI_PKT_MISC) {
@@ -76,6 +86,9 @@ static void wifi_promiscuous_cb(void *buf, wifi_promiscuous_pkt_type_t type) {
 }
 
 /* ---------- Streamer task: Ring → CDC ---------- */
+/**
+ * @brief FreeRTOS task that drains the ring buffer and writes frames to the host.
+ */
 static void streamer_task(void *arg)
 {
   (void)arg;
@@ -145,6 +158,9 @@ static void streamer_task(void *arg)
 
 //---------- Public API implementations ----------
 
+/**
+ * @brief Configure buffer resources and start the USB streamer task.
+ */
 void sniffer_init(void)
 {  
   // STEP.1 Create ring buffer
@@ -157,6 +173,9 @@ void sniffer_init(void)
   ESP_LOGI(TAG, "Sniffer started (Ring+CDC, prefix+payload stored)");
 }
 
+/**
+ * @brief Enable promiscuous capture with the predefined filter set.
+ */
 void sniffer_enable_promiscuous(void)
 {
     // Setup Wi-Fi promiscuous filter
@@ -182,6 +201,9 @@ void sniffer_enable_promiscuous(void)
 }
 
 
+/**
+ * @brief Reset ring indices and capture counters.
+ */
 void sniffer_ring_reset(void)
 {
     if (!g_rb) return;
@@ -190,6 +212,9 @@ void sniffer_ring_reset(void)
     dropped_count = 0;
 }
 
+/**
+ * @brief Print current ring usage and capture statistics.
+ */
 void sniffer_print_stats(void)
 {
     uint32_t used = ring_buf_size(g_rb);

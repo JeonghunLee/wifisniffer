@@ -1,3 +1,8 @@
+/**
+ * @file usb_cdc.c
+ * @brief Thin wrapper around TinyUSB CDC-ACM for the Wi-Fi sniffer streamer.
+ */
+
 #include "usb_cdc.h"
 #include "tinyusb.h"
 #include "tusb_cdc_acm.h"
@@ -7,6 +12,9 @@ static const char *TAG = "USB_CDC";
 static bool s_cdc_ready = false;
 
 /* --- line state callback: DTR 올라올 때만 ready --- */
+/**
+ * @brief Track line state changes so we only stream when the host opens the port.
+ */
 static void line_state_changed_cb(int itf, cdcacm_event_t *event)
 {
     (void)itf;

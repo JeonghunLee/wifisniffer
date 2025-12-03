@@ -1,3 +1,8 @@
+/**
+ * @file ring_buf.c
+ * @brief Mutex-protected ring buffer implementation used by the Wi-Fi sniffer pipeline.
+ */
+
 #include "ring_buf.h"
 #include <string.h>
 #include "freertos/FreeRTOS.h"
@@ -16,6 +21,9 @@ struct ring_buf {
 
 
 
+/**
+ * @brief Advance an index while wrapping at @p cap.
+ */
 static inline uint32_t nxt(uint32_t i, uint32_t cap){ 
   return (i+1U) % cap; 
 }

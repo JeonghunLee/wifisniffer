@@ -1,3 +1,8 @@
+/**
+ * @file cmd.c
+ * @brief UART console commands that control Wi-Fi modes and sniffer utilities.
+ */
+
 #include <stdio.h>
 #include <string.h>
 #include <strings.h>
@@ -21,6 +26,9 @@ static bool s_initialized = false;
 static void print_usage(void);
 static int  wifi_command(int argc, char **argv);
 
+/**
+ * @brief Initialise the ESP-IDF console REPL with the sniffer command set.
+ */
 void command_init(void)
 {
     if (s_initialized) {
@@ -53,6 +61,9 @@ void command_init(void)
     ESP_LOGI(TAG, "Console ready. Type 'help' to list commands.");
 }
 
+/**
+ * @brief Display available console commands and usage hints.
+ */
 static void print_usage(void)
 {
     printf("Usage:\n");
@@ -67,6 +78,9 @@ static void print_usage(void)
  
 }
 
+/**
+ * @brief Handle the top-level `wifi` command and its subcommands.
+ */
 static int wifi_command(int argc, char **argv)
 {
     if (argc < 2) {
