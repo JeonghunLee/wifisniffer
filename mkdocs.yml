@@ -4,9 +4,6 @@ site_author: Jeonghun Lee
 repo_url: https://github.com/JeonghunLee/wifisniffer
 repo_name: JeonghunLee/wifisniffer
 
-build:
-  apt_packages:
-    - doxygen
 
 nav:
   - Home: index.md
@@ -17,7 +14,8 @@ nav:
       - Channel Strategy: wifi_sniffer1.md
       - USB CDC Streaming: wifi_sniffer2.md
   - Wireshark Integration: wireshark_0.md
-  - Setup WSL/mkdocs/doxygen: mkdocs_setup.md  
+  - Setup mkdocs/doxygen: mkdocs_setup.md 
+  - Setup Read the Docs: mkdocs_readthedocs.md    
   - API Reference (Doxygen): api_doxygen.md
   
 plugins:
