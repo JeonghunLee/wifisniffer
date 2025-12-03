@@ -1,4 +1,4 @@
-# mkdocs Setup
+# WSL mkdocs Setup
 
 <br/>
 
@@ -12,7 +12,7 @@
 <br/>
 
 
-## Window 의 WSL Setup  
+## Setup WSL   
 
 <br/>
 
@@ -84,7 +84,7 @@ wsl --set-default-version 2
 
 <br/>
 
-## Ubuntu Setup after Install WSL  
+## Setup Ubuntu    
 
 <br/>
 
@@ -95,14 +95,25 @@ sudo apt update && sudo apt upgrade -y
 
 <br/>
 
+* Setup Doxygen and graphviz
+doxygen,dot 확인 
+```
+sudo apt install -y doxygen graphviz
+```
+
+
 * Setup Python 
 ```
 sudo apt install python3
 sudo apt install python3-pip
 sudo apt install -y python3-venv
 sudo apt install python3.12-venv
-sudo apt install -y doxygen graphviz
 ```
+
+<br/>
+
+
+## Setup venv
 
 <br/>
 
@@ -110,12 +121,6 @@ sudo apt install -y doxygen graphviz
 ```
 python3 -m venv .venv
 ```
-
-<br/>
-
-### Setup venv (Python) 
-
-<br/>
 
 * venv activate 
 ```
@@ -130,26 +135,25 @@ deactivate
 
 <br/>
 
-### Python Packages (venv)
+## Setup Python  
 
 <br/>
 
-* Mkdocs Package
+* Mkdocs Packages
 ```
 pip install mkdocs mkdocs-material mkdocs-mermaid2-plugin 
 ```
 
-* Mkdocs Plugin
-```
-pip install mkdocstrings
-pip install mkdocstrings-python
-```
+
 
 <br/>
 
-## Doxygen
+## Setup Doxygen    
 
 <br/>
+
+doxygen 과 graphviz 가 다 필요함 
+
 
 * Doxyfile 생성 
 ```
@@ -194,7 +198,7 @@ CALLER_GRAPH           = YES
 
 <br/>
 
-## Doxygen 과 mkdocs 연결  
+## Setup mkdocs 
 
 <br/>
 
@@ -222,29 +226,7 @@ nav:
 
 <br/>
 
-## mkdocs 설정 확인 
-
-<br/>
-
-* mkdocs.yml 파일확인 
-```
-...
-
-  features:
-    - toc.follow
-    - navigation.instant
-    - navigation.instant.progress
-    - navigation.path
-    - navigation.top
-    - navigation.footer
-    - search.suggest
-    - search.highlight
-    - content.tabs.link
-    - content.code.annotation
-    - content.tooltips
-    - content.code.copy
-    - toc.integrate         # 이 줄이 우측 TOC(Table of Contents)를 왼쪽 내비(sidebar)로 통합해줌 
-```
+## TEST mkdocs 
 
 <br/>
 
@@ -262,7 +244,7 @@ INFO    -  Documentation built in 3.74 seconds
 INFO    -  [15:48:47] Serving on http://127.0.0.1:8000/
 ```
 
-
+<br/>
  
 
 

@@ -14,8 +14,10 @@ nav:
       - Channel Strategy: wifi_sniffer1.md
       - USB CDC Streaming: wifi_sniffer2.md
   - Wireshark Integration: wireshark_0.md
-  - Setup mkdocs/doxygen: mkdocs_setup.md 
-  - Setup Read the Docs: mkdocs_readthedocs.md    
+  - Setup mkdocs/doxygen:
+      - Setup Window: mkdocs_setup_window.md
+      - Setup WSL: mkdocs_setup_wsl.md     
+      - Setup Read the Docs: mkdocs_readthedocs.md    
   - API Reference (Doxygen): api_doxygen.md
   
 plugins:
