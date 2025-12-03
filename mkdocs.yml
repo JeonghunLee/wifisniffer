@@ -1,0 +1,81 @@
+site_name: WiFi Sniffer Docs
+site_description: ESP32-S3 Wi-Fi packet sniffer documentation
+site_author: Jeonghun Lee
+repo_url: https://github.com/JeonghunLee/wifisniffer
+repo_name: JeonghunLee/wifisniffer
+
+nav:
+  - Home: index.md
+  - Hardware Setup: board.md
+  - Console Commands: command.md
+  - Capture Pipeline:
+      - Sniffer Overview: wifi_sniffer0.md
+      - Channel Strategy: wifi_sniffer1.md
+      - USB CDC Streaming: wifi_sniffer2.md
+  - Wireshark Integration: wireshark_0.md
+
+plugins:
+  - search
+  - mermaid2
+  - offline
+
+# Material theme configuration
+# https://squidfunk.github.io/mkdocs-material/
+theme:
+  name: material
+  language: ko
+  palette:
+    - media: "(prefers-color-scheme)"
+      toggle:
+        icon: material/brightness-auto
+        name: Switch to light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      toggle:
+        icon: material/brightness-4
+        name: Switch to system preference
+  features:
+    - toc.follow
+    - navigation.instant
+    - navigation.instant.progress
+    - navigation.path
+    - navigation.top
+    - navigation.footer
+    - search.suggest
+    - search.highlight
+    - content.tabs.link
+    - content.code.annotation
+    - content.tooltips
+    - content.code.copy
+ 
+
+markdown_extensions:
+  - pymdownx.arithmatex
+  - pymdownx.betterem:
+      smart_enable: all
+  - pymdownx.caret
+  - pymdownx.critic
+  - pymdownx.details
+  - pymdownx.emoji:
+      emoji_generator: !!python/name:pymdownx.emoji.to_svg
+  - pymdownx.inlinehilite
+  - pymdownx.magiclink
+  - pymdownx.mark
+  - pymdownx.smartsymbols
+  - pymdownx.superfences
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.tilde
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+
+extra_javascript:
+  - https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML
