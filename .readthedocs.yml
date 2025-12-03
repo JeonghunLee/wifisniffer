@@ -8,6 +8,8 @@ build:
   apt_packages:
     - doxygen    
   jobs:
+    pre_build:
+      - doxygen Doxyfile  
     post_install:
       - pip install -r docs/readthedoc_requirements.txt
   
