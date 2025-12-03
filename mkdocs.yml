@@ -4,6 +4,10 @@ site_author: Jeonghun Lee
 repo_url: https://github.com/JeonghunLee/wifisniffer
 repo_name: JeonghunLee/wifisniffer
 
+build:
+  apt_packages:
+    - doxygen
+
 nav:
   - Home: index.md
   - Hardware Setup: board.md
