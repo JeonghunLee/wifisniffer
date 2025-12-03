@@ -286,5 +286,4 @@ Select port number (or 'q' to quit): 2
 💡 Open with Wireshark: wireshark capture_20251110_111818.pcap
 
 ✓ Closed
-
-````
+```

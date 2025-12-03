@@ -144,4 +144,4 @@ Capturing WiFi packets... Press Ctrl+C to stop
 💡 Open with Wireshark: wireshark ./output/capture_20251126_122756.pcap
 
 ✓ Closed
-````
+```
