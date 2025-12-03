@@ -1,5 +1,6 @@
 .vscode/settings.json
-
+.venv/
+docs/doxygen/
 
 # Ignore build output files
 build

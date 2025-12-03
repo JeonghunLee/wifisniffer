@@ -13,7 +13,9 @@ nav:
       - Channel Strategy: wifi_sniffer1.md
       - USB CDC Streaming: wifi_sniffer2.md
   - Wireshark Integration: wireshark_0.md
-
+  - Setup WSL/mkdocs/doxygen: mkdocs_setup.md  
+  - API Reference (Doxygen): api_doxygen.md
+  
 plugins:
   - search
   - mermaid2
