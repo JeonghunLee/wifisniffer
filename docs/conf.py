@@ -37,7 +37,7 @@ html_theme = "sphinx_rtd_theme"
 html_static_path = ["_static"]
 
 #
-# GitHub 연동 설정
+# GitHub 연동 설정 (삭제시 raw 링크로 표시됨)
 #
 html_context = {
     "display_github": True,        # GitHub 링크 표시
