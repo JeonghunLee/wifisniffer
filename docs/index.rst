@@ -41,19 +41,17 @@ Developer Documentation
 
    sphinx_readthedocs
 
-API Reference (Doxygen only)
-=============
+Developer Documentation
+=======================
 
 .. toctree::
    :maxdepth: 1
-   :caption: Doxygen Usage(API Reference)
+   :caption: MkDocs & Doxygen
 
    api_doxygen
 
+.. toctree::
+   :maxdepth: 1
+   :caption: Sphinx API (Doxygen + Breathe)
 
-API Reference (Doxygen and Breathe)
-=============
-
-.. doxygenindex::
-   :project: wifisniffer
-   :path: .
+    api_doxygen_breath
