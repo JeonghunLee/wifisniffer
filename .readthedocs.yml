@@ -12,6 +12,8 @@ build:
     pre_build:
       # Doxygen XML 생성 -> Breath -> Sphinx 
       - doxygen Doxyfile_sphinx  
+      - ls -alh docs/_doxygen
+      - ls -alh docs/_doxygen/xml
     post_install:
       - pip install -r docs/sphinx_requirements.txt
   
