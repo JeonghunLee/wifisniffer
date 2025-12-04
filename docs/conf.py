@@ -36,6 +36,16 @@ exclude_patterns = []
 html_theme = "sphinx_rtd_theme"
 html_static_path = ["_static"]
 
+#
+# GitHub 연동 설정
+#
+html_theme_options = {
+    "display_github": True,        # GitHub 링크 표시
+    "github_user": "JeonghunLee",  # GitHub 사용자명
+    "github_repo": "wifisniffer",  # 리포지토리 이름
+    "github_version": "main",      # main 브랜치 기준
+    "conf_py_path": "/docs/",      # docs 폴더가 위치한 경로
+}
 
 
 # 
@@ -48,7 +58,7 @@ breathe_projects = {
     "wifisniffer": os.path.join(os.path.dirname(__file__), "_doxygen", "xml"),
 }
 #
-# Doxyfile HTML 설정
+# Doxyfile HTML 설정 (Not Working)
 #       GENERATE_HTML = YES
 #       HTML_OUTPUT = html 
 #       OUTPUT_DIRECTORY = docs/_doxygen
