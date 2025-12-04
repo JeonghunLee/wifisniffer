@@ -24,8 +24,8 @@ WiFi Sniffer Documentation
    wireshark_0
 
 
-Developer Documentation
-=======================
+Developer Documentation-Mkdocs/Sphinx Setup
+==========================================
 
 .. toctree::
    :maxdepth: 1
@@ -41,8 +41,8 @@ Developer Documentation
 
    sphinx_readthedocs
 
-Developer Documentation
-=======================
+Developer Documentation-API Reference
+=====================================
 
 .. toctree::
    :maxdepth: 1
