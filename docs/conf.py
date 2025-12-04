@@ -9,10 +9,22 @@ author = "Jeonghun Lee"
 release = "0.1.0"
 
 extensions = [
-    "breathe",
-    "myst_parser",          # Markdown도 쓰려면
-    # "exhale",             # 사용 시 주석 해제
+    "breathe",            # Doxygen XML 문서화용
+    "myst_parser",        # Markdown도 쓰려면
+    "exhale",             # Doxygen XML Control 사용 시 주석 해제
 ]
+
+import exhale
+
+# Exhale 설정 (선택 사항)
+exhale_args = {
+    "containmentFolder":     "./api",
+    "rootFileName":          "api_root.rst",
+    "rootFileTitle":         "API Reference",
+    "doxygenStripFromPath":  "..",
+    "createTreeView":        True,
+}
+
 
 # 템플릿 / 정적 파일
 templates_path = ["_templates"]
