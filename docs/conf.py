@@ -28,7 +28,7 @@ html_static_path = ["_static"]
 # Doxyfile 에서 GENERATE_XML = YES, XML_OUTPUT = xml 기준
 # Doxyfile에서 OUTPUT_DIRECTORY = docs/_doxygen
 breathe_projects = {
-    "wifisniffer": os.path.join(os.path.dirname(__file__), "_doxygen", "xml"),,
+    "wifisniffer": os.path.join(os.path.dirname(__file__), "_doxygen", "xml"),
 }
 breathe_default_project = "wifisniffer"
 
