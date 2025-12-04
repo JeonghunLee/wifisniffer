@@ -48,10 +48,10 @@ Developer Documentation-API Reference
    :maxdepth: 1
    :caption: MkDocs & Doxygen
 
-   api_doxygen
+   api_sphinx_doxygen
 
 .. toctree::
    :maxdepth: 1
    :caption: Sphinx API (Doxygen + Breathe)
 
-    api_doxygen_breath
+    api_sphinx_doxygen_breath

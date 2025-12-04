@@ -20,7 +20,7 @@ nav:
       - Setup Read the Docs: mkdocs_readthedocs.md    
   - Setup sphinx/doxygen:      
       - Setup Read the Docs: sphinx_readthedocs.md  
-  - API Reference (Doxygen): api_doxygen.md
+  - API Reference (Doxygen): api_mkdocs_doxygen.md
   
 plugins:
   - search
