@@ -39,7 +39,7 @@ html_static_path = ["_static"]
 #
 # GitHub 연동 설정
 #
-html_theme_options = {
+html_context = {
     "display_github": True,        # GitHub 링크 표시
     "github_user": "JeonghunLee",  # GitHub 사용자명
     "github_repo": "wifisniffer",  # 리포지토리 이름
