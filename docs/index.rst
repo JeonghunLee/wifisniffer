@@ -52,5 +52,5 @@ API Reference (Doxygen and Breathe)
 =============
 
 .. doxygenindex::
-   :project: MyProject
+   :project: wifisniffer
    :path: .

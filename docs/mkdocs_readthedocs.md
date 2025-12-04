@@ -1,8 +1,38 @@
-# ReadTheDocs 
+# ReadTheDocs Mkdocs
 
 <br/>
 
-* ReadtheDocs 설정 
+* Mkdocs 의 전체구조
+    * mkdocs.yml 관리    
+    * docs/readthedoc_requirements.txt  Python Package 관리 
+    * Doxyfile_mkdocs   Doxygen 설정 별도 관리 
+
+**주의 Markdown 만 지원**
+
+<br/>
+
+
+## Python Package Mkdocs
+
+<br/>
+
+* docs/readthedoc_requirements.txt 
+```
+mkdocs
+mkdocs-material
+mkdocs-mermaid2-plugin
+pymdown-extensions
+```
+
+<br/>
+
+## ReadtheDocs Mkdocs 설정 
+
+<br/>
+
+
+
+* ReadtheDocs Mkdocs 설정관리 
 
 .readthedocs_mkdocs.yml 
 ```
@@ -31,18 +61,16 @@ formats:
   - epub
 ```
 
+<br/>
+
+* Readthedocs 최종  변경  
+
 .readthedocs_mkdocs.yml -> .readthedocs.yml 변경 
 
+<br/>
 
-* docs/readthedoc_requirements.txt 
-```
-mkdocs
-mkdocs-material
-mkdocs-mermaid2-plugin
-pymdown-extensions
-```
 
-## ReadTheDocs 
+## ReadTheDocs 확인   
 
 <br/>
 

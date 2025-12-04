@@ -25,11 +25,12 @@ html_static_path = ["_static"]
 # ---------------------
 # Breathe 설정
 # ---------------------
-# Doxygen XML 경로 (Doxyfile의 OUTPUT_DIRECTORY와 맞추기)
+# Doxyfile 에서 GENERATE_XML = YES, XML_OUTPUT = xml 기준
+# Doxyfile에서 OUTPUT_DIRECTORY = docs/_doxygen
 breathe_projects = {
-    "MyProject": "./_doxygen/xml",
+    "wifisniffer": os.path.join(os.path.dirname(__file__), "_doxygen", "xml"),,
 }
-breathe_default_project = "MyProject"
+breathe_default_project = "wifisniffer"
 
 # ---------------------
 # MyST (Markdown) 설정 (선택)

@@ -18,6 +18,8 @@ nav:
       - Setup Window: mkdocs_setup_window.md
       - Setup WSL: mkdocs_setup_wsl.md     
       - Setup Read the Docs: mkdocs_readthedocs.md    
+  - Setup sphinx/doxygen:      
+      - Setup Read the Docs: sphinx_readthedocs.md  
   - API Reference (Doxygen): api_doxygen.md
   
 plugins:
