@@ -2,7 +2,7 @@
 
 <br/>
 
-[Go Back Index](index.md#wifi-control)
+[Go Back Index](index_mkdocs.md#wifi-control)
 
 <br/>
 
@@ -188,7 +188,7 @@ W (79428) SNFFER: USB CDC not ready, dropping packet
 
 <br/>
 
-[Go Back Index](index.md#wifi-control)
+[Go Back Index](index_mkdocs.md#wifi-control)
 
 Serial 기반의 Commands 제공  
 

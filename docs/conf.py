@@ -16,12 +16,7 @@ extensions = [
 
 # 템플릿 / 정적 파일
 templates_path = ["_templates"]
-exclude_patterns = [
-    "_build",
-    "Thumbs.db",
-    ".DS_Store",
-    "index.md",   # index.rst만 사용    
-]
+exclude_patterns = []
 
 # 테마 (sphinx-rtd-theme 사용하는 예)
 html_theme = "sphinx_rtd_theme"

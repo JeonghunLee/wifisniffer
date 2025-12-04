@@ -38,7 +38,7 @@ VS Code 기반으로 자동화
 * VS Code 의 경우 자동실행 
    * Terminal -> Run Task    
       * **Capture USB CDC (Not CP210x)-Debug**    
-      * **Capture USB CDC (Not CP210x)-Simpe**    
+      * **Capture USB CDC (Not CP210x)-Simpel**    
 
 <br/>
 
