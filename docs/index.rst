@@ -47,6 +47,12 @@ Documentation-API Reference
 
 .. toctree::
    :maxdepth: 1
-   :caption: API Reference
+   :caption: API Reference-1
+
+   api_sphinx_doxygen
+
+.. toctree::
+   :maxdepth: 1
+   :caption: API Reference-2
 
    api_sphinx_doxygen_breathe
