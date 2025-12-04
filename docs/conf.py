@@ -14,13 +14,15 @@ extensions = [
     "exhale",             # Doxygen XML Control 사용 시 주석 해제
 ]
 
+# exhale 사용 시 추가
 import exhale
 
-# Exhale 설정 (선택 사항)
+# Exhale 설정 (필요 시 조정)
+# index.rst api/api_root
 exhale_args = {
     "containmentFolder":     "./api",
     "rootFileName":          "api_root.rst",
-    "rootFileTitle":         "API Reference",
+    "rootFileTitle":         "API Referenc(Exhale + Breathe)",
     "doxygenStripFromPath":  "..",
     "createTreeView":        True,
 }

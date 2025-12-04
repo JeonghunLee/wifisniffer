@@ -59,6 +59,6 @@ Documentation-API Reference
 
 .. toctree::
    :maxdepth: 2
-   :caption: API(Exhale+Breathe)
+   :caption: API Reference-3
 
    api/api_root
