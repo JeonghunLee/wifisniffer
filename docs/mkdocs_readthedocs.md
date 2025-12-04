@@ -4,7 +4,7 @@
 
 * ReadtheDocs 설정 
 
-.readthedocs.yml
+.readthedocs_mkdocs.yml 
 ```
 # .readthedocs.yml
 version: 2
@@ -30,6 +30,9 @@ formats:
   - pdf
   - epub
 ```
+
+.readthedocs_mkdocs.yml -> .readthedocs.yml 변경 
+
 
 * docs/readthedoc_requirements.txt 
 ```

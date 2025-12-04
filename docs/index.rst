@@ -41,6 +41,12 @@ Developer Documentation
    mkdocs_setup_wsl
    mkdocs_readthedocs
 
+.. toctree::
+   :maxdepth: 1
+   :caption: Setup sphinx/doxygen
+
+   sphinx_readthedocs
+
 
 API Reference (Doxygen and Breathe)
 =============
