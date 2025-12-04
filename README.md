@@ -28,7 +28,21 @@ A WiFi packet sniffer for ESP32-S3 based on ESP-IDF 5.4 that captures WiFi packe
 
 <br/>
 
-- [Web: wifisniffer KR](https://wifisniffer.readthedocs.io/ko/latest/)
+* ReadTheDocs  
+    * Github 와 연결사용    
+    * [Web: wifisniffer Manaul](https://wifisniffer.readthedocs.io/ko/latest/)          
+
+<br/>
+
+## ReadME
+
+<br/>
+
+* ReadME TEST 
+    * 좋은 것 같은데, 무료에서는 좀 한계가 있는 듯해서 아래에서 멈춤      
+    * Github 연결은 되나 Sync는 유료    
+    * Landing Page 하려면 유료   
+    * [Web: wifisniffer 실패](https://wifi-sniffer.readme.io/)
 
 <br/>
 

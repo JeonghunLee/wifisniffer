@@ -157,7 +157,7 @@ doxygen 과 graphviz 가 다 필요함
 
 * Doxyfile 생성 
 ```
-doxygen -g Doxyfile
+doxygen -g Doxyfile_mkdocs
 ```
 
 <br/>
@@ -193,7 +193,7 @@ CALLER_GRAPH           = YES
 
 * Doxyfile 실행 
 ```
-(.venv) ahyuo@jhlee:/mnt/d/works/projects/wifisniffer$ doxygen Doxyfile
+(.venv) ahyuo@jhlee:/mnt/d/works/projects/wifisniffer$ doxygen Doxyfile_mkdocs
 ```
 
 <br/>

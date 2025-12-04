@@ -10,13 +10,12 @@ build:
     - graphviz
   jobs:
     pre_build:
-      # Doxygen XML 생성 -> Breath -> Sphinx 
-      - doxygen Doxyfile_sphinx  
+      - doxygen Doxyfile_mkdocs  
     post_install:
-      - pip install -r docs/sphinx_requirements.txt
+      - pip install -r docs/readthedoc_requirements.txt
   
-sphinx:
-  configuration: docs/conf.py   # Sphinx 설정 파일 위치
+mkdocs:
+  configuration: mkdocs.yml
 
 formats:
   - htmlzip

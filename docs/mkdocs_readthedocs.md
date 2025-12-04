@@ -18,7 +18,7 @@ build:
     - graphviz
   jobs:
     pre_build:
-      - doxygen Doxyfile  
+      - doxygen Doxyfile_mkdocs  
     post_install:
       - pip install -r docs/readthedoc_requirements.txt
   
