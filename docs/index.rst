@@ -24,8 +24,8 @@ WiFi Sniffer Documentation
    wireshark_0
 
 
-Docs-Mkdocs/Sphinx Setup
-==========================================
+Documentation-Mkdocs/Sphinx
+===========================
 
 .. toctree::
    :maxdepth: 1
@@ -41,12 +41,12 @@ Docs-Mkdocs/Sphinx Setup
 
    sphinx_readthedocs
 
-Docs-API Reference
-=====================================
+All API Reference
+=================
 
 .. toctree::
    :maxdepth: 1
-   :caption: MkDocs & Doxygen
+   :caption: Doxygen Only
 
     api_mkdocs_doxygen
     api_sphinx_doxygen
