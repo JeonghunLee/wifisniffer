@@ -41,9 +41,6 @@ Documentation-Mkdocs/Sphinx
 
    sphinx_readthedocs
 
-All API Reference
-=================
-
 .. toctree::
    :maxdepth: 1
    :caption: Sphinx API Reference(Doxygen + Breathe)
