@@ -43,6 +43,6 @@ Documentation-Mkdocs/Sphinx
 
 .. toctree::
    :maxdepth: 1
-   :caption: Sphinx API Reference(Doxygen + Breathe)
+   :caption: API Reference
 
    api_sphinx_doxygen_breathe
