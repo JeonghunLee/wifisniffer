@@ -23,12 +23,6 @@ WiFi Sniffer Documentation
 
    wireshark_0
 
-.. toctree::
-   :maxdepth: 1
-   :caption: Developer Docs
-
-   dev/index
-
 
 Developer Documentation
 =======================
@@ -46,6 +40,15 @@ Developer Documentation
    :caption: Setup sphinx/doxygen
 
    sphinx_readthedocs
+
+API Reference (Doxygen only)
+=============
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Doxygen Usage(API Reference)
+
+   api_doxygen
 
 
 API Reference (Doxygen and Breathe)
