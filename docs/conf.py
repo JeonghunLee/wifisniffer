@@ -22,20 +22,25 @@ exclude_patterns = []
 html_theme = "sphinx_rtd_theme"
 html_static_path = ["_static"]
 
-#
-# Doxyfile
-#       - GENERATE_HTML 
-#       - HTML_OUTPUT 설정에 맞춤
-html_extra_path = ["_doxygen/html"]
 
-# ---------------------
-# Breathe 설정
-# ---------------------
-# Doxyfile 에서 GENERATE_XML = YES, XML_OUTPUT = xml 기준
-# Doxyfile에서 OUTPUT_DIRECTORY = docs/_doxygen
+
+# 
+# Breathe XML 연결 설정
+# Doxyfile XML 설정
+#       GENERATE_XML = YES
+#       XML_OUTPUT = xml 
+#       OUTPUT_DIRECTORY = docs/_doxygen
 breathe_projects = {
     "wifisniffer": os.path.join(os.path.dirname(__file__), "_doxygen", "xml"),
 }
+#
+# Doxyfile HTML 설정
+#       GENERATE_HTML = YES
+#       HTML_OUTPUT = html 
+#       OUTPUT_DIRECTORY = docs/_doxygen
+html_extra_path = ["_doxygen/html"]
+
+
 breathe_default_project = "wifisniffer"
 
 # ---------------------
