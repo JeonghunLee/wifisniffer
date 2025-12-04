@@ -22,6 +22,12 @@ exclude_patterns = []
 html_theme = "sphinx_rtd_theme"
 html_static_path = ["_static"]
 
+#
+# Doxyfile
+#       - GENERATE_HTML 
+#       - HTML_OUTPUT 설정에 맞춤
+html_extra_path = ["_doxygen/html"]
+
 # ---------------------
 # Breathe 설정
 # ---------------------
