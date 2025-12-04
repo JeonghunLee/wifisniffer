@@ -44,11 +44,7 @@ Documentation-Mkdocs/Sphinx
 All API Reference
 =================
 
-.. toctree::
-   :maxdepth: 1
-   :caption: Doxygen Only
-    
-    api_sphinx_doxygen
+
 
 .. toctree::
    :maxdepth: 1
