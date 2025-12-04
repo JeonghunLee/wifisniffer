@@ -48,4 +48,4 @@ All API Reference
    :maxdepth: 1
    :caption: Sphinx API (Doxygen + Breathe)
 
-    api_sphinx_doxygen_breathe
+   api_sphinx_doxygen_breathe
