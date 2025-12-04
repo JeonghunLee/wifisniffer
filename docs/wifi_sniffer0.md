@@ -1,4 +1,4 @@
-# WIFI Sniffer TEST
+# WIFI Sniffer TEST-0  
 
 <br/>
 
@@ -6,12 +6,14 @@
 
 <br/>
 
+
 .pcap로 저장하지 않으면 WIFI Packet Capture 되는지 확인  
 
 <br/>
 
 * python .\read_packets.py -v -d
-
+    * [1] : ESP32-S3 Monitor (Serial)      
+    * [2] : ESP32-S3 USB-CDC    
 ```
 python .\read_packets.py -v -d
 

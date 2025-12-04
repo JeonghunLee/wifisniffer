@@ -9,11 +9,11 @@ nav:
   - Home: index_mkdocs.md
   - Hardware Setup: board.md
   - Console Commands: command.md
-  - Capture Pipeline:
-      - Sniffer Overview: wifi_sniffer0.md
-      - Channel Strategy: wifi_sniffer1.md
-      - USB CDC Streaming: wifi_sniffer2.md
-  - Wireshark Integration: wireshark_0.md
+  - WIFI Captures:
+      - WIFI Sniffer-1: wifi_sniffer0.md
+      - WIFI Sniffer-2: wifi_sniffer1.md
+      - WIFI Sniffer-3: wifi_sniffer2.md
+  - Tool Wireshark: wireshark_0.md
   - Setup mkdocs/doxygen:
       - Setup Window: mkdocs_setup_window.md
       - Setup WSL: mkdocs_setup_wsl.md     

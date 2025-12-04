@@ -1,8 +1,13 @@
-# WIFI Sniffer TEST
+# WIFI Sniffer TEST-2   
 
 <br/>
 
 [Go Back Index](index.md#wifi-sniffer)
+
+<br/>
+
+* Terminal -> Run Task        
+    * Capture USB CDC (Not CP210x)-Simpel            
 
 <br/>
 

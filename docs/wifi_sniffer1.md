@@ -1,8 +1,13 @@
-# WIFI Sniffer TEST
+# WIFI Sniffer TEST-1   
 
 <br/>
 
 [Go Back Index](index_mkdocs.md#wifi-sniffer)
+
+<br/>
+
+* Terminal -> Run Task       
+    * Capture USB CDC (Not CP210x)-Debug    
 
 <br/>
 
@@ -12,6 +17,8 @@
 <br/>
  
 * python .\read_packets.py -v 
+    * [1] : ESP32-S3 Monitor (Serial)      
+    * [2] : ESP32-S3 USB-CDC   
 
 ```
 python .\read_packets.py -v 

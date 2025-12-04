@@ -10,7 +10,7 @@ WiFi Sniffer Documentation
 
 .. toctree::
    :maxdepth: 1
-   :caption: Capture Pipeline
+   :caption: WIFI Capture 
 
    wifi_sniffer0
    wifi_sniffer1
@@ -19,7 +19,7 @@ WiFi Sniffer Documentation
 
 .. toctree::
    :maxdepth: 1
-   :caption: Wireshark Integration
+   :caption: Tool Wireshark 
 
    wireshark_0
 
