@@ -12,8 +12,9 @@ build:
     pre_build:
       # Doxygen XML 생성 -> Breath -> Sphinx 
       - doxygen Doxyfile_sphinx  
-      - ls -alh docs/_doxygen
-      - ls -alh docs/_doxygen/xml
+      - ls -alh docs/_doxygen    # raw log 확인
+      - ls -alh docs/_doxygen/xml  # raw log 확인
+      - ls -alh docs/_doxygen/html # raw log 확인          
     post_install:
       - pip install -r docs/sphinx_requirements.txt
   
