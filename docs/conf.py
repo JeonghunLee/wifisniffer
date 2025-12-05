@@ -52,7 +52,8 @@ from datetime import datetime
 import subprocess
 
 year = datetime.now().year
-copyright = f"{year}, {author}"
+_GITHUB_PROJECT_URL = "https://github.com/JeonghunLee/wifisniffer"
+copyright = f"{year}, {author} ,<a href='{_GITHUB_PROJECT_URL}' target='_blank'>View on GitHub Project</a>"
 
 def get_git_info():
     try:
@@ -68,16 +69,26 @@ def get_git_info():
     except:
         return "unknown"
 
-_GIT_HASH = get_git_info()
-_GITHUB_URL = (
+def get_git_hash():
+    try:
+        commit = subprocess.check_output(
+            ["git", "rev-parse", "--short", "HEAD"]
+        ).strip().decode("utf-8")
+        return f"{commit}"
+    except:
+        return "unknown"
+
+_GIT_INFO = get_git_info()  
+_GIT_HASH = get_git_hash()
+_GITHUB_COMMIT_URL = (
     f"https://github.com/JeonghunLee/wifisniffer/"
     f"commit/{_GIT_HASH}"
 )
 
 # Footer Information 설정
 html_last_updated_fmt = (
-    f"Updated | commit: {_GIT_HASH} | "
-    f"<a href='{_GITHUB_URL}' target='_blank'>View on GitHub</a>"
+    f"Updated | commit: {_GIT_INFO} | "
+    f"<a href='{_GITHUB_COMMIT_URL}' target='_blank'>View on GitHub Commit</a>"
 )
 
 
