@@ -53,7 +53,7 @@ import subprocess
 
 year = datetime.now().year
 # copyright HMTL Tags 안됨 주의 
-copyright = f"{year}, {author} "
+copyright = f"{year}, {author} Github Commit:"
 
 def get_git_info():
     try:
