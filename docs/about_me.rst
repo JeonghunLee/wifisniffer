@@ -1,8 +1,9 @@
 About Me
 ========
 
-Hi! I specialize in Embedded Firmware, BSP (Linux,RTOS), and DSP systems. |    
-I like learning the latest technology and am interested in various things related to SW and HW.     
+Hi! I specialize in Embedded Firmware, BSP (Linux, RTOS), and DSP systems. |
+I like learning the latest technologies and am interested in various things related to software and hardware.
+  
 
 
 
