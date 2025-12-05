@@ -30,8 +30,6 @@ exhale_args = {
     
     # Exhale 옵션
     "createTreeView":        True,
-    "treeOutputSubdir":      "api_tree",
-
     # Exhale 문서 상단 설명 넣기
     "afterTitleDescription":
         "This section is automatically generated from Doxygen XML using Exhale.",
@@ -39,6 +37,7 @@ exhale_args = {
     # Exhale 빌드 방식 제어 (Exhale Version 0.3.3 이상에서 사용 가능)
  #   "exhaleExecutesDoxygen": True,
  #   "forceDoxygenBuild":     True,
+ #   "treeOutputSubdir":      "api_tree",
 
     # Exhale 빌드 로그 보기
     "verboseBuild":          False,    
