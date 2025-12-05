@@ -24,13 +24,20 @@ A WiFi packet sniffer for ESP32-S3 based on ESP-IDF 5.4 that captures WiFi packe
 
 <br/>
 
-## ReadTheDocs
+## ReadTheDocs and Github Pages 
 
 <br/>
+
+Sometimes, Not working properly ReadTheDocs 
 
 * ReadTheDocs  
     * Github 와 연결사용    
     * [Web: wifisniffer Manaul](https://wifisniffer.readthedocs.io/ko/latest/)          
+
+<br/>
+
+* Github Pages          
+    * [Github Pages](https://jeonghunlee.github.io/wifisniffer/)   
 
 <br/>
 
