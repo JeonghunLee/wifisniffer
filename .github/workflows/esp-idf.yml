@@ -9,16 +9,17 @@ on:
     branches: [ main ]
 
 jobs:
-  build:
+  build-and-release:
     name: Build (ESP-IDF v5.4, Docker)
     runs-on: ubuntu-latest
     # Run the job inside an ESP-IDF Docker image (change image tag if needed)
     container:
       image: espressif/idf:release-v5.4
-
     env:
       # Ensure the target is ESP32-S3 as the repository expects
       IDF_TARGET: esp32s3
+    permissions:
+      contents: write   # to create releases
 
     steps:
       - name: Checkout repository
