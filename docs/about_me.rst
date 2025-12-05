@@ -1,7 +1,7 @@
 About Me
 ========
 
-Hi! I specialize in Embedded Firmware, BSP (Linux,RTOS), and DSP systems.     
+Hi! I specialize in Embedded Firmware, BSP (Linux,RTOS), and DSP systems. |    
 I like learning the latest technology and am interested in various things related to SW and HW.     
 
 
@@ -15,8 +15,8 @@ Interests
 
 
 
-GitHub Project
-----------------
+GitHub 
+-------
 * GitHub Main: <https://github.com/JeonghunLee>
     * GitHub - WiFi Sniffer: <https://github.com/JeonghunLee/wifisniffer>
 
@@ -24,8 +24,8 @@ GitHub Project
 
 My Blogger  
 -----------
-* Pleaes use Tags below to search more useful information
 * Main Blogger: <https://ahyuo79.blogspot.com>
+* Pleaes use Tags below to search more useful information
 * Categories ESP Tags Series:
     * MCU-ESP32:<https://ahyuo79.blogspot.com/search/label/MCU-ESP32>
     * MCU-ESP32S3:<https://ahyuo79.blogspot.com/search/label/MCU-ESP32S3>
