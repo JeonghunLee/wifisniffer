@@ -4,7 +4,7 @@ import sys
 # 필요하다면 프로젝트 루트 경로 추가
 sys.path.insert(0, os.path.abspath(".."))
 
-project = "WiFi Sniffer Firmware"
+project = "WiFi Sniffer based on ESP32-S3"
 author = "Jeonghun Lee"
 release = "0.1.0"
 
@@ -20,12 +20,49 @@ import exhale
 # Exhale 설정 (필요 시 조정)
 # index.rst api/api_root
 exhale_args = {
+    # API Reference Root 
     "containmentFolder":     "./api",
     "rootFileName":          "api_root.rst",
     "rootFileTitle":         "API Referenc(Exhale + Breathe)",
-    "doxygenStripFromPath":  "..",
+    
+    # Doxygen XML 위치
+    "doxygenStripFromPath":  "..",    
+    
+    # Exhale 옵션
     "createTreeView":        True,
+    "treeOutputSubdir":      "api_tree",
+
+    # Exhale 문서 상단 설명 넣기
+    "afterTitleDescription":
+        "This section is automatically generated from Doxygen XML using Exhale.",
+
+    # Exhale 빌드 방식 제어
+    "exhaleExecutesDoxygen": True,
+    "forceDoxygenBuild":     True,
+
+    # Exhale 빌드 로그 보기
+    "verboseBuild":          False,    
 }
+
+
+# Git commit 정보 자동 추출
+import subprocess
+
+def get_git_info():
+    try:
+        commit = subprocess.check_output(
+            ["git", "rev-parse", "--short", "HEAD"]
+        ).strip().decode("utf-8")
+
+        date = subprocess.check_output(
+            ["git", "show", "-s", "--format=%ci", "HEAD"]
+        ).strip().decode("utf-8")
+
+        return f"{commit} ({date})"
+    except:
+        return "unknown"
+
+html_last_updated_fmt = "Updated | " + get_git_info()
 
 
 # 템플릿 / 정적 파일
