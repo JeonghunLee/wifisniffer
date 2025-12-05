@@ -53,7 +53,7 @@ import subprocess
 
 year = datetime.now().year
 _GITHUB_PROJECT_URL = "https://github.com/JeonghunLee/wifisniffer"
-copyright = f"{year}, {author} ,<a href='{_GITHUB_PROJECT_URL}' target='_blank'>View on GitHub Project</a>"
+copyright = f"{year}, {author} "
 
 def get_git_info():
     try:
@@ -86,10 +86,10 @@ _GITHUB_COMMIT_URL = (
 )
 
 # Footer Information 설정
-html_last_updated_fmt = (
-    f"Updated | commit: {_GIT_INFO} | "
-    f"<a href='{_GITHUB_COMMIT_URL}' target='_blank'>View on GitHub Commit</a>"
-)
+#html_last_updated_fmt = (
+#    f"Updated | commit: {_GIT_INFO} | "
+#    f"<a href='{_GITHUB_COMMIT_URL}' target='_blank'>View on GitHub Commit</a>"
+#)
 
 
 # 템플릿 / 정적 파일
@@ -109,6 +109,7 @@ html_context = {
     "github_repo": "wifisniffer",  # 리포지토리 이름
     "github_version": "main",      # main 브랜치 기준
     "conf_py_path": "/docs/",      # docs 폴더가 위치한 경로
+    "commit": get_git_hash(),      # 현재 커밋 해시
 }
 
 
