@@ -2,8 +2,8 @@ name: "ESP-IDF Build and Release CI/CD (Docker v5.4)"
 
 on:
   push:
+    # create a release when a tag like v1.2.3 or v2025... is pushed    
     branches: [ main ]
-    # create a release when a tag like v1.2.3 or v2025... is pushed
     tags: ['v*']
   pull_request:
     branches: [ main ]
@@ -47,21 +47,24 @@ jobs:
           echo "Using IDF_TARGET=$IDF_TARGET"
           idf.py build
 
-      - name: Upload build artifact (build directory)
-        if: success()
-        uses: actions/upload-artifact@v4
-        with:
-          name: esp-idf-build
-          path: build/
+      - name: Check build outputs
+        run: |
+          echo "=== BUILD DIR CONTENTS ==="
+          ls -R build || true
 
       - name: Create GitHub Release and upload build
+        if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v1
         with:
+          tag_name: ${{ github.ref_name }}
+          name: ${{ github.ref_name }}
           files: |
             build/bootloader/bootloader.bin
             build/partition_table/partition-table.bin
             build/esp32s3_sniffer.bin
             build/*.elf
-            build/flash_project_args          
+            build/flash_project_args    
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}                  
 
 

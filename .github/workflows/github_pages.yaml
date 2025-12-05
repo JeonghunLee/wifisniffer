@@ -1,4 +1,4 @@
-name: Deploy MkDocs and Doxygen
+name: Deploy (mkdocs/doxygen) to GitHub Pages
 
 on:
   push:
@@ -40,7 +40,7 @@ jobs:
         run: |
           doxygen Doxyfile_mkdocs          
 
-      # index.md 준비 
+      # index.md 준비 (index_mkdocs.md -> index.md)
       - name: Prepare MkDocs index file
         run: |
           if [ -f docs/index_mkdocs.md ]; then
@@ -52,7 +52,8 @@ jobs:
       - name: Build site (MkDocs)
         run: mkdocs build --config-file mkdocs_githubaction.yml
 
+      # 변경된 mkdocs_githubaction.yml 사용        
       - name: Deploy to GitHub Pages
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: mkdocs gh-deploy --force
+        run: mkdocs gh-deploy --config-file mkdocs_githubaction.yml --force
