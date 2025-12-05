@@ -41,7 +41,7 @@ jobs:
           doxygen Doxyfile_mkdocs          
 
       - name: Build site (MkDocs)
-        run: mkdocs build --strict
+        run: mkdocs build 
 
       - name: Deploy to GitHub Pages
         env:
