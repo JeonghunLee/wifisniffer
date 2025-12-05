@@ -85,6 +85,7 @@ _GITHUB_COMMIT_URL = (
     f"commit/{_GIT_HASH}"
 )
 
+html_last_updated_fmt = None
 # Footer Information 설정
 #html_last_updated_fmt = (
 #    f"Updated | commit: {_GIT_INFO} | "
