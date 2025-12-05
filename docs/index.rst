@@ -5,7 +5,7 @@ WiFi Sniffer Documentation
    :maxdepth: 1
    :caption: About Me
 
-   aboutme
+   about_me
 
 .. toctree::
    :maxdepth: 1

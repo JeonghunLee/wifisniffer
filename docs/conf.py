@@ -23,7 +23,7 @@ exhale_args = {
     # API Reference Root 
     "containmentFolder":     "./api",
     "rootFileName":          "api_root.rst",
-    "rootFileTitle":         "API Referenc-3(2+Exhale)",
+    "rootFileTitle":         "API Reference-3(2+Exhale)",
     
     # Doxygen XML 위치
     "doxygenStripFromPath":  "..",    
