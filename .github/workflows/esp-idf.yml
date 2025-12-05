@@ -71,19 +71,21 @@ jobs:
           name: ${{ github.ref_name }}
           files: release-${{ github.ref_name }}-${{ env.IDF_TARGET }}.zip  
           body: |
-            🚀 ESP32-S3 WiFi Sniffer Firmware Release
-
-            **Version**: ${{ github.ref_name }}
-            **Target**: ${{ env.IDF_TARGET }}
+            🚀 ESP32-S3 WiFi Sniffer Binary Release 
+            ------------------------------------------
+            * **Version**: ${{ github.ref_name }}
+            * **Target**: ${{ env.IDF_TARGET }}
 
             📦 Included in ZIP:
+            ```
             - bootloader.bin
             - partition-table.bin
             - esp32s3_sniffer.bin
-            - flash_project_args
-            - ELF file(s)
+            - flash_project_args ( for flashing )
+            - ELF file(s)   (for debugging)
+            ```
 
-            🛠 Flash Guide:
+            🛠 Flash Guide: (Need ESP-IDF)  
             Flashing parameters are already included in **flash_project_args**
             ```
             esptool.py @flash_project_args
