@@ -50,18 +50,46 @@ jobs:
           echo "=== BUILD DIR CONTENTS ==="
           ls -R build || true
 
+      - name: Zip Release Files
+        run: |
+          mkdir release_files
+          echo "ESP32-S3 WiFi Sniffer Firmware" > release_files/readme.txt
+          cp build/bootloader/bootloader.bin release_files/
+          cp build/partition_table/partition-table.bin release_files/
+          cp build/esp32s3_sniffer.bin release_files/
+          cp build/*.elf release_files/
+          cp build/flash_project_args release_files/                
+          cd release_files
+          zip -r ../release-${{ github.ref_name }}-${{ env.IDF_TARGET }}.zip .
+          cd .. 
+
       - name: Create GitHub Release and upload build
         if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ github.ref_name }}
           name: ${{ github.ref_name }}
-          files: |
-            build/bootloader/bootloader.bin
-            build/partition_table/partition-table.bin
-            build/esp32s3_sniffer.bin
-            build/*.elf
-            build/flash_project_args    
+          files: release-${{ github.ref_name }}-${{ env.IDF_TARGET }}.zip  
+          body: |
+            🚀 ESP32-S3 WiFi Sniffer Firmware Release
+
+            **Version**: ${{ github.ref_name }}
+            **Target**: ${{ env.IDF_TARGET }}
+
+            📦 Included in ZIP:
+            - bootloader.bin
+            - partition-table.bin
+            - esp32s3_sniffer.bin
+            - flash_project_args
+            - ELF file(s)
+
+            🛠 Flash Guide:
+            Flashing parameters are already included in **flash_project_args**
+            ```
+            esptool.py @flash_project_args
+            ```
+
+          generate_release_notes: true          
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}                  
 
