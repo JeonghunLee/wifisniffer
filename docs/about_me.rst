@@ -1,23 +1,42 @@
 About Me
 ========
 
-Hi! I’m a Principal Research Engineer specializing in Embedded Firmware, BSP, and DSP.
-I like learning the latest technology and am interested in various things related to SW and HW.
+Hi! I specialize in Embedded Firmware, BSP (Linux,RTOS), and DSP systems.      
+I like learning the latest technology and am interested in various things related to SW and HW.   
 
-Career Highlights
------------------
-* 20+ years of embedded development experience
-* Expert in C/C++, Linux BSP, and high-speed interface bring-up
-* Recent work: ESP32-S3-based radar + Wi-Fi CSI sensing
 
 Interests
 ---------
-* Wireless communication (BLE AoA, Wi-Fi CSI-RTLS)
-* DSP, SDR, and radar signal processing
+* Embedded systems and firmware development (BSP, RTOS, drivers,System Optimization)
+* Wireless communication (BLE AoA, Wi-Fi CSI-RTLS) and Radar  based on DSP
 * Technical blogging and open-source tools
+* Documentation generation (Sphinx, MkDocs, Doxygen)
 
-Contact
+
+My Blogger information
+----------------------
+* Main: <https://ahyuo79.blogspot.com>
+* Pleaes use Tags below to search more useful information
+* Categories ESP Series:
+    * MCU-ESP32:<https://ahyuo79.blogspot.com/search/label/MCU-ESP32>
+    * MCU-ESP32S3:<https://ahyuo79.blogspot.com/search/label/MCU-ESP32S3>
+    * MCU-ESP32-BT:<https://ahyuo79.blogspot.com/search/label/MCU-ESP32-BT>
+    * MCU-ESP32-WiFi:<https://ahyuo79.blogspot.com/search/label/MCU-ESP32-WIFI>
+    * MCU-ESP32-MEM:<https://ahyuo79.blogspot.com/search/label/MCU-ESP32-MEM>
+* Categories Wireshark:
+    * Tool-Wireshark:<https://ahyuo79.blogspot.com/search/label/Tool-Wireshark>
+* Categories Documentation:
+    * DevOps-Sphinx:<https://ahyuo79.blogspot.com/search/label/DevOps-Sphinx>
+    * DevOps-MkDocs:<https://ahyuo79.blogspot.com/search/label/DevOps-Mkdocs>
+    * DevOps-ReadTheDocs:<https://ahyuo79.blogspot.com/2021/06/readthedoc-doc-host.html>
+* Categories USB:
+    * USB-Protocol:<https://ahyuo79.blogspot.com/search/label/IF-USB>
+
+
+Githu Project
 -------
-* GitHub: <https://github.com/JeonghunLee>
-* Blog: <https://ahyuo79.blogspot.com>
-* Medium: *(Coming soon)*
+* GitHub Main: <https://github.com/JeonghunLee>
+    * GitHub - WiFi Sniffer: <https://github.com/JeonghunLee/wifisniffer>
+
+
+
