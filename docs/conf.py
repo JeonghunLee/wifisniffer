@@ -52,7 +52,7 @@ from datetime import datetime
 import subprocess
 
 year = datetime.now().year
-_GITHUB_PROJECT_URL = "https://github.com/JeonghunLee/wifisniffer"
+# copyright HMTL Tags 안됨 주의 
 copyright = f"{year}, {author} "
 
 def get_git_info():
@@ -86,13 +86,14 @@ _GITHUB_COMMIT_URL = (
 )
 
 html_last_updated_fmt = None
-# Footer Information 설정
+# Footer Information 설정 예, HTML Tags가 안됨 
 #html_last_updated_fmt = (
 #    f"Updated | commit: {_GIT_INFO} | "
 #    f"<a href='{_GITHUB_COMMIT_URL}' target='_blank'>View on GitHub Commit</a>"
 #)
 
 
+# ---------------------
 # 템플릿 / 정적 파일
 templates_path = ["_templates"]
 exclude_patterns = []
@@ -110,7 +111,7 @@ html_context = {
     "github_repo": "wifisniffer",  # 리포지토리 이름
     "github_version": "main",      # main 브랜치 기준
     "conf_py_path": "/docs/",      # docs 폴더가 위치한 경로
-    "commit": get_git_hash(),      # 현재 커밋 해시
+    "commit": get_git_info(),      # 현재 커밋 해시 (footer용)
 }
 
 
