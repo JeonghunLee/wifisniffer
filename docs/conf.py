@@ -36,9 +36,9 @@ exhale_args = {
     "afterTitleDescription":
         "This section is automatically generated from Doxygen XML using Exhale.",
 
-    # Exhale 빌드 방식 제어
-    "exhaleExecutesDoxygen": True,
-    "forceDoxygenBuild":     True,
+    # Exhale 빌드 방식 제어 (Exhale Version 0.3.3 이상에서 사용 가능)
+ #   "exhaleExecutesDoxygen": True,
+ #   "forceDoxygenBuild":     True,
 
     # Exhale 빌드 로그 보기
     "verboseBuild":          False,    
