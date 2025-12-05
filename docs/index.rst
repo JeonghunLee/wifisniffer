@@ -3,6 +3,12 @@ WiFi Sniffer Documentation
 
 .. toctree::
    :maxdepth: 1
+   :caption: About Me
+
+   aboutme
+
+.. toctree::
+   :maxdepth: 1
    :caption: Home / Basics
 
    board
@@ -47,18 +53,8 @@ Documentation-API Reference
 
 .. toctree::
    :maxdepth: 1
-   :caption: API Reference-1
+   :caption: API Reference-ALL (TEST)
 
    api_sphinx_doxygen
-
-.. toctree::
-   :maxdepth: 1
-   :caption: API Reference-2
-
    api_sphinx_doxygen_breathe
-
-.. toctree::
-   :maxdepth: 2
-   :caption: API Reference-3
-
    api/api_root
