@@ -1,0 +1,9 @@
+<map id="wifi_mgr_set_ap_password" name="wifi_mgr_set_ap_password">
+<area shape="rect" id="Node000001" title="Update SoftAP password (empty string toggles open auth) and refresh sniffer." alt="" coords="5,31,203,56"/>
+<area shape="rect" id="Node000002" href="$sniffer_8c.html#aece9df03dd920b92c9296815619db4c3" title="Enable promiscuous capture with the predefined filter set." alt="" coords="251,5,455,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="203,31,237,27,238,32,203,36"/>
+<area shape="rect" id="Node000003" href="$wifi_8c.html#aa10886611772ba3c0e0a00dae83eec1f" title="Prime cached Wi&#45;Fi configs and record the current mode." alt="" coords="299,55,406,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="203,50,286,58,285,64,203,56"/>
+<area shape="rect" id="Node000004" href="$wifi_8c.html#a1ccfac3b661e1c212b38b3e7810f3f53" title="Convert Wi&#45;Fi mode enum to a short string for status printing." alt="" coords="503,55,689,80"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="406,65,489,65,489,70,406,70"/>
+</map>

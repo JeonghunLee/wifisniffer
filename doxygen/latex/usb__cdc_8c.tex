@@ -1,0 +1,227 @@
+\doxysection{main/usb\+\_\+cdc.c File Reference}
+\hypertarget{usb__cdc_8c}{}\label{usb__cdc_8c}\index{main/usb\_cdc.c@{main/usb\_cdc.c}}
+
+
+Thin wrapper around Tiny\+USB CDC-\/\+ACM for the Wi-\/\+Fi sniffer streamer.  
+
+
+{\ttfamily \#include "{}usb\+\_\+cdc.\+h"{}}\newline
+{\ttfamily \#include "{}tinyusb.\+h"{}}\newline
+{\ttfamily \#include "{}tusb\+\_\+cdc\+\_\+acm.\+h"{}}\newline
+{\ttfamily \#include "{}esp\+\_\+log.\+h"{}}\newline
+Include dependency graph for usb\+\_\+cdc.\+c\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{usb__cdc_8c__incl}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{usb__cdc_8c_ad7f5fefcb59d3ecfcd976eb481ad5d2c}{usb\+\_\+cdc\+\_\+init}} (void)
+\begin{DoxyCompactList}\small\item\em Initialise the USB CDC-\/\+ACM driver and install callbacks. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{usb__cdc_8c_a58646b344bbaa2edb2faa572c0e2edfa}{usb\+\_\+cdc\+\_\+ready}} (void)
+\begin{DoxyCompactList}\small\item\em Check whether the host has opened the CDC port and asserted DTR. \end{DoxyCompactList}\item 
+size\+\_\+t \mbox{\hyperlink{usb__cdc_8c_a667914e3820578cb214c3051b16a2d2c}{usb\+\_\+cdc\+\_\+write}} (const uint8\+\_\+t \texorpdfstring{$\ast$}{*}data, size\+\_\+t len)
+\begin{DoxyCompactList}\small\item\em Queue bytes for transmission to the host over the CDC endpoint. \end{DoxyCompactList}\item 
+size\+\_\+t \mbox{\hyperlink{usb__cdc_8c_aaf6a13f8d90b8d1326efce17d8533c36}{usb\+\_\+cdc\+\_\+read}} (uint8\+\_\+t \texorpdfstring{$\ast$}{*}data, size\+\_\+t len)
+\begin{DoxyCompactList}\small\item\em Read any pending bytes from the host. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{usb__cdc_8c_a00c519adc370605a08c0ef79c88307a9}{usb\+\_\+cdc\+\_\+flush}} (void)
+\begin{DoxyCompactList}\small\item\em Flush any queued bytes to the host over the CDC endpoint. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Thin wrapper around Tiny\+USB CDC-\/\+ACM for the Wi-\/\+Fi sniffer streamer. 
+
+
+
+Definition in file \mbox{\hyperlink{usb__cdc_8c_source}{usb\+\_\+cdc.\+c}}.
+
+
+
+\doxysubsection{Function Documentation}
+\Hypertarget{usb__cdc_8c_a00c519adc370605a08c0ef79c88307a9}\label{usb__cdc_8c_a00c519adc370605a08c0ef79c88307a9} 
+\index{usb\_cdc.c@{usb\_cdc.c}!usb\_cdc\_flush@{usb\_cdc\_flush}}
+\index{usb\_cdc\_flush@{usb\_cdc\_flush}!usb\_cdc.c@{usb\_cdc.c}}
+\doxysubsubsection{\texorpdfstring{usb\_cdc\_flush()}{usb\_cdc\_flush()}}
+{\footnotesize\ttfamily void usb\+\_\+cdc\+\_\+flush (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Flush any queued bytes to the host over the CDC endpoint. 
+
+
+
+Definition at line \mbox{\hyperlink{usb__cdc_8c_source_l00111}{111}} of file \mbox{\hyperlink{usb__cdc_8c_source}{usb\+\_\+cdc.\+c}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00112\ \{}
+\DoxyCodeLine{00113\ \ \ \ \ tinyusb\_cdcacm\_write\_flush(TINYUSB\_CDC\_ACM\_0,\ 0);}
+\DoxyCodeLine{00114\ \}}
+
+\end{DoxyCode}
+\Hypertarget{usb__cdc_8c_ad7f5fefcb59d3ecfcd976eb481ad5d2c}\label{usb__cdc_8c_ad7f5fefcb59d3ecfcd976eb481ad5d2c} 
+\index{usb\_cdc.c@{usb\_cdc.c}!usb\_cdc\_init@{usb\_cdc\_init}}
+\index{usb\_cdc\_init@{usb\_cdc\_init}!usb\_cdc.c@{usb\_cdc.c}}
+\doxysubsubsection{\texorpdfstring{usb\_cdc\_init()}{usb\_cdc\_init()}}
+{\footnotesize\ttfamily void usb\+\_\+cdc\+\_\+init (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Initialise the USB CDC-\/\+ACM driver and install callbacks. 
+
+
+
+Definition at line \mbox{\hyperlink{usb__cdc_8c_source_l00033}{33}} of file \mbox{\hyperlink{usb__cdc_8c_source}{usb\+\_\+cdc.\+c}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00034\ \{}
+\DoxyCodeLine{00035\ \ \ \ \ \textcolor{comment}{//\ Initialize\ TinyUSB\ driver}}
+\DoxyCodeLine{00036\ \ \ \ \ }
+\DoxyCodeLine{00037\ \ \ \ \ tinyusb\_config\_t\ tusb\_cfg\ =\ \{}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ \ \ .device\_descriptor\ \ \ \ \ \ \ =\ NULL,}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ \ \ .string\_descriptor\ \ \ \ \ \ \ =\ NULL,}
+\DoxyCodeLine{00040\ \ \ \ \ \ \ \ \ .external\_phy\ \ \ \ \ \ \ \ \ \ \ \ =\ \textcolor{keyword}{false},}
+\DoxyCodeLine{00041\ \ \ \ \ \ \ \ \ .configuration\_descriptor=\ NULL,}
+\DoxyCodeLine{00042\ \ \ \ \ \};}
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00044\ \ \ \ \ ESP\_ERROR\_CHECK(tinyusb\_driver\_install(\&tusb\_cfg));}
+\DoxyCodeLine{00045\ }
+\DoxyCodeLine{00046\ \ \ \ \ \textcolor{comment}{//\ Initialize\ CDC-\/ACM}}
+\DoxyCodeLine{00047\ \ \ \ \ tinyusb\_config\_cdcacm\_t\ acm\_cfg\ =\ \{}
+\DoxyCodeLine{00048\ \ \ \ \ \ \ \ \ .usb\_dev\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ =\ TINYUSB\_USBDEV\_0,}
+\DoxyCodeLine{00049\ \ \ \ \ \ \ \ \ .cdc\_port\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ =\ TINYUSB\_CDC\_ACM\_0,}
+\DoxyCodeLine{00050\ \ \ \ \ \ \ \ \ .rx\_unread\_buf\_sz\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ =\ 64,}
+\DoxyCodeLine{00051\ \ \ \ \ \ \ \ \ .callback\_rx\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ =\ NULL,}
+\DoxyCodeLine{00052\ \ \ \ \ \ \ \ \ .callback\_rx\_wanted\_char\ \ \ \ \ \ \ \ =\ NULL,}
+\DoxyCodeLine{00053\ \ \ \ \ \ \ \ \ .callback\_line\_state\_changed\ \ \ \ =\ line\_state\_changed\_cb,}
+\DoxyCodeLine{00054\ \ \ \ \ \ \ \ \ .callback\_line\_coding\_changed\ \ \ =\ NULL,}
+\DoxyCodeLine{00055\ \ \ \ \ \};}
+\DoxyCodeLine{00056\ \ \ \ \ }
+\DoxyCodeLine{00057\ \ \ \ \ ESP\_ERROR\_CHECK(tusb\_cdc\_acm\_init(\&acm\_cfg));}
+\DoxyCodeLine{00058\ \ \ \ \ ESP\_LOGI(TAG,\ \textcolor{stringliteral}{"{}USB\ CDC\ initialized"{}});}
+\DoxyCodeLine{00059\ \}}
+
+\end{DoxyCode}
+\Hypertarget{usb__cdc_8c_aaf6a13f8d90b8d1326efce17d8533c36}\label{usb__cdc_8c_aaf6a13f8d90b8d1326efce17d8533c36} 
+\index{usb\_cdc.c@{usb\_cdc.c}!usb\_cdc\_read@{usb\_cdc\_read}}
+\index{usb\_cdc\_read@{usb\_cdc\_read}!usb\_cdc.c@{usb\_cdc.c}}
+\doxysubsubsection{\texorpdfstring{usb\_cdc\_read()}{usb\_cdc\_read()}}
+{\footnotesize\ttfamily size\+\_\+t usb\+\_\+cdc\+\_\+read (\begin{DoxyParamCaption}\item[{uint8\+\_\+t \texorpdfstring{$\ast$}{*}}]{data,  }\item[{size\+\_\+t}]{len }\end{DoxyParamCaption})}
+
+
+
+Read any pending bytes from the host. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ out}}  & {\em data} & Pointer to the buffer to receive incoming data. \\
+\hline
+\mbox{\texttt{ in}}  & {\em len} & Maximum number of bytes to read into the buffer. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Number of bytes actually read from the host. 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{usb__cdc_8c_source_l00096}{96}} of file \mbox{\hyperlink{usb__cdc_8c_source}{usb\+\_\+cdc.\+c}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00097\ \{}
+\DoxyCodeLine{00098\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ rx\_size\ =\ 0;}
+\DoxyCodeLine{00099\ \ \ \ \ esp\_err\_t\ ret\ =\ tinyusb\_cdcacm\_read(TINYUSB\_CDC\_ACM\_0,\ data,\ len,\ \&rx\_size);}
+\DoxyCodeLine{00100\ \ \ \ \ }
+\DoxyCodeLine{00101\ \ \ \ \ \textcolor{keywordflow}{if}\ (ret\ !=\ ESP\_OK)\ \{}
+\DoxyCodeLine{00102\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{00103\ \ \ \ \ \}}
+\DoxyCodeLine{00104\ \ \ \ \ }
+\DoxyCodeLine{00105\ \ \ \ \ \textcolor{keywordflow}{return}\ rx\_size;}
+\DoxyCodeLine{00106\ \}}
+
+\end{DoxyCode}
+\Hypertarget{usb__cdc_8c_a58646b344bbaa2edb2faa572c0e2edfa}\label{usb__cdc_8c_a58646b344bbaa2edb2faa572c0e2edfa} 
+\index{usb\_cdc.c@{usb\_cdc.c}!usb\_cdc\_ready@{usb\_cdc\_ready}}
+\index{usb\_cdc\_ready@{usb\_cdc\_ready}!usb\_cdc.c@{usb\_cdc.c}}
+\doxysubsubsection{\texorpdfstring{usb\_cdc\_ready()}{usb\_cdc\_ready()}}
+{\footnotesize\ttfamily bool usb\+\_\+cdc\+\_\+ready (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Check whether the host has opened the CDC port and asserted DTR. 
+
+\begin{DoxyReturn}{Returns}
+true if the CDC port is ready for data transmission. 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{usb__cdc_8c_source_l00065}{65}} of file \mbox{\hyperlink{usb__cdc_8c_source}{usb\+\_\+cdc.\+c}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00066\ \{}
+\DoxyCodeLine{00067\ \ \ \ \ \textcolor{comment}{//\ 호스트가\ 실제로\ 포트를\ 연\ 상태인지\ +\ TinyUSB\ 연결\ 여부}}
+\DoxyCodeLine{00068\ \ \ \ \ \textcolor{comment}{//\ Use\ TinyUSB's\ direct\ API\ to\ check\ connection\ state}}
+\DoxyCodeLine{00069\ \ \ \ \ \textcolor{keywordflow}{return}\ s\_cdc\_ready\ \&\&\ tud\_cdc\_connected();}
+\DoxyCodeLine{00070\ \}}
+
+\end{DoxyCode}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=291pt]{usb__cdc_8c_a58646b344bbaa2edb2faa572c0e2edfa_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{usb__cdc_8c_a667914e3820578cb214c3051b16a2d2c}\label{usb__cdc_8c_a667914e3820578cb214c3051b16a2d2c} 
+\index{usb\_cdc.c@{usb\_cdc.c}!usb\_cdc\_write@{usb\_cdc\_write}}
+\index{usb\_cdc\_write@{usb\_cdc\_write}!usb\_cdc.c@{usb\_cdc.c}}
+\doxysubsubsection{\texorpdfstring{usb\_cdc\_write()}{usb\_cdc\_write()}}
+{\footnotesize\ttfamily size\+\_\+t usb\+\_\+cdc\+\_\+write (\begin{DoxyParamCaption}\item[{const uint8\+\_\+t \texorpdfstring{$\ast$}{*}}]{data,  }\item[{size\+\_\+t}]{len }\end{DoxyParamCaption})}
+
+
+
+Queue bytes for transmission to the host over the CDC endpoint. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em data} & Pointer to the data buffer to send. \\
+\hline
+\mbox{\texttt{ in}}  & {\em len} & Number of bytes to send from the data buffer. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Number of bytes successfully queued for transmission. 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{usb__cdc_8c_source_l00078}{78}} of file \mbox{\hyperlink{usb__cdc_8c_source}{usb\+\_\+cdc.\+c}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00079\ \{}
+\DoxyCodeLine{00080\ \ \ \ \ \textcolor{keywordflow}{if}\ (!\mbox{\hyperlink{usb__cdc_8c_a58646b344bbaa2edb2faa572c0e2edfa}{usb\_cdc\_ready}}())\ \{}
+\DoxyCodeLine{00081\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{00082\ \ \ \ \ \}}
+\DoxyCodeLine{00083\ \ \ \ \ }
+\DoxyCodeLine{00084\ \ \ \ \ \textcolor{comment}{//\ Use\ TinyUSB\ CDC\ ACM\ write\ function}}
+\DoxyCodeLine{00085\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ queued\ =\ tinyusb\_cdcacm\_write\_queue(TINYUSB\_CDC\_ACM\_0,\ data,\ len);}
+\DoxyCodeLine{00086\ \ \ \ \ tinyusb\_cdcacm\_write\_flush(TINYUSB\_CDC\_ACM\_0,\ 0);\ \ \textcolor{comment}{//\ 바로\ 전송\ \ \ \ }}
+\DoxyCodeLine{00087\ \ \ \ \ \textcolor{keywordflow}{return}\ queued;}
+\DoxyCodeLine{00088\ \}}
+
+\end{DoxyCode}
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=291pt]{usb__cdc_8c_a667914e3820578cb214c3051b16a2d2c_cgraph}
+\end{center}
+\end{figure}

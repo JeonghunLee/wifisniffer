@@ -1,0 +1,1206 @@
+
+<!doctype html>
+<html lang="ko" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="ESP32-S3 Wi-Fi packet sniffer documentation">
+      
+      
+        <meta name="author" content="Jeonghun Lee">
+      
+      
+      
+        <link rel="prev" href="wifi_sniffer0.html">
+      
+      
+        <link rel="next" href="wifi_sniffer2.html">
+      
+      
+        
+      
+      
+      <link rel="icon" href="assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.0">
+    
+    
+      
+        <title>WIFI Sniffer-2 - WiFi Sniffer Docs</title>
+      
+    
+    
+      <link rel="stylesheet" href="assets/stylesheets/main.618322db.min.css">
+      
+        
+        <link rel="stylesheet" href="assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+        <script src="https://unpkg.com/iframe-worker/shim"></script>
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="stylesheets/extra.css">
+    
+    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#wifi-sniffer-test-1" class="md-skip">
+          콘텐츠로 이동
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="상단/헤더">
+    <a href="." title="WiFi Sniffer Docs" class="md-header__button md-logo" aria-label="WiFi Sniffer Docs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            WiFi Sniffer Docs
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              WIFI Sniffer-2
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m14.3 16-.7-2h-3.2l-.7 2H7.8L11 7h2l3.2 9zM20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12zm-9.15 3.96h2.3L12 9z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to system preference"  type="radio" name="__palette" id="__palette_2">
+    
+      <label class="md-header__button md-icon" title="Switch to system preference" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="검색" placeholder="검색" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="검색">
+        
+        <button type="reset" class="md-search__icon md-icon" title="지우기" aria-label="지우기" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            검색 초기화
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/JeonghunLee/wifisniffer" title="저장소로 이동" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    JeonghunLee/wifisniffer
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--integrated" aria-label="네비게이션" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="." title="WiFi Sniffer Docs" class="md-nav__button md-logo" aria-label="WiFi Sniffer Docs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    WiFi Sniffer Docs
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/JeonghunLee/wifisniffer" title="저장소로 이동" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    JeonghunLee/wifisniffer
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="index_mkdocs.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="board.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hardware Setup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="command.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Console Commands
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    WIFI Captures
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    WIFI Captures
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="wifi_sniffer0.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    WIFI Sniffer-1
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+      <a href="wifi_sniffer1.html" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    WIFI Sniffer-2
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="wifi_sniffer2.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    WIFI Sniffer-3
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="wireshark_0.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tool Wireshark
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Setup mkdocs/doxygen
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Setup mkdocs/doxygen
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="mkdocs_setup_window.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Setup Window
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="mkdocs_setup_wsl.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Setup WSL
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="mkdocs_readthedocs.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Setup Read the Docs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Setup sphinx/doxygen
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Setup sphinx/doxygen
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="sphinx_readthedocs.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Setup Read the Docs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="api_mkdocs_doxygen.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Reference (Doxygen)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+                
+
+
+
+
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="wifi-sniffer-test-1">WIFI Sniffer TEST-1</h1>
+<p><br/></p>
+<p><br/></p>
+<ul>
+<li>Terminal -&gt; Run Task       <ul>
+<li>Capture USB CDC (Not CP210x)-Debug    </li>
+</ul>
+</li>
+</ul>
+<p><br/></p>
+<p>.pcap로 저장하며, 기본으로 output/capture_날짜로 저장 확인<br />
+이 파일 기반으로 wireshark로 분석   </p>
+<p><br/></p>
+<ul>
+<li>python .\read_packets.py -v <ul>
+<li>[1] : ESP32-S3 Monitor (Serial)      </li>
+<li>[2] : ESP32-S3 USB-CDC   </li>
+</ul>
+</li>
+</ul>
+<div class="highlight"><pre><span></span><code>python .\read_packets.py -v 
+
+Available serial ports:
+  [1] COM4: Silicon Labs CP210x USB to UART Bridge(COM4)   // for ESP-IDF Monitor 
+  [2] COM11: USB 직렬 장치(COM11)                           // for WIFI Sniffer 
+
+Select port number (or &#39;q&#39; to quit): 2
+.....
+        48 19 00 00 80 CA 4B 99 66 FE BC 10 2F 69 79 53 80 CA 4B 99 66 FE 30 60 3D CF 2B 00...
+[  517] 09:01:37.481341 | Ch: 1 | RSSI:-89dBm | Len:  28B | DATA
+          48 19 00 00 80 CA 4B 99 66 FE BC 10 2F 69 79 53 80 CA 4B 99 66 FE 60 60 3D CF 2B 00...
+[  518] 09:01:37.482196 | Ch: 1 | RSSI:-88dBm | Len:  28B | DATA
+          48 19 00 00 80 CA 4B 99 66 FE BC 10 2F 69 79 53 80 CA 4B 99 66 FE 60 60 3D CF 2B 00...
+[  519] 09:01:37.493441 | Ch: 1 | RSSI:-91dBm | Len: 178B | MGMT
+          80 00 00 00 FF FF FF FF FF FF 66 CB E9 8C 44 A8 66 CB E9 8C 44 A8 C0 39 73 F1 99 16 00 00 00 00...
+[  520] 09:01:37.584162 | Ch: 1 | RSSI:-87dBm | Len:  28B | DATA
+          48 19 00 00 80 CA 4B 99 66 FE BC 10 2F 69 79 53 80 CA 4B 99 66 FE 80 60 3D CF 2B 00...
+[  521] 09:01:37.585017 | Ch: 1 | RSSI:-85dBm | Len:  28B | DATA
+          48 19 00 00 80 CA 4B 99 66 FE BC 10 2F 69 79 53 80 CA 4B 99 66 FE 80 60 3D CF 2B 00...
+[  522] 09:01:37.587436 | Ch: 1 | RSSI:-88dBm | Len:  28B | DATA
+          48 19 00 00 80 CA 4B 99 66 FE BC 10 2F 69 79 53 80 CA 4B 99 66 FE 80 60 3D CF 2B 00...
+[  523] 09:01:37.595841 | Ch: 1 | RSSI:-89dBm | Len: 178B | MGMT
+          80 00 00 00 FF FF FF FF FF FF 66 CB E9 8C 44 A8 66 CB E9 8C 44 A8 D0 39 73 81 9B 16 00 00 00 00...
+[  524] 09:01:37.641718 | Ch: 1 | RSSI:-27dBm | Len:  80B | DATA
+          08 42 00 00 FF FF FF FF FF FF 90 9F 33 D4 80 0A 48 E7 DA 0D 2E DF 00 27 72 45 00 60 C4 00 00 00...
+[  525] 09:01:37.648731 | Ch: 1 | RSSI:-88dBm | Len:  28B | DATA
+          48 09 00 00 80 CA 4B 99 66 FE BC 10 2F 69 79 53 80 CA 4B 99 66 FE 90 60 3D CF 2B 00...
+[  526] 09:01:37.650446 | Ch: 1 | RSSI:-90dBm | Len:  28B | DATA
+          48 09 00 00 80 CA 4B 99 66 FE BC 10 2F 69 79 53 80 CA 4B 99 66 FE 90 60 3D CF 2B 00...
+[  527] 09:01:37.686114 | Ch: 1 | RSSI:-87dBm | Len:  28B | DATA
+          48 19 00 00 80 CA 4B 99 66 FE BC 10 2F 69 79 53 80 CA 4B 99 66 FE A0 60 3D CF 2B 00...
+[  528] 09:01:37.686961 | Ch: 1 | RSSI:-89dBm | Len:  28B | DATA
+          48 19 00 00 80 CA 4B 99 66 FE BC 10 2F 69 79 53 80 CA 4B 99 66 FE A0 60 3D CF 2B 00...
+[  529] 09:01:37.689323 | Ch: 1 | RSSI:-87dBm | Len:  28B | DATA
+          48 19 00 00 80 CA 4B 99 66 FE BC 10 2F 69 79 53 80 CA 4B 99 66 FE A0 60 3D CF 2B 00...
+[  530] 09:01:37.698242 | Ch: 1 | RSSI:-90dBm | Len: 178B | MGMT
+          80 00 00 00 FF FF FF FF FF FF 66 CB E9 8C 44 A8 66 CB E9 8C 44 A8 E0 39 73 11 9D 16 00 00 00 00...
+[  531] 09:01:37.700109 | Ch: 1 | RSSI:-77dBm | Len:  51B | MGMT
+          40 00 00 00 FF FF FF FF FF FF A4 36 C7 2A 7B 5E FF FF FF FF FF FF 90 33 00 05 64 6C 69 6E 6B 01...
+[  532] 09:01:37.800643 | Ch: 1 | RSSI:-90dBm | Len: 178B | MGMT
+          80 00 00 00 FF FF FF FF FF FF 66 CB E9 8C 44 A8 66 CB E9 8C 44 A8 F0 39 73 A1 9E 16 00 00 00 00...
+[  533] 09:01:37.819644 | Ch: 1 | RSSI:-78dBm | Len:  51B | MGMT
+          40 00 00 00 FF FF FF FF FF FF A4 36 C7 2A 7B 5E FF FF FF FF FF FF B0 33 00 05 64 6C 69 6E 6B 01...
+[  534] 09:01:37.820397 | Ch: 1 | RSSI:-79dBm | Len:  51B | MGMT
+          40 00 00 00 FF FF FF FF FF FF A4 36 C7 2A 7B 5E FF FF FF FF FF FF C0 33 00 05 64 6C 69 6E 6B 01...
+[  535] 09:01:37.890954 | Ch: 1 | RSSI:-92dBm | Len:  28B | DATA
+          48 19 00 00 80 CA 4B 99 66 FE BC 10 2F 69 79 53 80 CA 4B 99 66 FE E0 60 3D CF 2B 00...
+[  536] 09:01:37.891809 | Ch: 1 | RSSI:-89dBm | Len:  28B | DATA
+          48 19 00 00 80 CA 4B 99 66 FE BC 10 2F 69 79 53 80 CA 4B 99 66 FE E0 60 3D CF 2B 00...
+[  537] 09:01:37.894259 | Ch: 1 | RSSI:-88dBm | Len:  28B | DATA
+          48 19 00 00 80 CA 4B 99 66 FE BC 10 2F 69 79 53 80 CA 4B 99 66 FE E0 60 3D CF 2B 00...
+[  538] 09:01:37.948043 | Ch: 1 | RSSI:-26dBm | Len: 269B | MGMT
+          80 00 00 00 FF FF FF FF FF FF 90 9F 33 D4 80 0A 90 9F 33 D4 80 0A C0 34 90 41 9D BD 65 2C 00 00...
+[  539] 09:01:37.948923 | Ch: 1 | RSSI:-27dBm | Len:  80B | DATA
+          08 42 00 00 FF FF FF FF FF FF 90 9F 33 D4 80 0A 48 E7 DA 0D 2E DF 70 27 73 45 00 60 C4 00 00 00...
+[  540] 09:01:37.955914 | Ch: 1 | RSSI:-88dBm | Len:  28B | DATA
+          48 09 00 00 80 CA 4B 99 66 FE BC 10 2F 69 79 53 80 CA 4B 99 66 FE 00 61 3D CF 2B 00...
+[  541] 09:01:37.956769 | Ch: 1 | RSSI:-90dBm | Len:  28B | DATA
+          48 09 00 00 80 CA 4B 99 66 FE BC 10 2F 69 79 53 80 CA 4B 99 66 FE 00 61 3D CF 2B 00...
+[  542] 09:01:37.957624 | Ch: 1 | RSSI:-90dBm | Len:  28B | DATA
+          48 09 00 00 80 CA 4B 99 66 FE BC 10 2F 69 79 53 80 CA 4B 99 66 FE 00 61 3D CF 2B 00...
+[  543] 09:01:37.993315 | Ch: 1 | RSSI:-89dBm | Len:  28B | DATA
+          48 19 00 00 80 CA 4B 99 66 FE BC 10 2F 69 79 53 80 CA 4B 99 66 FE 10 61 3D CF 2B 00...
+[  544] 09:01:38.005444 | Ch: 1 | RSSI:-90dBm | Len: 178B | MGMT
+          80 00 00 00 FF FF FF FF FF FF 66 CB E9 8C 44 A8 66 CB E9 8C 44 A8 10 3A 73 C1 A1 16 00 00 00 00...
+[  545] 09:01:38.012743 | Ch: 1 | RSSI:-90dBm | Len:  88B | MGMT
+          40 00 00 00 FF FF FF FF FF FF 74 40 BE FD 39 65 FF FF FF FF FF FF 00 00 00 0B 53 51 41 5F 54 45...
+[  546] 09:01:38.058318 | Ch: 1 | RSSI:-86dBm | Len:  28B | DATA
+          48 09 00 00 80 CA 4B 99 66 FE BC 10 2F 69 79 53 80 CA 4B 99 66 FE 20 61 3D CF 2B 00...
+[  547] 09:01:38.059173 | Ch: 1 | RSSI:-88dBm | Len:  28B | DATA
+          48 09 00 00 80 CA 4B 99 66 FE BC 10 2F 69 79 53 80 CA 4B 99 66 FE 20 61 3D CF 2B 00...
+[  548] 09:01:38.060028 | Ch: 1 | RSSI:-89dBm | Len:  28B | DATA
+          48 09 00 00 80 CA 4B 99 66 FE BC 10 2F 69 79 53 80 CA 4B 99 66 FE 20 61 3D CF 2B 00...
+[  549] 09:01:38.095089 | Ch: 1 | RSSI:-91dBm | Len:  28B | DATA
+          48 19 00 00 80 CA 4B 99 66 FE BC 10 2F 69 79 53 80 CA 4B 99 66 FE 30 61 3D CF 2B 00...
+[  550] 09:01:38.095750 | Ch: 1 | RSSI:-88dBm | Len:  28B | DATA
+          48 19 00 00 80 CA 4B 99 66 FE BC 10 2F 69 79 53 80 CA 4B 99 66 FE 30 61 3D CF 2B 00...
+[  551] 09:01:38.096605 | Ch: 1 | RSSI:-89dBm | Len:  28B | DATA
+          48 19 00 00 80 CA 4B 99 66 FE BC 10 2F 69 79 53 80 CA 4B 99 66 FE 30 61 3D CF 2B 00...
+[  552] 09:01:38.098685 | Ch: 1 | RSSI:-90dBm | Len:  28B | DATA
+          48 19 00 00 80 CA 4B 99 66 FE BC 10 2F 69 79 53 80 CA 4B 99 66 FE 30 61 3D CF 2B 00...
+[  553] 09:01:38.152837 | Ch: 1 | RSSI:-26dBm | Len: 269B | MGMT
+          80 00 00 00 FF FF FF FF FF FF 90 9F 33 D4 80 0A 90 9F 33 D4 80 0A E0 34 87 61 A0 BD 65 2C 00 00...
+[  554] 09:01:38.198125 | Ch: 1 | RSSI:-90dBm | Len:  28B | DATA
+          48 19 00 00 80 CA 4B 99 66 FE BC 10 2F 69 79 53 80 CA 4B 99 66 FE 60 61 3D CF 2B 00...
+[  555] 09:01:38.198979 | Ch: 1 | RSSI:-90dBm | Len:  28B | DATA
+          48 19 00 00 80 CA 4B 99 66 FE BC 10 2F 69 79 53 80 CA 4B 99 66 FE 60 61 3D CF 2B 00...
+[  556] 09:01:38.256423 | Ch: 1 | RSSI:-29dBm | Len: 115B | DATA
+          08 42 00 00 FF FF FF FF FF FF 90 9F 33 D4 80 0A 8C EA 48 47 62 1C B0 27 74 45 00 60 C4 00 00 00...
+[  557] 09:01:38.263120 | Ch: 1 | RSSI:-90dBm | Len:  28B | DATA
+          48 09 00 00 80 CA 4B 99 66 FE BC 10 2F 69 79 53 80 CA 4B 99 66 FE 70 61 3D CF 2B 00...
+[  558] 09:01:38.271724 | Ch: 1 | RSSI:-26dBm | Len:  37B | MGMT
+          D0 00 3A 01 7C D9 5C 0B F0 E8 90 9F 33 D4 80 0A 90 9F 33 D4 80 0A 00 35 03 00 FC 1A 10 00 00 40...
+[  559] 09:01:38.273233 | Ch: 1 | RSSI:-55dBm | Len:  37B | MGMT
+          D0 00 40 01 90 9F 33 D4 80 0A 7C D9 5C 0B F0 E8 90 9F 33 D4 80 0A 40 4F 03 01 FC 25 00 1A 10 00...
+[  560] 09:01:38.275436 | Ch: 1 | RSSI:-54dBm | Len:  37B | MGMT
+          D0 08 40 01 90 9F 33 D4 80 0A 7C D9 5C 0B F0 E8 90 9F 33 D4 80 0A 40 4F 03 01 FC 25 00 1A 10 00...
+[  561] 09:01:38.300952 | Ch: 1 | RSSI:-86dBm | Len:  28B | DATA
+          48 19 00 00 80 CA 4B 99 66 FE BC 10 2F 69 79 53 80 CA 4B 99 66 FE 80 61 3D CF 2B 00...
+[  562] 09:01:38.301806 | Ch: 1 | RSSI:-88dBm | Len:  28B | DATA
+          48 19 00 00 80 CA 4B 99 66 FE BC 10 2F 69 79 53 80 CA 4B 99 66 FE 80 61 3D CF 2B 00...
+[  563] 09:01:38.304217 | Ch: 1 | RSSI:-86dBm | Len:  28B | DATA
+          48 19 00 00 80 CA 4B 99 66 FE BC 10 2F 69 79 53 80 CA 4B 99 66 FE 80 61 3D CF 2B 00...
+[  564] 09:01:38.357631 | Ch: 1 | RSSI:-26dBm | Len: 269B | MGMT
+          80 00 00 00 FF FF FF FF FF FF 90 9F 33 D4 80 0A 90 9F 33 D4 80 0A 10 35 7E 81 A3 BD 65 2C 00 00...
+[  565] 09:01:38.402928 | Ch: 1 | RSSI:-88dBm | Len:  28B | DATA
+          48 19 00 00 80 CA 4B 99 66 FE BC 10 2F 69 79 53 80 CA 4B 99 66 FE A0 61 3D CF 2B 00...
+[  566] 09:01:38.403783 | Ch: 1 | RSSI:-90dBm | Len:  28B | DATA
+          48 19 00 00 80 CA 4B 99 66 FE BC 10 2F 69 79 53 80 CA 4B 99 66 FE A0 61 3D CF 2B 00...
+[  567] 09:01:38.415058 | Ch: 1 | RSSI:-88dBm | Len: 178B | MGMT
+          80 00 00 00 FF FF FF FF FF FF 66 CB E9 8C 44 A8 66 CB E9 8C 44 A8 50 3A 73 01 A8 16 00 00 00 00...
+[  568] 09:01:38.423424 | Ch: 1 | RSSI:-47dBm | Len:  30B | DATA
+          C8 19 3A 01 90 9F 33 D4 80 0A 88 57 1D 92 A7 AF 90 9F 33 D4 80 0A F0 C4 00 00 00 00 39 CF...
+[  569] 09:01:38.460061 | Ch: 1 | RSSI:-26dBm | Len: 269B | MGMT
+          80 00 00 00 FF FF FF FF FF FF 90 9F 33 D4 80 0A 90 9F 33 D4 80 0A 20 35 90 11 A5 BD 65 2C 00 00...
+[  570] 09:01:38.505358 | Ch: 1 | RSSI:-89dBm | Len:  28B | DATA
+          48 19 00 00 80 CA 4B 99 66 FE BC 10 2F 69 79 53 80 CA 4B 99 66 FE C0 61 3D CF 2B 00...
+[  571] 09:01:38.506213 | Ch: 1 | RSSI:-88dBm | Len:  28B | DATA
+          48 19 00 00 80 CA 4B 99 66 FE BC 10 2F 69 79 53 80 CA 4B 99 66 FE C0 61 3D CF 2B 00...
+[  572] 09:01:38.598857 | Ch: 1 | RSSI:-90dBm | Len: 193B | MGMT
+          80 00 00 00 FF FF FF FF FF FF 88 57 1D 83 46 DF 88 57 1D 83 46 DF C0 38 7B 91 47 05 00 00 00 00...
+[  573] 09:01:38.608160 | Ch: 1 | RSSI:-88dBm | Len:  28B | DATA
+          48 19 00 00 80 CA 4B 99 66 FE BC 10 2F 69 79 53 80 CA 4B 99 66 FE E0 61 3D CF 2B 00...
+[  574] 09:01:38.609014 | Ch: 1 | RSSI:-91dBm | Len:  28B | DATA
+          48 19 00 00 80 CA 4B 99 66 FE BC 10 2F 69 79 53 80 CA 4B 99 66 FE E0 61 3D CF 2B 00...
+[  575] 09:01:38.619850 | Ch: 1 | RSSI:-90dBm | Len: 178B | MGMT
+          80 00 00 00 FF FF FF FF FF FF 66 CB E9 8C 44 A8 66 CB E9 8C 44 A8 70 3A 73 21 AB 16 00 00 00 00...
+[  576] 09:01:38.664838 | Ch: 1 | RSSI:-25dBm | Len: 269B | MGMT
+          80 00 00 00 FF FF FF FF FF FF 90 9F 33 D4 80 0A 90 9F 33 D4 80 0A 40 35 81 31 A8 BD 65 2C 00 00...
+[  577] 09:01:38.698204 | Ch: 1 | RSSI:-88dBm | Len:  95B | MGMT
+          40 00 00 00 FF FF FF FF FF FF 28 6D 97 EC 2B 61 FF FF FF FF FF FF C0 67 00 09 55 2B 4E 65 74 31...
+[  578] 09:01:38.699172 | Ch: 1 | RSSI:-87dBm | Len:  86B | MGMT
+          40 00 00 00 FF FF FF FF FF FF 28 6D 97 EC 2B 61 FF FF FF FF FF FF D0 67 00 00 01 08 02 04 0B 0C...
+[  579] 09:01:38.709513 | Ch: 1 | RSSI:-91dBm | Len:  28B | DATA
+          48 19 00 00 80 CA 4B 99 66 FE BC 10 2F 69 79 53 80 CA 4B 99 66 FE 00 62 3D CF 2B 00...
+[  580] 09:01:38.710185 | Ch: 1 | RSSI:-90dBm | Len:  28B | DATA
+          48 19 00 00 80 CA 4B 99 66 FE BC 10 2F 69 79 53 80 CA 4B 99 66 FE 00 62 3D CF 2B 00...
+[  581] 09:01:38.711040 | Ch: 1 | RSSI:-87dBm | Len:  28B | DATA
+          48 19 00 00 80 CA 4B 99 66 FE BC 10 2F 69 79 53 80 CA 4B 99 66 FE 00 62 3D CF 2B 00...
+[  582] 09:01:38.722304 | Ch: 1 | RSSI:-89dBm | Len: 178B | MGMT
+          80 00 00 00 FF FF FF FF FF FF 66 CB E9 8C 44 A8 66 CB E9 8C 44 A8 80 3A A9 B1 AC 16 00 00 00 00...
+[  583] 09:01:38.735586 | Ch: 1 | RSSI:-85dBm | Len:  95B | MGMT
+          40 00 00 00 FF FF FF FF FF FF 28 6D 97 EC 2B 61 FF FF FF FF FF FF E0 67 00 09 55 2B 4E 65 74 31...
+[  584] 09:01:38.736641 | Ch: 1 | RSSI:-84dBm | Len:  86B | MGMT
+          40 00 00 00 FF FF FF FF FF FF 28 6D 97 EC 2B 61 FF FF FF FF FF FF F0 67 00 00 01 08 02 04 0B 0C...
+[  585] 09:01:38.767263 | Ch: 1 | RSSI:-27dBm | Len: 269B | MGMT
+          80 00 00 00 FF FF FF FF FF FF 90 9F 33 D4 80 0A 90 9F 33 D4 80 0A 50 35 99 C1 A9 BD 65 2C 00 00...
+[  586] 09:01:38.783172 | Ch: 1 | RSSI:-87dBm | Len:  86B | MGMT
+          40 00 00 00 FF FF FF FF FF FF 28 6D 97 EC 2B 61 FF FF FF FF FF FF 10 68 00 00 01 08 02 04 0B 0C...
+[  587] 09:01:38.824652 | Ch: 1 | RSSI:-88dBm | Len: 178B | MGMT
+          80 00 00 00 FF FF FF FF FF FF 66 CB E9 8C 44 A8 66 CB E9 8C 44 A8 90 3A 73 41 AE 16 00 00 00 00...
+[  588] 09:01:38.850449 | Ch: 1 | RSSI:-86dBm | Len:  95B | MGMT
+          40 00 00 00 FF FF FF FF FF FF 28 6D 97 EC 2B 61 FF FF FF FF FF FF 20 68 00 09 55 2B 4E 65 74 31...
+[  589] 09:01:38.851440 | Ch: 1 | RSSI:-87dBm | Len:  86B | MGMT
+          40 00 00 00 FF FF FF FF FF FF 28 6D 97 EC 2B 61 FF FF FF FF FF FF 30 68 00 00 01 08 02 04 0B 0C...
+[  590] 09:01:38.869646 | Ch: 1 | RSSI:-27dBm | Len: 269B | MGMT
+          80 00 00 00 FF FF FF FF FF FF 90 9F 33 D4 80 0A 90 9F 33 D4 80 0A 60 35 87 51 AB BD 65 2C 00 00...
+[  591] 09:01:38.878031 | Ch: 1 | RSSI:-88dBm | Len:  28B | DATA
+          48 09 00 00 80 CA 4B 99 66 FE BC 10 2F 69 79 53 80 CA 4B 99 66 FE 50 62 3D CF 2B 00...
+[  592] 09:01:38.878886 | Ch: 1 | RSSI:-90dBm | Len:  28B | DATA
+          48 09 00 00 80 CA 4B 99 66 FE BC 10 2F 69 79 53 80 CA 4B 99 66 FE 50 62 3D CF 2B 00...
+[  593] 09:01:38.879741 | Ch: 1 | RSSI:-89dBm | Len:  28B | DATA
+          48 09 00 00 80 CA 4B 99 66 FE BC 10 2F 69 79 53 80 CA 4B 99 66 FE 50 62 3D CF 2B 00...
+[  594] 09:01:38.907713 | Ch: 1 | RSSI:-90dBm | Len:  88B | MGMT
+          40 00 00 00 FF FF FF FF FF FF 74 40 BE FD 39 65 FF FF FF FF FF FF E0 00 00 0B 53 51 41 5F 54 45...
+[  595] 09:01:38.914970 | Ch: 1 | RSSI:-86dBm | Len:  28B | DATA
+          48 19 00 00 80 CA 4B 99 66 FE BC 10 2F 69 79 53 80 CA 4B 99 66 FE 60 62 3D CF 2B 00...
+[  596] 09:01:38.915825 | Ch: 1 | RSSI:-89dBm | Len:  28B | DATA
+          48 19 00 00 80 CA 4B 99 66 FE BC 10 2F 69 79 53 80 CA 4B 99 66 FE 60 62 3D CF 2B 00...
+[  597] 09:01:38.918651 | Ch: 1 | RSSI:-87dBm | Len:  28B | DATA
+          48 19 00 00 80 CA 4B 99 66 FE BC 10 2F 69 79 53 80 CA 4B 99 66 FE 60 62 3D CF 2B 00...
+[  598] 09:01:38.924517 | Ch: 1 | RSSI:-90dBm | Len:  95B | MGMT
+          40 00 00 00 FF FF FF FF FF FF 28 6D 97 EC 2B 61 FF FF FF FF FF FF 40 68 00 09 55 2B 4E 65 74 31...
+[  599] 09:01:38.927063 | Ch: 1 | RSSI:-88dBm | Len: 178B | MGMT
+          80 00 00 00 FF FF FF FF FF FF 66 CB E9 8C 44 A8 66 CB E9 8C 44 A8 A0 3A 73 D1 AF 16 00 00 00 00...
+[  600] 09:01:38.929444 | Ch: 1 | RSSI:-86dBm | Len:  86B | MGMT
+          40 00 00 00 FF FF FF FF FF FF 28 6D 97 EC 2B 61 FF FF FF FF FF FF 50 68 00 00 01 08 02 04 0B 0C...
+[  601] 09:01:38.972075 | Ch: 1 | RSSI:-26dBm | Len: 269B | MGMT
+          80 00 00 00 FF FF FF FF FF FF 90 9F 33 D4 80 0A 90 9F 33 D4 80 0A 70 35 99 E1 AC BD 65 2C 00 00...
+[  602] 09:01:38.979969 | Ch: 1 | RSSI:-90dBm | Len:  28B | DATA
+          48 09 00 00 80 CA 4B 99 66 FE BC 10 2F 69 79 53 80 CA 4B 99 66 FE 70 62 3D CF 2B 00...
+[  603] 09:01:38.980824 | Ch: 1 | RSSI:-88dBm | Len:  28B | DATA
+          48 09 00 00 80 CA 4B 99 66 FE BC 10 2F 69 79 53 80 CA 4B 99 66 FE 70 62 3D CF 2B 00...
+[  604] 09:01:38.981679 | Ch: 1 | RSSI:-88dBm | Len:  28B | DATA
+          48 09 00 00 80 CA 4B 99 66 FE BC 10 2F 69 79 53 80 CA 4B 99 66 FE 70 62 3D CF 2B 00...
+[  605] 09:01:39.008461 | Ch: 1 | RSSI:-88dBm | Len: 193B | MGMT
+          80 00 00 00 FF FF FF FF FF FF 88 57 1D 83 46 DF 88 57 1D 83 46 DF 00 39 7C D1 4D 05 00 00 00 00...
+[  606] 09:01:39.017350 | Ch: 1 | RSSI:-87dBm | Len:  28B | DATA
+          48 19 00 00 80 CA 4B 99 66 FE BC 10 2F 69 79 53 80 CA 4B 99 66 FE 80 62 3D CF 2B 00...
+[  607] 09:01:39.021099 | Ch: 1 | RSSI:-90dBm | Len:  28B | DATA
+          48 19 00 00 80 CA 4B 99 66 FE BC 10 2F 69 79 53 80 CA 4B 99 66 FE 80 62 3D CF 2B 00...
+[  608] 09:01:39.029454 | Ch: 1 | RSSI:-90dBm | Len: 178B | MGMT
+          80 00 00 00 FF FF FF FF FF FF 66 CB E9 8C 44 A8 66 CB E9 8C 44 A8 B0 3A 73 61 B1 16 00 00 00 00...
+[  609] 09:01:39.082324 | Ch: 1 | RSSI:-88dBm | Len:  28B | DATA
+          48 09 00 00 80 CA 4B 99 66 FE BC 10 2F 69 79 53 80 CA 4B 99 66 FE 90 62 3D CF 2B 00...
+[  610] 09:01:39.084038 | Ch: 1 | RSSI:-87dBm | Len:  28B | DATA
+          48 09 00 00 80 CA 4B 99 66 FE BC 10 2F 69 79 53 80 CA 4B 99 66 FE 90 62 3D CF 2B 00...
+[  611] 09:01:39.119718 | Ch: 1 | RSSI:-86dBm | Len:  28B | DATA
+          48 19 00 00 80 CA 4B 99 66 FE BC 10 2F 69 79 53 80 CA 4B 99 66 FE A0 62 3D CF 2B 00...
+[  612] 09:01:39.120572 | Ch: 1 | RSSI:-86dBm | Len:  28B | DATA
+          48 19 00 00 80 CA 4B 99 66 FE BC 10 2F 69 79 53 80 CA 4B 99 66 FE A0 62 3D CF 2B 00...
+[  613] 09:01:39.131855 | Ch: 1 | RSSI:-89dBm | Len: 178B | MGMT
+          80 00 00 00 FF FF FF FF FF FF 66 CB E9 8C 44 A8 66 CB E9 8C 44 A8 C0 3A 73 F1 B2 16 00 00 00 00...
+[  614] 09:01:39.150897 | Ch: 1 | RSSI:-77dBm | Len:  51B | MGMT
+          40 00 00 00 FF FF FF FF FF FF A4 36 C7 2A 7B 5E FF FF FF FF FF FF 10 35 00 05 64 6C 69 6E 6B 01...
+[  615] 09:01:39.151551 | Ch: 1 | RSSI:-77dBm | Len:  51B | MGMT
+          40 00 00 00 FF FF FF FF FF FF A4 36 C7 2A 7B 5E FF FF FF FF FF FF 20 35 00 05 64 6C 69 6E 6B 01...
+[  616] 09:01:39.176866 | Ch: 1 | RSSI:-27dBm | Len: 271B | MGMT
+          80 00 00 00 FF FF FF FF FF FF 90 9F 33 D4 80 0A 90 9F 33 D4 80 0A 90 35 87 01 B0 BD 65 2C 00 00...
+[  617] 09:01:39.180617 | Ch: 1 | RSSI:-46dBm | Len:  30B | DATA
+          C8 09 3A 01 90 9F 33 D4 80 0A 88 57 1D 92 A7 AF 90 9F 33 D4 80 0A 00 C5 00 00 00 00 39 CF...
+[  618] 09:01:39.213947 | Ch: 1 | RSSI:-91dBm | Len: 193B | MGMT
+          80 00 00 00 FF FF FF FF FF FF 88 57 1D 83 46 DF 88 57 1D 83 46 DF 20 39 29 F4 50 05 00 00 00 00...
+[  619] 09:01:39.222163 | Ch: 1 | RSSI:-86dBm | Len:  28B | DATA
+          48 19 00 00 80 CA 4B 99 66 FE BC 10 2F 69 79 53 80 CA 4B 99 66 FE C0 62 3D CF 2B 00...
+[  620] 09:01:39.223018 | Ch: 1 | RSSI:-88dBm | Len:  28B | DATA
+          48 19 00 00 80 CA 4B 99 66 FE BC 10 2F 69 79 53 80 CA 4B 99 66 FE C0 62 3D CF 2B 00...
+[  621] 09:01:39.228267 | Ch: 1 | RSSI:-91dBm | Len:  28B | DATA
+          48 01 00 00 80 CA 4B 99 66 FE BC 10 2F 69 79 53 80 CA 4B 99 66 FE C0 62 3D CF 2B 00...
+[  622] 09:01:39.234255 | Ch: 1 | RSSI:-93dBm | Len: 178B | MGMT
+          80 00 00 00 FF FF FF FF FF FF 66 CB E9 8C 44 A8 66 CB E9 8C 44 A8 D0 3A 73 81 B4 16 00 00 00 00...
+[  623] 09:01:39.287561 | Ch: 1 | RSSI:-89dBm | Len:  28B | DATA
+          48 09 00 00 80 CA 4B 99 66 FE BC 10 2F 69 79 53 80 CA 4B 99 66 FE D0 62 3D CF 2B 00...
+[  624] 09:01:39.288411 | Ch: 1 | RSSI:-89dBm | Len:  28B | DATA
+          48 09 00 00 80 CA 4B 99 66 FE BC 10 2F 69 79 53 80 CA 4B 99 66 FE D0 62 3D CF 2B 00...
+[  625] 09:01:39.289280 | Ch: 1 | RSSI:-88dBm | Len:  28B | DATA
+          48 09 00 00 80 CA 4B 99 66 FE BC 10 2F 69 79 53 80 CA 4B 99 66 FE D0 62 3D CF 2B 00...
+[  626] 09:01:39.315666 | Ch: 1 | RSSI:-90dBm | Len: 193B | MGMT
+          80 00 00 00 FF FF FF FF FF FF 88 57 1D 83 46 DF 88 57 1D 83 46 DF 30 39 7C 81 52 05 00 00 00 00...
+[  627] 09:01:39.324982 | Ch: 1 | RSSI:-88dBm | Len:  28B | DATA
+          48 19 00 00 80 CA 4B 99 66 FE BC 10 2F 69 79 53 80 CA 4B 99 66 FE E0 62 3D CF 2B 00...
+[  628] 09:01:39.325836 | Ch: 1 | RSSI:-89dBm | Len:  28B | DATA
+          48 19 00 00 80 CA 4B 99 66 FE BC 10 2F 69 79 53 80 CA 4B 99 66 FE E0 62 3D CF 2B 00...
+[  629] 09:01:39.390980 | Ch: 1 | RSSI:-87dBm | Len:  28B | DATA
+          48 09 00 00 80 CA 4B 99 66 FE BC 10 2F 69 79 53 80 CA 4B 99 66 FE F0 62 3D CF 2B 00...
+[  630] 09:01:39.391975 | Ch: 1 | RSSI:-89dBm | Len:  28B | DATA
+          48 09 00 00 80 CA 4B 99 66 FE BC 10 2F 69 79 53 80 CA 4B 99 66 FE F0 62 3D CF 2B 00...
+[  631] 09:01:39.392587 | Ch: 1 | RSSI:-88dBm | Len:  28B | DATA
+          48 09 00 00 80 CA 4B 99 66 FE BC 10 2F 69 79 53 80 CA 4B 99 66 FE F0 62 3D CF 2B 00...
+[  632] 09:01:39.428006 | Ch: 1 | RSSI:-90dBm | Len:  28B | DATA
+          48 19 00 00 80 CA 4B 99 66 FE BC 10 2F 69 79 53 80 CA 4B 99 66 FE 00 63 3D CF 2B 00...
+[  633] 09:01:39.439242 | Ch: 1 | RSSI:-90dBm | Len: 178B | MGMT
+          80 00 00 00 FF FF FF FF FF FF 66 CB E9 8C 44 A8 66 CB E9 8C 44 A8 F0 3A 2C A2 B7 16 00 00 00 00...
+[  634] 09:01:39.484073 | Ch: 1 | RSSI:-26dBm | Len: 269B | MGMT
+          80 00 00 00 FF FF FF FF FF FF 90 9F 33 D4 80 0A 90 9F 33 D4 80 0A C0 35 90 B1 B4 BD 65 2C 00 00...
+[  635] 09:01:39.485685 | Ch: 1 | RSSI:-77dBm | Len:  51B | MGMT
+          40 00 00 00 FF FF FF FF FF FF A4 36 C7 2A 7B 5E FF FF FF FF FF FF 60 35 00 05 64 6C 69 6E 6B 01...
+[  636] 09:01:39.486440 | Ch: 1 | RSSI:-78dBm | Len:  51B | MGMT
+          40 00 00 00 FF FF FF FF FF FF A4 36 C7 2A 7B 5E FF FF FF FF FF FF 70 35 00 05 64 6C 69 6E 6B 01...
+[  637] 09:01:39.491935 | Ch: 1 | RSSI:-89dBm | Len:  28B | DATA
+          48 09 00 00 80 CA 4B 99 66 FE BC 10 2F 69 79 53 80 CA 4B 99 66 FE 10 63 3D CF 2B 00...
+[  638] 09:01:39.492790 | Ch: 1 | RSSI:-89dBm | Len:  28B | DATA
+          48 09 00 00 80 CA 4B 99 66 FE BC 10 2F 69 79 53 80 CA 4B 99 66 FE 10 63 3D CF 2B 00...
+[  639] 09:01:39.493645 | Ch: 1 | RSSI:-90dBm | Len:  28B | DATA
+          48 09 00 00 80 CA 4B 99 66 FE BC 10 2F 69 79 53 80 CA 4B 99 66 FE 10 63 3D CF 2B 00...
+[  640] 09:01:39.529343 | Ch: 1 | RSSI:-87dBm | Len:  28B | DATA
+          48 19 00 00 80 CA 4B 99 66 FE BC 10 2F 69 79 53 80 CA 4B 99 66 FE 20 63 3D CF 2B 00...
+[  641] 09:01:39.530198 | Ch: 1 | RSSI:-90dBm | Len:  28B | DATA
+          48 19 00 00 80 CA 4B 99 66 FE BC 10 2F 69 79 53 80 CA 4B 99 66 FE 20 63 3D CF 2B 00...
+[  642] 09:01:39.541560 | Ch: 1 | RSSI:-92dBm | Len: 178B | MGMT
+          80 00 00 00 FF FF FF FF FF FF 66 CB E9 8C 44 A8 66 CB E9 8C 44 A8 00 3B D5 31 B9 16 00 00 00 00...
+
+======================================================================
+✓ Capture stopped
+======================================================================
+  Total packets: 692
+  Errors:        4204
+  Saved to:      capture_20251110_111818.pcap
+
+💡 Open with Wireshark: wireshark capture_20251110_111818.pcap
+
+✓ Closed
+</code></pre></div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  맨위로
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="하단/푸터" >
+        
+          
+          <a href="wifi_sniffer0.html" class="md-footer__link md-footer__link--prev" aria-label="이전: WIFI Sniffer-1">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                이전
+              </span>
+              <div class="md-ellipsis">
+                WIFI Sniffer-1
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="wifi_sniffer2.html" class="md-footer__link md-footer__link--next" aria-label="다음: WIFI Sniffer-3">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                다음
+              </span>
+              <div class="md-ellipsis">
+                WIFI Sniffer-3
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-progress" data-md-component="progress" role="progressbar"></div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": ".", "features": ["toc.follow", "navigation.instant", "navigation.instant.progress", "navigation.path", "navigation.top", "navigation.footer", "search.suggest", "search.highlight", "content.tabs.link", "content.code.annotation", "content.tooltips", "content.code.copy", "toc.integrate"], "search": "assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "\ud074\ub9bd\ubcf4\ub4dc\uc5d0 \ubcf5\uc0ac\ub428", "clipboard.copy": "\ud074\ub9bd\ubcf4\ub4dc\ub85c \ubcf5\uc0ac", "search.result.more.one": "\uc774 \ubb38\uc11c\uc5d0\uc11c 1\uac1c\uc758 \uac80\uc0c9 \uacb0\uacfc \ub354 \ubcf4\uae30", "search.result.more.other": "\uc774 \ubb38\uc11c\uc5d0\uc11c #\uac1c\uc758 \uac80\uc0c9 \uacb0\uacfc \ub354 \ubcf4\uae30", "search.result.none": "\uac80\uc0c9\uc5b4\uc640 \uc77c\uce58\ud558\ub294 \ubb38\uc11c\uac00 \uc5c6\uc2b5\ub2c8\ub2e4", "search.result.one": "1\uac1c\uc758 \uc77c\uce58\ud558\ub294 \ubb38\uc11c", "search.result.other": "#\uac1c\uc758 \uc77c\uce58\ud558\ub294 \ubb38\uc11c", "search.result.placeholder": "\uac80\uc0c9\uc5b4\ub97c \uc785\ub825\ud558\uc138\uc694", "search.result.term.missing": "\ud3ec\ud568\ub418\uc9c0 \uc54a\uc740 \uac80\uc0c9\uc5b4", "select.version": "\ubc84\uc804 \uc120\ud0dd"}, "version": null}</script>
+    
+    
+      <script src="assets/javascripts/bundle.e71a0d61.min.js"></script>
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+      
+    
+  </body>
+</html>

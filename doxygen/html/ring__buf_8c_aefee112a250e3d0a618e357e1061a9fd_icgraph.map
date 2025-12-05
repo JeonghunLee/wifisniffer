@@ -1,0 +1,5 @@
+<map id="ring_buf_reset" name="ring_buf_reset">
+<area shape="rect" id="Node000001" title="Reset head/tail indices to empty the buffer." alt="" coords="188,5,303,31"/>
+<area shape="rect" id="Node000002" href="$sniffer_8c.html#ac875b5b30914b5076359238e95f1b068" title="Reset ring indices and capture counters." alt="" coords="5,5,140,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="174,21,140,21,140,15,174,15"/>
+</map>

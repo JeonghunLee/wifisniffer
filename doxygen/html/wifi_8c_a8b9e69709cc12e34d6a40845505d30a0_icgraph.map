@@ -1,0 +1,5 @@
+<map id="wifi_mgr_set_mode" name="wifi_mgr_set_mode">
+<area shape="rect" id="Node000001" title="Apply a specific Wi&#45;Fi mode using stored STA/AP configurations." alt="" coords="227,5,376,31"/>
+<area shape="rect" id="Node000002" href="$wifi_8c.html#a1192cabd1e0fd0948ae7942b7201668d" title="Parse a textual mode and forward to wifi_mgr_set_mode." alt="" coords="5,5,179,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="213,21,179,21,179,15,213,15"/>
+</map>

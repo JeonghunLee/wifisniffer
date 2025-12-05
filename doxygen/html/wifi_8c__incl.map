@@ -1,0 +1,21 @@
+<map id="main/wifi.c" name="main/wifi.c">
+<area shape="rect" id="Node000001" title="Minimal Wi&#45;Fi configuration manager backing the sniffer console commands." alt="" coords="170,5,263,31"/>
+<area shape="rect" id="Node000002" href="$wifi_8h_source.html" title=" " alt="" coords="53,79,111,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="196,33,117,74,115,70,194,28"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="5,152,92,177"/>
+<area shape="poly" id="edge6_Node000001_Node000004" title=" " alt="" coords="170,23,137,28,102,39,69,55,43,80,37,93,35,108,41,138,36,139,30,108,32,92,38,77,66,51,100,34,136,23,169,18"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="135,79,205,104"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="211,32,187,69,183,66,207,30"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="230,79,297,104"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="227,30,250,66,246,69,222,32"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="321,79,405,104"/>
+<area shape="poly" id="edge7_Node000001_Node000007" title=" " alt="" coords="241,28,328,70,326,75,239,33"/>
+<area shape="rect" id="Node000008" href="$sniffer_8h_source.html" title=" " alt="" coords="430,79,505,104"/>
+<area shape="poly" id="edge8_Node000001_Node000008" title=" " alt="" coords="258,28,417,73,416,78,256,33"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="221,152,303,177"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="112,102,221,144,219,149,110,107"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="79,105,62,141,57,139,74,103"/>
+<area shape="poly" id="edge10_Node000008_Node000003" title=" " alt="" coords="435,107,309,150,307,145,433,101"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="432,152,503,177"/>
+<area shape="poly" id="edge9_Node000008_Node000009" title=" " alt="" coords="470,104,470,138,465,138,465,104"/>
+</map>

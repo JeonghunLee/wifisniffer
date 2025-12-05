@@ -1,0 +1,10 @@
+<map id="sniffer_print_stats" name="sniffer_print_stats">
+<area shape="rect" id="Node000001" title="Print current ring usage and capture statistics." alt="" coords="5,55,144,80"/>
+<area shape="rect" id="Node000002" href="$ring__buf_8c.html#ad6404e293895d958da7da1fc4ea1b071" title="Get the total capacity of the ring buffer." alt="" coords="193,5,299,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="119,52,187,32,188,37,120,57"/>
+<area shape="rect" id="Node000003" href="$ring__buf_8c.html#ae90410ce05cf9ff498ebeb016d117c77" title="Get the number of free slots remaining in the ring buffer." alt="" coords="192,55,300,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="144,65,178,65,178,70,144,70"/>
+<area shape="rect" id="Node000004" href="$ring__buf_8c.html#ab94ddb9b9132e515bb238f5ecf142390" title="Get the current number of occupied slots in the ring buffer." alt="" coords="348,80,456,105"/>
+<area shape="poly" id="edge4_Node000001_Node000004" title=" " alt="" coords="127,77,192,89,266,93,334,93,334,98,265,98,192,94,126,83"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="301,73,335,79,334,84,300,79"/>
+</map>

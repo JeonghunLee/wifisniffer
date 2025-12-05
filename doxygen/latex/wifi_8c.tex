@@ -1,0 +1,624 @@
+\doxysection{main/wifi.c File Reference}
+\hypertarget{wifi_8c}{}\label{wifi_8c}\index{main/wifi.c@{main/wifi.c}}
+
+
+Minimal Wi-\/\+Fi configuration manager backing the sniffer console commands.  
+
+
+{\ttfamily \#include "{}wifi.\+h"{}}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include "{}esp\+\_\+wifi.\+h"{}}\newline
+{\ttfamily \#include "{}esp\+\_\+log.\+h"{}}\newline
+{\ttfamily \#include "{}sniffer.\+h"{}}\newline
+Include dependency graph for wifi.\+c\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{wifi_8c__incl}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{wifi_8c_ae04ba72d72202a9d8808cdbc8f39fc8b}{WIFI\+\_\+\+AP\+\_\+\+DEFAULT\+\_\+\+CHANNEL}}~1
+\begin{DoxyCompactList}\small\item\em Default Soft\+AP channel number. \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{wifi_8c_aab1fcc3a54a3fcc22469e05026531f41}{WIFI\+\_\+\+AP\+\_\+\+DEFAULT\+\_\+\+MAX\+\_\+\+CONNECTION}}~4
+\item 
+\#define \mbox{\hyperlink{wifi_8c_ae6cd7ec8132dba36d5d5a02910245a21}{WIFI\+\_\+\+AP\+\_\+\+DEFAULT\+\_\+\+BEACON\+\_\+\+INTERVAL}}~100
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+const char \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{wifi_8c_a1ccfac3b661e1c212b38b3e7810f3f53}{wifi\+\_\+mgr\+\_\+mode\+\_\+to\+\_\+string}} (wifi\+\_\+mode\+\_\+t mode)
+\begin{DoxyCompactList}\small\item\em Convert Wi-\/\+Fi mode enum to a short string for status printing. \end{DoxyCompactList}\item 
+esp\+\_\+err\+\_\+t \mbox{\hyperlink{wifi_8c_aa10886611772ba3c0e0a00dae83eec1f}{wifi\+\_\+mgr\+\_\+init}} (void)
+\begin{DoxyCompactList}\small\item\em Prime cached Wi-\/\+Fi configs and record the current mode. \end{DoxyCompactList}\item 
+esp\+\_\+err\+\_\+t \mbox{\hyperlink{wifi_8c_a8b9e69709cc12e34d6a40845505d30a0}{wifi\+\_\+mgr\+\_\+set\+\_\+mode}} (wifi\+\_\+mode\+\_\+t mode)
+\begin{DoxyCompactList}\small\item\em Apply a specific Wi-\/\+Fi mode using stored STA/\+AP configurations. \end{DoxyCompactList}\item 
+esp\+\_\+err\+\_\+t \mbox{\hyperlink{wifi_8c_a1192cabd1e0fd0948ae7942b7201668d}{wifi\+\_\+mgr\+\_\+set\+\_\+mode\+\_\+str}} (const char \texorpdfstring{$\ast$}{*}mode\+\_\+str)
+\begin{DoxyCompactList}\small\item\em Parse a textual mode and forward to \doxylink{wifi_8c_a8b9e69709cc12e34d6a40845505d30a0}{wifi\+\_\+mgr\+\_\+set\+\_\+mode}. \end{DoxyCompactList}\item 
+esp\+\_\+err\+\_\+t \mbox{\hyperlink{wifi_8c_afd0442b8f0eea2d94cc3306fa93905c5}{wifi\+\_\+mgr\+\_\+set\+\_\+sta\+\_\+ssid}} (const char \texorpdfstring{$\ast$}{*}ssid)
+\begin{DoxyCompactList}\small\item\em Update STA SSID and refresh promiscuous mode if already active. \end{DoxyCompactList}\item 
+esp\+\_\+err\+\_\+t \mbox{\hyperlink{wifi_8c_adb1b9bcac58b750454246bc88b78fe15}{wifi\+\_\+mgr\+\_\+set\+\_\+sta\+\_\+password}} (const char \texorpdfstring{$\ast$}{*}password)
+\begin{DoxyCompactList}\small\item\em Update STA password and refresh promiscuous mode if active. \end{DoxyCompactList}\item 
+esp\+\_\+err\+\_\+t \mbox{\hyperlink{wifi_8c_a36d6884f1f016c7dca7a8dc3b86d62ca}{wifi\+\_\+mgr\+\_\+set\+\_\+ap\+\_\+ssid}} (const char \texorpdfstring{$\ast$}{*}ssid)
+\begin{DoxyCompactList}\small\item\em Update Soft\+AP SSID and refresh promiscuous mode if active. \end{DoxyCompactList}\item 
+esp\+\_\+err\+\_\+t \mbox{\hyperlink{wifi_8c_aea02fef844d7a0cde1fa5507ae392b6e}{wifi\+\_\+mgr\+\_\+set\+\_\+ap\+\_\+password}} (const char \texorpdfstring{$\ast$}{*}password)
+\begin{DoxyCompactList}\small\item\em Update Soft\+AP password (empty string toggles open auth) and refresh sniffer. \end{DoxyCompactList}\item 
+esp\+\_\+err\+\_\+t \mbox{\hyperlink{wifi_8c_aa7e1c1f464177418ca578460692cc56c}{wifi\+\_\+mgr\+\_\+set\+\_\+channel}} (uint8\+\_\+t primary)
+\begin{DoxyCompactList}\small\item\em Change the primary channel while respecting mode restrictions. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{wifi_8c_a03dd315406b5f0eb5b84a286c43ba7cc}{wifi\+\_\+mgr\+\_\+print\+\_\+status}} (void)
+\begin{DoxyCompactList}\small\item\em Print a snapshot of cached and runtime Wi-\/\+Fi configuration. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Minimal Wi-\/\+Fi configuration manager backing the sniffer console commands. 
+
+
+
+Definition in file \mbox{\hyperlink{wifi_8c_source}{wifi.\+c}}.
+
+
+
+\doxysubsection{Macro Definition Documentation}
+\Hypertarget{wifi_8c_ae6cd7ec8132dba36d5d5a02910245a21}\label{wifi_8c_ae6cd7ec8132dba36d5d5a02910245a21} 
+\index{wifi.c@{wifi.c}!WIFI\_AP\_DEFAULT\_BEACON\_INTERVAL@{WIFI\_AP\_DEFAULT\_BEACON\_INTERVAL}}
+\index{WIFI\_AP\_DEFAULT\_BEACON\_INTERVAL@{WIFI\_AP\_DEFAULT\_BEACON\_INTERVAL}!wifi.c@{wifi.c}}
+\doxysubsubsection{\texorpdfstring{WIFI\_AP\_DEFAULT\_BEACON\_INTERVAL}{WIFI\_AP\_DEFAULT\_BEACON\_INTERVAL}}
+{\footnotesize\ttfamily \#define WIFI\+\_\+\+AP\+\_\+\+DEFAULT\+\_\+\+BEACON\+\_\+\+INTERVAL~100}
+
+
+
+Definition at line \mbox{\hyperlink{wifi_8c_source_l00036}{36}} of file \mbox{\hyperlink{wifi_8c_source}{wifi.\+c}}.
+
+\Hypertarget{wifi_8c_ae04ba72d72202a9d8808cdbc8f39fc8b}\label{wifi_8c_ae04ba72d72202a9d8808cdbc8f39fc8b} 
+\index{wifi.c@{wifi.c}!WIFI\_AP\_DEFAULT\_CHANNEL@{WIFI\_AP\_DEFAULT\_CHANNEL}}
+\index{WIFI\_AP\_DEFAULT\_CHANNEL@{WIFI\_AP\_DEFAULT\_CHANNEL}!wifi.c@{wifi.c}}
+\doxysubsubsection{\texorpdfstring{WIFI\_AP\_DEFAULT\_CHANNEL}{WIFI\_AP\_DEFAULT\_CHANNEL}}
+{\footnotesize\ttfamily \#define WIFI\+\_\+\+AP\+\_\+\+DEFAULT\+\_\+\+CHANNEL~1}
+
+
+
+Default Soft\+AP channel number. 
+
+
+
+Definition at line \mbox{\hyperlink{wifi_8c_source_l00034}{34}} of file \mbox{\hyperlink{wifi_8c_source}{wifi.\+c}}.
+
+\Hypertarget{wifi_8c_aab1fcc3a54a3fcc22469e05026531f41}\label{wifi_8c_aab1fcc3a54a3fcc22469e05026531f41} 
+\index{wifi.c@{wifi.c}!WIFI\_AP\_DEFAULT\_MAX\_CONNECTION@{WIFI\_AP\_DEFAULT\_MAX\_CONNECTION}}
+\index{WIFI\_AP\_DEFAULT\_MAX\_CONNECTION@{WIFI\_AP\_DEFAULT\_MAX\_CONNECTION}!wifi.c@{wifi.c}}
+\doxysubsubsection{\texorpdfstring{WIFI\_AP\_DEFAULT\_MAX\_CONNECTION}{WIFI\_AP\_DEFAULT\_MAX\_CONNECTION}}
+{\footnotesize\ttfamily \#define WIFI\+\_\+\+AP\+\_\+\+DEFAULT\+\_\+\+MAX\+\_\+\+CONNECTION~4}
+
+
+
+Definition at line \mbox{\hyperlink{wifi_8c_source_l00035}{35}} of file \mbox{\hyperlink{wifi_8c_source}{wifi.\+c}}.
+
+
+
+\doxysubsection{Function Documentation}
+\Hypertarget{wifi_8c_aa10886611772ba3c0e0a00dae83eec1f}\label{wifi_8c_aa10886611772ba3c0e0a00dae83eec1f} 
+\index{wifi.c@{wifi.c}!wifi\_mgr\_init@{wifi\_mgr\_init}}
+\index{wifi\_mgr\_init@{wifi\_mgr\_init}!wifi.c@{wifi.c}}
+\doxysubsubsection{\texorpdfstring{wifi\_mgr\_init()}{wifi\_mgr\_init()}}
+{\footnotesize\ttfamily esp\+\_\+err\+\_\+t wifi\+\_\+mgr\+\_\+init (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Prime cached Wi-\/\+Fi configs and record the current mode. 
+
+Initialise Wi-\/\+Fi manager state by loading NVS-\/backed configs.
+
+\begin{DoxyReturn}{Returns}
+ESP\+\_\+\+OK on success, or an error code on failure. 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{wifi_8c_source_l00077}{77}} of file \mbox{\hyperlink{wifi_8c_source}{wifi.\+c}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00078\ \{}
+\DoxyCodeLine{00079\ \ \ \ \ \textcolor{keywordflow}{if}\ (s\_initialized)\ \{}
+\DoxyCodeLine{00080\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ ESP\_OK;}
+\DoxyCodeLine{00081\ \ \ \ \ \}}
+\DoxyCodeLine{00082\ \ \ \ \ s\_initialized\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00083\ }
+\DoxyCodeLine{00084\ \ \ \ \ memset(\&s\_sta\_config,\ 0,\ \textcolor{keyword}{sizeof}(s\_sta\_config));}
+\DoxyCodeLine{00085\ \ \ \ \ memset(\&s\_ap\_config,\ 0,\ \textcolor{keyword}{sizeof}(s\_ap\_config));}
+\DoxyCodeLine{00086\ }
+\DoxyCodeLine{00087\ \ \ \ \ (void)esp\_wifi\_get\_config(WIFI\_IF\_STA,\ \&s\_sta\_config);}
+\DoxyCodeLine{00088\ \ \ \ \ \textcolor{keywordflow}{if}\ (esp\_wifi\_get\_config(WIFI\_IF\_AP,\ \&s\_ap\_config)\ !=\ ESP\_OK)\ \{}
+\DoxyCodeLine{00089\ \ \ \ \ \ \ \ \ memset(\&s\_ap\_config,\ 0,\ \textcolor{keyword}{sizeof}(s\_ap\_config));}
+\DoxyCodeLine{00090\ \ \ \ \ \}}
+\DoxyCodeLine{00091\ \ \ \ \ ensure\_ap\_defaults();}
+\DoxyCodeLine{00092\ \ \ \ \ (void)esp\_wifi\_get\_mode(\&s\_current\_mode);}
+\DoxyCodeLine{00093\ }
+\DoxyCodeLine{00094\ \ \ \ \ ESP\_LOGI(TAG,\ \textcolor{stringliteral}{"{}wifi\_mgr\_init:\ mode=\%s"{}},\ \mbox{\hyperlink{wifi_8c_a1ccfac3b661e1c212b38b3e7810f3f53}{wifi\_mgr\_mode\_to\_string}}(s\_current\_mode));}
+\DoxyCodeLine{00095\ \ \ \ \ \textcolor{keywordflow}{return}\ ESP\_OK;}
+\DoxyCodeLine{00096\ \}}
+
+\end{DoxyCode}
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=336pt]{wifi_8c_aa10886611772ba3c0e0a00dae83eec1f_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{wifi_8c_aa10886611772ba3c0e0a00dae83eec1f_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{wifi_8c_a1ccfac3b661e1c212b38b3e7810f3f53}\label{wifi_8c_a1ccfac3b661e1c212b38b3e7810f3f53} 
+\index{wifi.c@{wifi.c}!wifi\_mgr\_mode\_to\_string@{wifi\_mgr\_mode\_to\_string}}
+\index{wifi\_mgr\_mode\_to\_string@{wifi\_mgr\_mode\_to\_string}!wifi.c@{wifi.c}}
+\doxysubsubsection{\texorpdfstring{wifi\_mgr\_mode\_to\_string()}{wifi\_mgr\_mode\_to\_string()}}
+{\footnotesize\ttfamily const char \texorpdfstring{$\ast$}{*} wifi\+\_\+mgr\+\_\+mode\+\_\+to\+\_\+string (\begin{DoxyParamCaption}\item[{wifi\+\_\+mode\+\_\+t}]{mode }\end{DoxyParamCaption})}
+
+
+
+Convert Wi-\/\+Fi mode enum to a short string for status printing. 
+
+Convert an enum mode to a short human-\/readable string.
+
+
+\begin{DoxyParams}{Parameters}
+{\em mode} & Wi-\/\+Fi mode enum value. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Short string representation of the Wi-\/\+Fi mode. 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{wifi_8c_source_l00061}{61}} of file \mbox{\hyperlink{wifi_8c_source}{wifi.\+c}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00062\ \{}
+\DoxyCodeLine{00063\ \ \ \ \ \textcolor{keywordflow}{switch}\ (mode)\ \{}
+\DoxyCodeLine{00064\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ WIFI\_MODE\_NULL:\ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}null"{}};}
+\DoxyCodeLine{00065\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ WIFI\_MODE\_STA:\ \ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}sta"{}};}
+\DoxyCodeLine{00066\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ WIFI\_MODE\_AP:\ \ \ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}ap"{}};}
+\DoxyCodeLine{00067\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ WIFI\_MODE\_APSTA:\textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}ap+sta"{}};}
+\DoxyCodeLine{00068\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{default}:\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}unknown"{}};}
+\DoxyCodeLine{00069\ \ \ \ \ \}}
+\DoxyCodeLine{00070\ \}}
+
+\end{DoxyCode}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{wifi_8c_a1ccfac3b661e1c212b38b3e7810f3f53_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{wifi_8c_a03dd315406b5f0eb5b84a286c43ba7cc}\label{wifi_8c_a03dd315406b5f0eb5b84a286c43ba7cc} 
+\index{wifi.c@{wifi.c}!wifi\_mgr\_print\_status@{wifi\_mgr\_print\_status}}
+\index{wifi\_mgr\_print\_status@{wifi\_mgr\_print\_status}!wifi.c@{wifi.c}}
+\doxysubsubsection{\texorpdfstring{wifi\_mgr\_print\_status()}{wifi\_mgr\_print\_status()}}
+{\footnotesize\ttfamily void wifi\+\_\+mgr\+\_\+print\+\_\+status (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Print a snapshot of cached and runtime Wi-\/\+Fi configuration. 
+
+Print the current Wi-\/\+Fi configuration snapshot to the console. 
+
+Definition at line \mbox{\hyperlink{wifi_8c_source_l00260}{260}} of file \mbox{\hyperlink{wifi_8c_source}{wifi.\+c}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00261\ \{}
+\DoxyCodeLine{00262\ \ \ \ \ wifi\_mode\_t\ mode\ =\ WIFI\_MODE\_NULL;}
+\DoxyCodeLine{00263\ \ \ \ \ (void)esp\_wifi\_get\_mode(\&mode);}
+\DoxyCodeLine{00264\ }
+\DoxyCodeLine{00265\ \ \ \ \ wifi\_config\_t\ sta;}
+\DoxyCodeLine{00266\ \ \ \ \ wifi\_config\_t\ ap;}
+\DoxyCodeLine{00267\ \ \ \ \ memset(\&sta,\ 0,\ \textcolor{keyword}{sizeof}(sta));}
+\DoxyCodeLine{00268\ \ \ \ \ memset(\&ap,\ 0,\ \textcolor{keyword}{sizeof}(ap));}
+\DoxyCodeLine{00269\ }
+\DoxyCodeLine{00270\ \ \ \ \ \textcolor{keywordflow}{if}\ (esp\_wifi\_get\_config(WIFI\_IF\_STA,\ \&sta)\ !=\ ESP\_OK)\ \{}
+\DoxyCodeLine{00271\ \ \ \ \ \ \ \ \ sta\ =\ s\_sta\_config;}
+\DoxyCodeLine{00272\ \ \ \ \ \}}
+\DoxyCodeLine{00273\ \ \ \ \ \textcolor{keywordflow}{if}\ (esp\_wifi\_get\_config(WIFI\_IF\_AP,\ \&ap)\ !=\ ESP\_OK)\ \{}
+\DoxyCodeLine{00274\ \ \ \ \ \ \ \ \ ap\ =\ s\_ap\_config;}
+\DoxyCodeLine{00275\ \ \ \ \ \}}
+\DoxyCodeLine{00276\ }
+\DoxyCodeLine{00277\ \ \ \ \ printf(\textcolor{stringliteral}{"{}Wi-\/Fi\ Status\ :\(\backslash\)n"{}});}
+\DoxyCodeLine{00278\ \ \ \ \ printf(\textcolor{stringliteral}{"{}\ \ -\/\ Wi-\/Fi\ MODE:\ \%s\(\backslash\)n"{}},\ \mbox{\hyperlink{wifi_8c_a1ccfac3b661e1c212b38b3e7810f3f53}{wifi\_mgr\_mode\_to\_string}}(mode));\ \ \ \ }
+\DoxyCodeLine{00279\ \ \ \ \ printf(\textcolor{stringliteral}{"{}\ \ -\/\ STA\ SSID:\ \%s\(\backslash\)n"{}},\ sta.sta.ssid[0]\ ?\ (\textcolor{keywordtype}{char}\ *)sta.sta.ssid\ :\ \textcolor{stringliteral}{"{}<unset>"{}});}
+\DoxyCodeLine{00280\ \ \ \ \ printf(\textcolor{stringliteral}{"{}\ \ -\/\ STA\ password:\ \%s\ (\%s)\(\backslash\)n"{}},\ sta.sta.password[0]\ ?\ \textcolor{stringliteral}{"{}<set>"{}}\ :\ \textcolor{stringliteral}{"{}<empty>"{}},sta.sta.password);}
+\DoxyCodeLine{00281\ \ \ \ \ printf(\textcolor{stringliteral}{"{}\ \ -\/\ AP\ SSID:\ \%s\(\backslash\)n"{}},\ ap.ap.ssid[0]\ ?\ (\textcolor{keywordtype}{char}\ *)ap.ap.ssid\ :\ \textcolor{stringliteral}{"{}<unset>"{}});}
+\DoxyCodeLine{00282\ \ \ \ \ printf(\textcolor{stringliteral}{"{}\ \ -\/\ AP\ password:\ \%s\(\backslash\)n"{}},}
+\DoxyCodeLine{00283\ \ \ \ \ \ \ \ \ \ \ \ (ap.ap.authmode\ ==\ WIFI\_AUTH\_OPEN)\ ?\ \textcolor{stringliteral}{"{}<open>"{}}\ :\ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00284\ \ \ \ \ \ \ \ \ \ \ \ (ap.ap.password[0]\ ?\ \textcolor{stringliteral}{"{}<set>"{}}\ :\ \textcolor{stringliteral}{"{}<invalid>"{}}));}
+\DoxyCodeLine{00285\ \ \ \ \ printf(\textcolor{stringliteral}{"{}\ \ -\/\ AP\ channel:\ \%u\(\backslash\)n"{}},\ ap.ap.channel);}
+\DoxyCodeLine{00286\ \}}
+
+\end{DoxyCode}
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{wifi_8c_a03dd315406b5f0eb5b84a286c43ba7cc_cgraph}
+\end{center}
+\end{figure}
+\Hypertarget{wifi_8c_aea02fef844d7a0cde1fa5507ae392b6e}\label{wifi_8c_aea02fef844d7a0cde1fa5507ae392b6e} 
+\index{wifi.c@{wifi.c}!wifi\_mgr\_set\_ap\_password@{wifi\_mgr\_set\_ap\_password}}
+\index{wifi\_mgr\_set\_ap\_password@{wifi\_mgr\_set\_ap\_password}!wifi.c@{wifi.c}}
+\doxysubsubsection{\texorpdfstring{wifi\_mgr\_set\_ap\_password()}{wifi\_mgr\_set\_ap\_password()}}
+{\footnotesize\ttfamily esp\+\_\+err\+\_\+t wifi\+\_\+mgr\+\_\+set\+\_\+ap\+\_\+password (\begin{DoxyParamCaption}\item[{const char \texorpdfstring{$\ast$}{*}}]{password }\end{DoxyParamCaption})}
+
+
+
+Update Soft\+AP password (empty string toggles open auth) and refresh sniffer. 
+
+Update the Soft\+AP password (empty string forces open mode).
+
+
+\begin{DoxyParams}{Parameters}
+{\em password} & New password string. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+ESP\+\_\+\+OK on success, or an error code on failure. 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{wifi_8c_source_l00204}{204}} of file \mbox{\hyperlink{wifi_8c_source}{wifi.\+c}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00205\ \{}
+\DoxyCodeLine{00206\ \ \ \ \ ESP\_ERROR\_CHECK(\mbox{\hyperlink{wifi_8c_aa10886611772ba3c0e0a00dae83eec1f}{wifi\_mgr\_init}}());}
+\DoxyCodeLine{00207\ \ \ \ \ esp\_err\_t\ err\ =\ update\_ap\_password(password);}
+\DoxyCodeLine{00208\ \ \ \ \ \textcolor{keywordflow}{if}\ (err\ ==\ ESP\_OK\ \&\&}
+\DoxyCodeLine{00209\ \ \ \ \ \ \ \ \ (s\_current\_mode\ ==\ WIFI\_MODE\_AP\ ||\ s\_current\_mode\ ==\ WIFI\_MODE\_APSTA))\ \{}
+\DoxyCodeLine{00210\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{sniffer_8c_aece9df03dd920b92c9296815619db4c3}{sniffer\_enable\_promiscuous}}();}
+\DoxyCodeLine{00211\ \ \ \ \ \}}
+\DoxyCodeLine{00212\ \ \ \ \ \textcolor{keywordflow}{return}\ err;}
+\DoxyCodeLine{00213\ \}}
+
+\end{DoxyCode}
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{wifi_8c_aea02fef844d7a0cde1fa5507ae392b6e_cgraph}
+\end{center}
+\end{figure}
+\Hypertarget{wifi_8c_a36d6884f1f016c7dca7a8dc3b86d62ca}\label{wifi_8c_a36d6884f1f016c7dca7a8dc3b86d62ca} 
+\index{wifi.c@{wifi.c}!wifi\_mgr\_set\_ap\_ssid@{wifi\_mgr\_set\_ap\_ssid}}
+\index{wifi\_mgr\_set\_ap\_ssid@{wifi\_mgr\_set\_ap\_ssid}!wifi.c@{wifi.c}}
+\doxysubsubsection{\texorpdfstring{wifi\_mgr\_set\_ap\_ssid()}{wifi\_mgr\_set\_ap\_ssid()}}
+{\footnotesize\ttfamily esp\+\_\+err\+\_\+t wifi\+\_\+mgr\+\_\+set\+\_\+ap\+\_\+ssid (\begin{DoxyParamCaption}\item[{const char \texorpdfstring{$\ast$}{*}}]{ssid }\end{DoxyParamCaption})}
+
+
+
+Update Soft\+AP SSID and refresh promiscuous mode if active. 
+
+Update the Soft\+AP SSID and reapply when needed.
+
+
+\begin{DoxyParams}{Parameters}
+{\em ssid} & New SSID string. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+ESP\+\_\+\+OK on success, or an error code on failure. 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{wifi_8c_source_l00188}{188}} of file \mbox{\hyperlink{wifi_8c_source}{wifi.\+c}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00189\ \{}
+\DoxyCodeLine{00190\ \ \ \ \ ESP\_ERROR\_CHECK(\mbox{\hyperlink{wifi_8c_aa10886611772ba3c0e0a00dae83eec1f}{wifi\_mgr\_init}}());}
+\DoxyCodeLine{00191\ \ \ \ \ esp\_err\_t\ err\ =\ update\_ap\_ssid(ssid);}
+\DoxyCodeLine{00192\ \ \ \ \ \textcolor{keywordflow}{if}\ (err\ ==\ ESP\_OK\ \&\&}
+\DoxyCodeLine{00193\ \ \ \ \ \ \ \ \ (s\_current\_mode\ ==\ WIFI\_MODE\_AP\ ||\ s\_current\_mode\ ==\ WIFI\_MODE\_APSTA))\ \{}
+\DoxyCodeLine{00194\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{sniffer_8c_aece9df03dd920b92c9296815619db4c3}{sniffer\_enable\_promiscuous}}();}
+\DoxyCodeLine{00195\ \ \ \ \ \}}
+\DoxyCodeLine{00196\ \ \ \ \ \textcolor{keywordflow}{return}\ err;}
+\DoxyCodeLine{00197\ \}}
+
+\end{DoxyCode}
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{wifi_8c_a36d6884f1f016c7dca7a8dc3b86d62ca_cgraph}
+\end{center}
+\end{figure}
+\Hypertarget{wifi_8c_aa7e1c1f464177418ca578460692cc56c}\label{wifi_8c_aa7e1c1f464177418ca578460692cc56c} 
+\index{wifi.c@{wifi.c}!wifi\_mgr\_set\_channel@{wifi\_mgr\_set\_channel}}
+\index{wifi\_mgr\_set\_channel@{wifi\_mgr\_set\_channel}!wifi.c@{wifi.c}}
+\doxysubsubsection{\texorpdfstring{wifi\_mgr\_set\_channel()}{wifi\_mgr\_set\_channel()}}
+{\footnotesize\ttfamily esp\+\_\+err\+\_\+t wifi\+\_\+mgr\+\_\+set\+\_\+channel (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{primary }\end{DoxyParamCaption})}
+
+
+
+Change the primary channel while respecting mode restrictions. 
+
+Change the primary channel while in NULL/\+AP mode for sniffing.
+
+
+\begin{DoxyParams}{Parameters}
+{\em primary} & Desired primary channel (1-\/13). \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+ESP\+\_\+\+OK on success, or an error code on failure. 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{wifi_8c_source_l00220}{220}} of file \mbox{\hyperlink{wifi_8c_source}{wifi.\+c}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00221\ \{}
+\DoxyCodeLine{00222\ \ \ \ \ wifi\_mode\_t\ mode\ =\ WIFI\_MODE\_NULL;}
+\DoxyCodeLine{00223\ }
+\DoxyCodeLine{00224\ \ \ \ \ \textcolor{keywordflow}{if}\ (primary\ <\ 1\ ||\ primary\ >\ 13)\ \{\ \ \ \textcolor{comment}{//\ 필요하면\ 14까지\ 허용}}
+\DoxyCodeLine{00225\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ ESP\_ERR\_INVALID\_ARG;}
+\DoxyCodeLine{00226\ \ \ \ \ \}}
+\DoxyCodeLine{00227\ }
+\DoxyCodeLine{00228\ \ \ \ \ ESP\_ERROR\_CHECK(\mbox{\hyperlink{wifi_8c_aa10886611772ba3c0e0a00dae83eec1f}{wifi\_mgr\_init}}());}
+\DoxyCodeLine{00229\ \ \ \ \ (void)esp\_wifi\_get\_mode(\&mode);}
+\DoxyCodeLine{00230\ }
+\DoxyCodeLine{00231\ \ \ \ \ \textcolor{comment}{//\ 1)\ STA\ /\ APSTA인\ 경우:\ 경고\ 또는\ 막기}}
+\DoxyCodeLine{00232\ \ \ \ \ \textcolor{keywordflow}{if}\ (mode\ ==\ WIFI\_MODE\_STA\ ||\ mode\ ==\ WIFI\_MODE\_APSTA)\ \{}
+\DoxyCodeLine{00233\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ 여기서\ 정책\ 결정:}}
+\DoxyCodeLine{00234\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ \ \ -\/\ 그냥\ 막을지}}
+\DoxyCodeLine{00235\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ \ \ -\/\ 또는\ 경고만\ 찍고\ 시도할지}}
+\DoxyCodeLine{00236\ \ \ \ \ \ \ \ \ ESP\_LOGW(TAG,}
+\DoxyCodeLine{00237\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}Channel\ change\ in\ STA/APSTA\ mode\ may\ be\ invalid\ or\ break\ connection.\ "{}}}
+\DoxyCodeLine{00238\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}Use\ NULL/AP\ mode\ for\ sniffer\ channel\ hopping."{}});}
+\DoxyCodeLine{00239\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ 나는\ 아예\ 막는\ 쪽이\ 더\ 안전하다고\ 봄}}
+\DoxyCodeLine{00240\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ ESP\_ERR\_INVALID\_STATE;}
+\DoxyCodeLine{00241\ \ \ \ \ \}\ \ \ \ }
+\DoxyCodeLine{00242\ \ \ \ \ \textcolor{comment}{//\ 2)\ NULL\ /\ AP\ 모드인\ 경우:\ 채널\ 변경\ 시도}}
+\DoxyCodeLine{00243\ \ \ \ \ esp\_err\_t\ err\ =\ esp\_wifi\_set\_channel(primary,\ WIFI\_SECOND\_CHAN\_NONE);}
+\DoxyCodeLine{00244\ \ \ \ \ \textcolor{keywordflow}{if}\ (err\ !=\ ESP\_OK)\ \{}
+\DoxyCodeLine{00245\ \ \ \ \ \ \ \ \ ESP\_LOGE(TAG,\ \textcolor{stringliteral}{"{}esp\_wifi\_set\_channel\ failed:\ \%s"{}},\ esp\_err\_to\_name(err));}
+\DoxyCodeLine{00246\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ err;}
+\DoxyCodeLine{00247\ \ \ \ \ \}}
+\DoxyCodeLine{00248\ }
+\DoxyCodeLine{00249\ \ \ \ \ \textcolor{comment}{//\ 채널\ 변경\ 후\ 스니퍼\ 다시\ 세팅\ (필요시)}}
+\DoxyCodeLine{00250\ \ \ \ \ \mbox{\hyperlink{sniffer_8c_aece9df03dd920b92c9296815619db4c3}{sniffer\_enable\_promiscuous}}();}
+\DoxyCodeLine{00251\ }
+\DoxyCodeLine{00252\ \ \ \ \ ESP\_LOGI(TAG,\ \textcolor{stringliteral}{"{}Wi-\/Fi\ channel\ set\ to\ \%u"{}},\ primary);}
+\DoxyCodeLine{00253\ \ \ \ \ \textcolor{keywordflow}{return}\ ESP\_OK;}
+\DoxyCodeLine{00254\ \}}
+
+\end{DoxyCode}
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{wifi_8c_aa7e1c1f464177418ca578460692cc56c_cgraph}
+\end{center}
+\end{figure}
+\Hypertarget{wifi_8c_a8b9e69709cc12e34d6a40845505d30a0}\label{wifi_8c_a8b9e69709cc12e34d6a40845505d30a0} 
+\index{wifi.c@{wifi.c}!wifi\_mgr\_set\_mode@{wifi\_mgr\_set\_mode}}
+\index{wifi\_mgr\_set\_mode@{wifi\_mgr\_set\_mode}!wifi.c@{wifi.c}}
+\doxysubsubsection{\texorpdfstring{wifi\_mgr\_set\_mode()}{wifi\_mgr\_set\_mode()}}
+{\footnotesize\ttfamily esp\+\_\+err\+\_\+t wifi\+\_\+mgr\+\_\+set\+\_\+mode (\begin{DoxyParamCaption}\item[{wifi\+\_\+mode\+\_\+t}]{mode }\end{DoxyParamCaption})}
+
+
+
+Apply a specific Wi-\/\+Fi mode using stored STA/\+AP configurations. 
+
+Apply the requested Wi-\/\+Fi mode (NULL/\+AP/\+STA/\+APSTA).
+
+
+\begin{DoxyParams}{Parameters}
+{\em mode} & Desired Wi-\/\+Fi mode to set. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+ESP\+\_\+\+OK on success, or an error code on failure. 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{wifi_8c_source_l00104}{104}} of file \mbox{\hyperlink{wifi_8c_source}{wifi.\+c}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00105\ \{}
+\DoxyCodeLine{00106\ \ \ \ \ ESP\_ERROR\_CHECK(\mbox{\hyperlink{wifi_8c_aa10886611772ba3c0e0a00dae83eec1f}{wifi\_mgr\_init}}());}
+\DoxyCodeLine{00107\ \ \ \ \ \textcolor{keywordflow}{return}\ apply\_wifi\_mode\_internal(mode);}
+\DoxyCodeLine{00108\ \}}
+
+\end{DoxyCode}
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{wifi_8c_a8b9e69709cc12e34d6a40845505d30a0_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{wifi_8c_a8b9e69709cc12e34d6a40845505d30a0_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{wifi_8c_a1192cabd1e0fd0948ae7942b7201668d}\label{wifi_8c_a1192cabd1e0fd0948ae7942b7201668d} 
+\index{wifi.c@{wifi.c}!wifi\_mgr\_set\_mode\_str@{wifi\_mgr\_set\_mode\_str}}
+\index{wifi\_mgr\_set\_mode\_str@{wifi\_mgr\_set\_mode\_str}!wifi.c@{wifi.c}}
+\doxysubsubsection{\texorpdfstring{wifi\_mgr\_set\_mode\_str()}{wifi\_mgr\_set\_mode\_str()}}
+{\footnotesize\ttfamily esp\+\_\+err\+\_\+t wifi\+\_\+mgr\+\_\+set\+\_\+mode\+\_\+str (\begin{DoxyParamCaption}\item[{const char \texorpdfstring{$\ast$}{*}}]{mode\+\_\+str }\end{DoxyParamCaption})}
+
+
+
+Parse a textual mode and forward to \doxylink{wifi_8c_a8b9e69709cc12e34d6a40845505d30a0}{wifi\+\_\+mgr\+\_\+set\+\_\+mode}. 
+
+Helper that parses a string such as "{}sta"{} or "{}ap+sta"{} into \doxylink{wifi_8c_a8b9e69709cc12e34d6a40845505d30a0}{wifi\+\_\+mgr\+\_\+set\+\_\+mode}.
+
+
+\begin{DoxyParams}{Parameters}
+{\em mode\+\_\+str} & String representation of the desired mode ("{}null"{}, "{}sta"{}, "{}ap"{}, "{}apsta"{}). \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+ESP\+\_\+\+OK on success, or an error code on failure. 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{wifi_8c_source_l00115}{115}} of file \mbox{\hyperlink{wifi_8c_source}{wifi.\+c}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00116\ \{}
+\DoxyCodeLine{00117\ \ \ \ \ \textcolor{keywordflow}{if}\ (mode\_str\ ==\ NULL)\ \{}
+\DoxyCodeLine{00118\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ ESP\_ERR\_INVALID\_ARG;}
+\DoxyCodeLine{00119\ \ \ \ \ \}}
+\DoxyCodeLine{00120\ }
+\DoxyCodeLine{00121\ \ \ \ \ wifi\_mode\_t\ mode\ =\ WIFI\_MODE\_NULL;}
+\DoxyCodeLine{00122\ }
+\DoxyCodeLine{00123\ \ \ \ \ \textcolor{keywordflow}{if}\ (strcasecmp(mode\_str,\ \textcolor{stringliteral}{"{}null"{}})\ ==\ 0)\ \{}
+\DoxyCodeLine{00124\ \ \ \ \ \ \ \ \ mode\ =\ WIFI\_MODE\_NULL;}
+\DoxyCodeLine{00125\ \ \ \ \ \}}
+\DoxyCodeLine{00126\ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (strcasecmp(mode\_str,\ \textcolor{stringliteral}{"{}sta"{}})\ ==\ 0)\ \{}
+\DoxyCodeLine{00127\ \ \ \ \ \ \ \ \ mode\ =\ WIFI\_MODE\_STA;}
+\DoxyCodeLine{00128\ \ \ \ \ \}}
+\DoxyCodeLine{00129\ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (strcasecmp(mode\_str,\ \textcolor{stringliteral}{"{}ap"{}})\ ==\ 0)\ \{}
+\DoxyCodeLine{00130\ \ \ \ \ \ \ \ \ mode\ =\ WIFI\_MODE\_AP;}
+\DoxyCodeLine{00131\ \ \ \ \ \}}
+\DoxyCodeLine{00132\ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (strcasecmp(mode\_str,\ \textcolor{stringliteral}{"{}ap+sta"{}})\ ==\ 0\ ||}
+\DoxyCodeLine{00133\ \ \ \ \ \ \ \ \ \ \ \ \ \ strcasecmp(mode\_str,\ \textcolor{stringliteral}{"{}apsta"{}})\ ==\ 0\ ||}
+\DoxyCodeLine{00134\ \ \ \ \ \ \ \ \ \ \ \ \ \ strcasecmp(mode\_str,\ \textcolor{stringliteral}{"{}sta+ap"{}})\ ==\ 0)\ \{}
+\DoxyCodeLine{00135\ \ \ \ \ \ \ \ \ mode\ =\ WIFI\_MODE\_APSTA;}
+\DoxyCodeLine{00136\ \ \ \ \ \}}
+\DoxyCodeLine{00137\ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00138\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ ESP\_ERR\_INVALID\_ARG;}
+\DoxyCodeLine{00139\ \ \ \ \ \}}
+\DoxyCodeLine{00140\ }
+\DoxyCodeLine{00141\ \ \ \ \ \textcolor{comment}{//\ 모드\ 적용}}
+\DoxyCodeLine{00142\ \ \ \ \ esp\_err\_t\ err\ =\ \mbox{\hyperlink{wifi_8c_a8b9e69709cc12e34d6a40845505d30a0}{wifi\_mgr\_set\_mode}}(mode);}
+\DoxyCodeLine{00143\ \ \ \ \ \textcolor{keywordflow}{if}\ (err\ !=\ ESP\_OK)\ \{}
+\DoxyCodeLine{00144\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ err;}
+\DoxyCodeLine{00145\ \ \ \ \ \}}
+\DoxyCodeLine{00146\ }
+\DoxyCodeLine{00147\ \ \ \ \ \textcolor{keywordflow}{return}\ ESP\_OK;}
+\DoxyCodeLine{00148\ \}}
+
+\end{DoxyCode}
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{wifi_8c_a1192cabd1e0fd0948ae7942b7201668d_cgraph}
+\end{center}
+\end{figure}
+\Hypertarget{wifi_8c_adb1b9bcac58b750454246bc88b78fe15}\label{wifi_8c_adb1b9bcac58b750454246bc88b78fe15} 
+\index{wifi.c@{wifi.c}!wifi\_mgr\_set\_sta\_password@{wifi\_mgr\_set\_sta\_password}}
+\index{wifi\_mgr\_set\_sta\_password@{wifi\_mgr\_set\_sta\_password}!wifi.c@{wifi.c}}
+\doxysubsubsection{\texorpdfstring{wifi\_mgr\_set\_sta\_password()}{wifi\_mgr\_set\_sta\_password()}}
+{\footnotesize\ttfamily esp\+\_\+err\+\_\+t wifi\+\_\+mgr\+\_\+set\+\_\+sta\+\_\+password (\begin{DoxyParamCaption}\item[{const char \texorpdfstring{$\ast$}{*}}]{password }\end{DoxyParamCaption})}
+
+
+
+Update STA password and refresh promiscuous mode if active. 
+
+Update the cached STA password and reapply when needed.
+
+
+\begin{DoxyParams}{Parameters}
+{\em password} & New password string. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+ESP\+\_\+\+OK on success, or an error code on failure. 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{wifi_8c_source_l00172}{172}} of file \mbox{\hyperlink{wifi_8c_source}{wifi.\+c}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00173\ \{}
+\DoxyCodeLine{00174\ \ \ \ \ ESP\_ERROR\_CHECK(\mbox{\hyperlink{wifi_8c_aa10886611772ba3c0e0a00dae83eec1f}{wifi\_mgr\_init}}());}
+\DoxyCodeLine{00175\ \ \ \ \ esp\_err\_t\ err\ =\ update\_sta\_password(password);}
+\DoxyCodeLine{00176\ \ \ \ \ \textcolor{keywordflow}{if}\ (err\ ==\ ESP\_OK\ \&\&}
+\DoxyCodeLine{00177\ \ \ \ \ \ \ \ \ (s\_current\_mode\ ==\ WIFI\_MODE\_STA\ ||\ s\_current\_mode\ ==\ WIFI\_MODE\_APSTA))\ \{}
+\DoxyCodeLine{00178\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{sniffer_8c_aece9df03dd920b92c9296815619db4c3}{sniffer\_enable\_promiscuous}}();}
+\DoxyCodeLine{00179\ \ \ \ \ \}}
+\DoxyCodeLine{00180\ \ \ \ \ \textcolor{keywordflow}{return}\ err;}
+\DoxyCodeLine{00181\ \}}
+
+\end{DoxyCode}
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{wifi_8c_adb1b9bcac58b750454246bc88b78fe15_cgraph}
+\end{center}
+\end{figure}
+\Hypertarget{wifi_8c_afd0442b8f0eea2d94cc3306fa93905c5}\label{wifi_8c_afd0442b8f0eea2d94cc3306fa93905c5} 
+\index{wifi.c@{wifi.c}!wifi\_mgr\_set\_sta\_ssid@{wifi\_mgr\_set\_sta\_ssid}}
+\index{wifi\_mgr\_set\_sta\_ssid@{wifi\_mgr\_set\_sta\_ssid}!wifi.c@{wifi.c}}
+\doxysubsubsection{\texorpdfstring{wifi\_mgr\_set\_sta\_ssid()}{wifi\_mgr\_set\_sta\_ssid()}}
+{\footnotesize\ttfamily esp\+\_\+err\+\_\+t wifi\+\_\+mgr\+\_\+set\+\_\+sta\+\_\+ssid (\begin{DoxyParamCaption}\item[{const char \texorpdfstring{$\ast$}{*}}]{ssid }\end{DoxyParamCaption})}
+
+
+
+Update STA SSID and refresh promiscuous mode if already active. 
+
+Update the cached STA SSID and apply when appropriate.
+
+
+\begin{DoxyParams}{Parameters}
+{\em ssid} & New SSID string. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+ESP\+\_\+\+OK on success, or an error code on failure. 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{wifi_8c_source_l00156}{156}} of file \mbox{\hyperlink{wifi_8c_source}{wifi.\+c}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00157\ \{}
+\DoxyCodeLine{00158\ \ \ \ \ ESP\_ERROR\_CHECK(\mbox{\hyperlink{wifi_8c_aa10886611772ba3c0e0a00dae83eec1f}{wifi\_mgr\_init}}());}
+\DoxyCodeLine{00159\ \ \ \ \ esp\_err\_t\ err\ =\ update\_sta\_ssid(ssid);}
+\DoxyCodeLine{00160\ \ \ \ \ \textcolor{keywordflow}{if}\ (err\ ==\ ESP\_OK\ \&\&}
+\DoxyCodeLine{00161\ \ \ \ \ \ \ \ \ (s\_current\_mode\ ==\ WIFI\_MODE\_STA\ ||\ s\_current\_mode\ ==\ WIFI\_MODE\_APSTA))\ \{}
+\DoxyCodeLine{00162\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{sniffer_8c_aece9df03dd920b92c9296815619db4c3}{sniffer\_enable\_promiscuous}}();}
+\DoxyCodeLine{00163\ \ \ \ \ \}}
+\DoxyCodeLine{00164\ \ \ \ \ \textcolor{keywordflow}{return}\ err;}
+\DoxyCodeLine{00165\ \}}
+
+\end{DoxyCode}
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{wifi_8c_afd0442b8f0eea2d94cc3306fa93905c5_cgraph}
+\end{center}
+\end{figure}

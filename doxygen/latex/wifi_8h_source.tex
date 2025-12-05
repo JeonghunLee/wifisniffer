@@ -1,0 +1,37 @@
+\doxysection{wifi.\+h}
+\hypertarget{wifi_8h_source}{}\label{wifi_8h_source}\index{main/wifi.h@{main/wifi.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{wifi_8h_source_l00001}00001\ }
+\DoxyCodeLine{\Hypertarget{wifi_8h_source_l00002}00002\ \textcolor{preprocessor}{\#pragma\ once\ }\textcolor{comment}{//\ wifi.h}}
+\DoxyCodeLine{\Hypertarget{wifi_8h_source_l00003}00003\ }
+\DoxyCodeLine{\Hypertarget{wifi_8h_source_l00004}00004\ \textcolor{preprocessor}{\#include\ "{}esp\_err.h"{}}}
+\DoxyCodeLine{\Hypertarget{wifi_8h_source_l00005}00005\ \textcolor{preprocessor}{\#include\ "{}esp\_wifi.h"{}}}
+\DoxyCodeLine{\Hypertarget{wifi_8h_source_l00006}00006\ }
+\DoxyCodeLine{\Hypertarget{wifi_8h_source_l00007}00007\ \textcolor{preprocessor}{\#ifdef\ \_\_cplusplus}}
+\DoxyCodeLine{\Hypertarget{wifi_8h_source_l00008}00008\ \textcolor{keyword}{extern}\ \textcolor{stringliteral}{"{}C"{}}\ \{}
+\DoxyCodeLine{\Hypertarget{wifi_8h_source_l00009}00009\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{\Hypertarget{wifi_8h_source_l00010}00010\ }
+\DoxyCodeLine{\Hypertarget{wifi_8h_source_l00011}00011\ }
+\DoxyCodeLine{\Hypertarget{wifi_8h_source_l00012}00012\ \textcolor{comment}{/*\ Wi-\/Fi\ 모듈\ 초기화}}
+\DoxyCodeLine{\Hypertarget{wifi_8h_source_l00013}00013\ \textcolor{comment}{\ *\ \ -\/\ NVS,\ netif,\ event\ loop,\ wifi\_init\ 등은\ 이미\ 다른\ 곳에서\ 했다\ 가정해도\ 되고}}
+\DoxyCodeLine{\Hypertarget{wifi_8h_source_l00014}00014\ \textcolor{comment}{\ *\ \ -\/\ 최소한\ 현재\ config/mode\ 를\ 읽어와\ 내부\ 상태(s\_sta\_config,\ s\_ap\_config\ 등)를\ 채우는\ 역할}}
+\DoxyCodeLine{\Hypertarget{wifi_8h_source_l00015}00015\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{\Hypertarget{wifi_8h_source_l00016}00016\ }
+\DoxyCodeLine{\Hypertarget{wifi_8h_source_l00021}00021\ esp\_err\_t\ \mbox{\hyperlink{wifi_8c_aa10886611772ba3c0e0a00dae83eec1f}{wifi\_mgr\_init}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{\Hypertarget{wifi_8h_source_l00023}00023\ esp\_err\_t\ \mbox{\hyperlink{wifi_8c_a8b9e69709cc12e34d6a40845505d30a0}{wifi\_mgr\_set\_mode}}(wifi\_mode\_t\ mode);\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ NULL/AP/STA/APSTA}}
+\DoxyCodeLine{\Hypertarget{wifi_8h_source_l00025}00025\ esp\_err\_t\ \mbox{\hyperlink{wifi_8c_a1192cabd1e0fd0948ae7942b7201668d}{wifi\_mgr\_set\_mode\_str}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *mode\_str);\ \textcolor{comment}{//\ "{}null"{}/"{}ap"{}/"{}sta"{}/"{}apsta"{}}}
+\DoxyCodeLine{\Hypertarget{wifi_8h_source_l00027}00027\ esp\_err\_t\ \mbox{\hyperlink{wifi_8c_afd0442b8f0eea2d94cc3306fa93905c5}{wifi\_mgr\_set\_sta\_ssid}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *ssid);}
+\DoxyCodeLine{\Hypertarget{wifi_8h_source_l00029}00029\ esp\_err\_t\ \mbox{\hyperlink{wifi_8c_adb1b9bcac58b750454246bc88b78fe15}{wifi\_mgr\_set\_sta\_password}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *password);}
+\DoxyCodeLine{\Hypertarget{wifi_8h_source_l00031}00031\ esp\_err\_t\ \mbox{\hyperlink{wifi_8c_a36d6884f1f016c7dca7a8dc3b86d62ca}{wifi\_mgr\_set\_ap\_ssid}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *ssid);}
+\DoxyCodeLine{\Hypertarget{wifi_8h_source_l00033}00033\ esp\_err\_t\ \mbox{\hyperlink{wifi_8c_aea02fef844d7a0cde1fa5507ae392b6e}{wifi\_mgr\_set\_ap\_password}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *password);}
+\DoxyCodeLine{\Hypertarget{wifi_8h_source_l00035}00035\ esp\_err\_t\ \mbox{\hyperlink{wifi_8c_aa7e1c1f464177418ca578460692cc56c}{wifi\_mgr\_set\_channel}}(uint8\_t\ primary);}
+\DoxyCodeLine{\Hypertarget{wifi_8h_source_l00036}00036\ }
+\DoxyCodeLine{\Hypertarget{wifi_8h_source_l00038}00038\ \textcolor{keywordtype}{void}\ \ \ \ \ \ \ \ \mbox{\hyperlink{wifi_8c_a03dd315406b5f0eb5b84a286c43ba7cc}{wifi\_mgr\_print\_status}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{\Hypertarget{wifi_8h_source_l00040}00040\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *\mbox{\hyperlink{wifi_8c_a1ccfac3b661e1c212b38b3e7810f3f53}{wifi\_mgr\_mode\_to\_string}}(wifi\_mode\_t\ mode);}
+\DoxyCodeLine{\Hypertarget{wifi_8h_source_l00041}00041\ }
+\DoxyCodeLine{\Hypertarget{wifi_8h_source_l00042}00042\ \textcolor{preprocessor}{\#ifdef\ \_\_cplusplus}}
+\DoxyCodeLine{\Hypertarget{wifi_8h_source_l00043}00043\ \}}
+\DoxyCodeLine{\Hypertarget{wifi_8h_source_l00044}00044\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

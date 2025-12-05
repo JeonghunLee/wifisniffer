@@ -1,0 +1,213 @@
+\doxysection{main/sniffer.c File Reference}
+\hypertarget{sniffer_8c}{}\label{sniffer_8c}\index{main/sniffer.c@{main/sniffer.c}}
+
+
+Wi-\/\+Fi promiscuous capture pipeline that feeds frames into the USB CDC streamer.  
+
+
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include $<$sys/time.\+h$>$}\newline
+{\ttfamily \#include "{}esp\+\_\+wifi.\+h"{}}\newline
+{\ttfamily \#include "{}esp\+\_\+event.\+h"{}}\newline
+{\ttfamily \#include "{}esp\+\_\+netif.\+h"{}}\newline
+{\ttfamily \#include "{}esp\+\_\+log.\+h"{}}\newline
+{\ttfamily \#include "{}nvs\+\_\+flash.\+h"{}}\newline
+{\ttfamily \#include "{}freertos/\+Free\+RTOS.\+h"{}}\newline
+{\ttfamily \#include "{}freertos/task.\+h"{}}\newline
+{\ttfamily \#include "{}esp\+\_\+heap\+\_\+caps.\+h"{}}\newline
+{\ttfamily \#include "{}sniffer.\+h"{}}\newline
+{\ttfamily \#include "{}ring\+\_\+buf.\+h"{}}\newline
+{\ttfamily \#include "{}usb\+\_\+cdc.\+h"{}}\newline
+Include dependency graph for sniffer.\+c\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{sniffer_8c__incl}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{sniffer_8c_a6432f82ec9266d706cd6751e29c7a0c1}{SLOT\+\_\+\+SIZE}}~(sizeof(packet\+\_\+prefix\+\_\+t) + MAX\+\_\+\+PACKET\+\_\+\+SIZE)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{sniffer_8c_af3f2c00029c37c09a9d581f521ee44c7}{sniffer\+\_\+init}} (void)
+\begin{DoxyCompactList}\small\item\em Configure buffer resources and start the USB streamer task. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{sniffer_8c_aece9df03dd920b92c9296815619db4c3}{sniffer\+\_\+enable\+\_\+promiscuous}} (void)
+\begin{DoxyCompactList}\small\item\em Enable promiscuous capture with the predefined filter set. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{sniffer_8c_ac875b5b30914b5076359238e95f1b068}{sniffer\+\_\+ring\+\_\+reset}} (void)
+\begin{DoxyCompactList}\small\item\em Reset ring indices and capture counters. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{sniffer_8c_a3f1754a0286ce754699ab73c0b0a53ba}{sniffer\+\_\+print\+\_\+stats}} (void)
+\begin{DoxyCompactList}\small\item\em Print current ring usage and capture statistics. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Wi-\/\+Fi promiscuous capture pipeline that feeds frames into the USB CDC streamer. 
+
+
+
+Definition in file \mbox{\hyperlink{sniffer_8c_source}{sniffer.\+c}}.
+
+
+
+\doxysubsection{Macro Definition Documentation}
+\Hypertarget{sniffer_8c_a6432f82ec9266d706cd6751e29c7a0c1}\label{sniffer_8c_a6432f82ec9266d706cd6751e29c7a0c1} 
+\index{sniffer.c@{sniffer.c}!SLOT\_SIZE@{SLOT\_SIZE}}
+\index{SLOT\_SIZE@{SLOT\_SIZE}!sniffer.c@{sniffer.c}}
+\doxysubsubsection{\texorpdfstring{SLOT\_SIZE}{SLOT\_SIZE}}
+{\footnotesize\ttfamily \#define SLOT\+\_\+\+SIZE~(sizeof(packet\+\_\+prefix\+\_\+t) + MAX\+\_\+\+PACKET\+\_\+\+SIZE)}
+
+
+
+Definition at line \mbox{\hyperlink{sniffer_8c_source_l00022}{22}} of file \mbox{\hyperlink{sniffer_8c_source}{sniffer.\+c}}.
+
+
+
+\doxysubsection{Function Documentation}
+\Hypertarget{sniffer_8c_aece9df03dd920b92c9296815619db4c3}\label{sniffer_8c_aece9df03dd920b92c9296815619db4c3} 
+\index{sniffer.c@{sniffer.c}!sniffer\_enable\_promiscuous@{sniffer\_enable\_promiscuous}}
+\index{sniffer\_enable\_promiscuous@{sniffer\_enable\_promiscuous}!sniffer.c@{sniffer.c}}
+\doxysubsubsection{\texorpdfstring{sniffer\_enable\_promiscuous()}{sniffer\_enable\_promiscuous()}}
+{\footnotesize\ttfamily void sniffer\+\_\+enable\+\_\+promiscuous (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Enable promiscuous capture with the predefined filter set. 
+
+Enable promiscuous capture filters and callback. 
+
+Definition at line \mbox{\hyperlink{sniffer_8c_source_l00179}{179}} of file \mbox{\hyperlink{sniffer_8c_source}{sniffer.\+c}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00180\ \{}
+\DoxyCodeLine{00181\ \ \ \ \ \textcolor{comment}{//\ Setup\ Wi-\/Fi\ promiscuous\ filter}}
+\DoxyCodeLine{00182\ \ \ \ \ \textcolor{comment}{//\ \ https://docs.espressif.com/projects/esp-\/idf/en/release-\/v5.4/esp32/api-\/reference/network/esp\_wifi.html}}
+\DoxyCodeLine{00183\ \ \ \ \ \textcolor{comment}{//\ \ https://docs.espressif.com/projects/esp-\/idf/en/release-\/v5.4/esp32/api-\/reference/network/esp\_wifi.html\#id5}}
+\DoxyCodeLine{00184\ \ \ \ \ wifi\_promiscuous\_filter\_t\ filt\ =\ \{}
+\DoxyCodeLine{00185\ \ \ \ \ \ \ \ \ .filter\_mask\ =\ WIFI\_PROMIS\_FILTER\_MASK\_MGMT\ |}
+\DoxyCodeLine{00186\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ WIFI\_PROMIS\_FILTER\_MASK\_DATA\ |}
+\DoxyCodeLine{00187\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ WIFI\_PROMIS\_FILTER\_MASK\_CTRL,}
+\DoxyCodeLine{00188\ \ \ \ \ \};}
+\DoxyCodeLine{00189\ }
+\DoxyCodeLine{00190\ \ \ \ \ esp\_err\_t\ err\ =\ esp\_wifi\_set\_promiscuous(\textcolor{keyword}{false});}
+\DoxyCodeLine{00191\ \ \ \ \ \textcolor{keywordflow}{if}\ (err\ !=\ ESP\_OK)\ \{}
+\DoxyCodeLine{00192\ \ \ \ \ \ \ \ \ ESP\_LOGW(TAG,\ \textcolor{stringliteral}{"{}set\_promiscuous(false)\ failed:\ \%d"{}},\ err);}
+\DoxyCodeLine{00193\ \ \ \ \ \}}
+\DoxyCodeLine{00194\ \ \ \ \ }
+\DoxyCodeLine{00195\ \ \ \ \ \textcolor{comment}{//\ Setup\ filter\ and\ callback}}
+\DoxyCodeLine{00196\ \ \ \ \ ESP\_ERROR\_CHECK(esp\_wifi\_set\_promiscuous\_filter(\&filt));}
+\DoxyCodeLine{00197\ \ \ \ \ ESP\_ERROR\_CHECK(esp\_wifi\_set\_promiscuous\_rx\_cb(\&wifi\_promiscuous\_cb));}
+\DoxyCodeLine{00198\ \ \ \ \ ESP\_ERROR\_CHECK(esp\_wifi\_set\_promiscuous(\textcolor{keyword}{true}));}
+\DoxyCodeLine{00199\ }
+\DoxyCodeLine{00200\ \ \ \ \ ESP\_LOGI(TAG,\ \textcolor{stringliteral}{"{}Promiscuous\ mode\ enabled"{}});}
+\DoxyCodeLine{00201\ \}}
+
+\end{DoxyCode}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{sniffer_8c_aece9df03dd920b92c9296815619db4c3_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{sniffer_8c_af3f2c00029c37c09a9d581f521ee44c7}\label{sniffer_8c_af3f2c00029c37c09a9d581f521ee44c7} 
+\index{sniffer.c@{sniffer.c}!sniffer\_init@{sniffer\_init}}
+\index{sniffer\_init@{sniffer\_init}!sniffer.c@{sniffer.c}}
+\doxysubsubsection{\texorpdfstring{sniffer\_init()}{sniffer\_init()}}
+{\footnotesize\ttfamily void sniffer\+\_\+init (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Configure buffer resources and start the USB streamer task. 
+
+Set up ring buffer and streamer task. 
+
+Definition at line \mbox{\hyperlink{sniffer_8c_source_l00164}{164}} of file \mbox{\hyperlink{sniffer_8c_source}{sniffer.\+c}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00165\ \{\ \ }
+\DoxyCodeLine{00166\ \ \ \textcolor{comment}{//\ STEP.1\ Create\ ring\ buffer}}
+\DoxyCodeLine{00167\ \ \ uint32\_t\ cap\ =\ have\_psram()\ ?\ RING\_SLOTS\_PSRAM\ :\ RING\_SLOTS\_INTERNAL;}
+\DoxyCodeLine{00168\ \ \ ESP\_ERROR\_CHECK(ring\_buf\_create(\&g\_rb,\ cap,\ SLOT\_SIZE,\ have\_psram()));}
+\DoxyCodeLine{00169\ \ \ }
+\DoxyCodeLine{00170\ \ \ \textcolor{comment}{//\ STEP.2\ Start\ streamer\ task}}
+\DoxyCodeLine{00171\ \ \ xTaskCreate(streamer\_task,\ \textcolor{stringliteral}{"{}streamer"{}},\ 4096,\ NULL,\ 5,\ NULL);}
+\DoxyCodeLine{00172\ }
+\DoxyCodeLine{00173\ \ \ ESP\_LOGI(TAG,\ \textcolor{stringliteral}{"{}Sniffer\ started\ (Ring+CDC,\ prefix+payload\ stored)"{}});}
+\DoxyCodeLine{00174\ \}}
+
+\end{DoxyCode}
+\Hypertarget{sniffer_8c_a3f1754a0286ce754699ab73c0b0a53ba}\label{sniffer_8c_a3f1754a0286ce754699ab73c0b0a53ba} 
+\index{sniffer.c@{sniffer.c}!sniffer\_print\_stats@{sniffer\_print\_stats}}
+\index{sniffer\_print\_stats@{sniffer\_print\_stats}!sniffer.c@{sniffer.c}}
+\doxysubsubsection{\texorpdfstring{sniffer\_print\_stats()}{sniffer\_print\_stats()}}
+{\footnotesize\ttfamily void sniffer\+\_\+print\+\_\+stats (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Print current ring usage and capture statistics. 
+
+Dump capture/drop counters and current ring usage. 
+
+Definition at line \mbox{\hyperlink{sniffer_8c_source_l00218}{218}} of file \mbox{\hyperlink{sniffer_8c_source}{sniffer.\+c}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00219\ \{}
+\DoxyCodeLine{00220\ \ \ \ \ uint32\_t\ used\ =\ \mbox{\hyperlink{ring__buf_8c_ab94ddb9b9132e515bb238f5ecf142390}{ring\_buf\_size}}(g\_rb);}
+\DoxyCodeLine{00221\ \ \ \ \ uint32\_t\ free\ =\ \mbox{\hyperlink{ring__buf_8c_ae90410ce05cf9ff498ebeb016d117c77}{ring\_buf\_free}}(g\_rb);}
+\DoxyCodeLine{00222\ \ \ \ \ uint32\_t\ cap\ =\ \mbox{\hyperlink{ring__buf_8c_ad6404e293895d958da7da1fc4ea1b071}{ring\_buf\_cap}}(g\_rb);}
+\DoxyCodeLine{00223\ }
+\DoxyCodeLine{00224\ \ \ \ \ printf(\textcolor{stringliteral}{"{}Sniffer\ (Ring\ buffer)\ status:\(\backslash\)n"{}});}
+\DoxyCodeLine{00225\ \ \ \ \ printf(\textcolor{stringliteral}{"{}\ \ -\/\ Ring\ Buf:\ \%lu\ used/\ \%lu\ free\ /\ \%lu\ total\ (usable=\%lu)\(\backslash\)n"{}},\ used,\ free,\ cap\ ,\ cap\ -\/\ 1);}
+\DoxyCodeLine{00226\ \ \ \ \ printf(\textcolor{stringliteral}{"{}\ \ -\/\ Captured:\ \%lu\(\backslash\)n"{}},\ captured\_count);}
+\DoxyCodeLine{00227\ \ \ \ \ printf(\textcolor{stringliteral}{"{}\ \ -\/\ Dropped\ :\ \%lu\(\backslash\)n"{}},\ dropped\_count);}
+\DoxyCodeLine{00228\ \}}
+
+\end{DoxyCode}
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{sniffer_8c_a3f1754a0286ce754699ab73c0b0a53ba_cgraph}
+\end{center}
+\end{figure}
+\Hypertarget{sniffer_8c_ac875b5b30914b5076359238e95f1b068}\label{sniffer_8c_ac875b5b30914b5076359238e95f1b068} 
+\index{sniffer.c@{sniffer.c}!sniffer\_ring\_reset@{sniffer\_ring\_reset}}
+\index{sniffer\_ring\_reset@{sniffer\_ring\_reset}!sniffer.c@{sniffer.c}}
+\doxysubsubsection{\texorpdfstring{sniffer\_ring\_reset()}{sniffer\_ring\_reset()}}
+{\footnotesize\ttfamily void sniffer\+\_\+ring\+\_\+reset (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Reset ring indices and capture counters. 
+
+Reset ring buffer indices and statistics. 
+
+Definition at line \mbox{\hyperlink{sniffer_8c_source_l00207}{207}} of file \mbox{\hyperlink{sniffer_8c_source}{sniffer.\+c}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00208\ \{}
+\DoxyCodeLine{00209\ \ \ \ \ \textcolor{keywordflow}{if}\ (!g\_rb)\ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00210\ \ \ \ \ \mbox{\hyperlink{ring__buf_8c_aefee112a250e3d0a618e357e1061a9fd}{ring\_buf\_reset}}(g\_rb);}
+\DoxyCodeLine{00211\ \ \ \ \ captured\_count\ =\ 0;}
+\DoxyCodeLine{00212\ \ \ \ \ dropped\_count\ =\ 0;}
+\DoxyCodeLine{00213\ \}}
+
+\end{DoxyCode}
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=303pt]{sniffer_8c_ac875b5b30914b5076359238e95f1b068_cgraph}
+\end{center}
+\end{figure}

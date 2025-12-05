@@ -1,0 +1,90 @@
+\doxysection{main/cmd.c File Reference}
+\hypertarget{cmd_8c}{}\label{cmd_8c}\index{main/cmd.c@{main/cmd.c}}
+
+
+UART console commands that control Wi-\/\+Fi modes and sniffer utilities.  
+
+
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include $<$strings.\+h$>$}\newline
+{\ttfamily \#include "{}esp\+\_\+console.\+h"{}}\newline
+{\ttfamily \#include "{}esp\+\_\+err.\+h"{}}\newline
+{\ttfamily \#include "{}esp\+\_\+log.\+h"{}}\newline
+{\ttfamily \#include "{}sdkconfig.\+h"{}}\newline
+{\ttfamily \#include "{}cmd.\+h"{}}\newline
+{\ttfamily \#include "{}wifi.\+h"{}}\newline
+{\ttfamily \#include "{}sniffer.\+h"{}}\newline
+Include dependency graph for cmd.\+c\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{cmd_8c__incl}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{cmd_8c_aa2fcb6356b44efb0f80d437a819a4e2c}{command\+\_\+init}} (void)
+\begin{DoxyCompactList}\small\item\em Initialise the ESP-\/\+IDF console REPL with the sniffer command set. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+UART console commands that control Wi-\/\+Fi modes and sniffer utilities. 
+
+
+
+Definition in file \mbox{\hyperlink{cmd_8c_source}{cmd.\+c}}.
+
+
+
+\doxysubsection{Function Documentation}
+\Hypertarget{cmd_8c_aa2fcb6356b44efb0f80d437a819a4e2c}\label{cmd_8c_aa2fcb6356b44efb0f80d437a819a4e2c} 
+\index{cmd.c@{cmd.c}!command\_init@{command\_init}}
+\index{command\_init@{command\_init}!cmd.c@{cmd.c}}
+\doxysubsubsection{\texorpdfstring{command\_init()}{command\_init()}}
+{\footnotesize\ttfamily void command\+\_\+init (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Initialise the ESP-\/\+IDF console REPL with the sniffer command set. 
+
+Start the UART REPL and register Wi-\/\+Fi sniffer console commands. 
+
+Definition at line \mbox{\hyperlink{cmd_8c_source_l00032}{32}} of file \mbox{\hyperlink{cmd_8c_source}{cmd.\+c}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00033\ \{}
+\DoxyCodeLine{00034\ \ \ \ \ \textcolor{keywordflow}{if}\ (s\_initialized)\ \{}
+\DoxyCodeLine{00035\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00036\ \ \ \ \ \}}
+\DoxyCodeLine{00037\ \ \ \ \ s\_initialized\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00038\ }
+\DoxyCodeLine{00039\ \ \ \ \ ESP\_ERROR\_CHECK(esp\_console\_register\_help\_command());}
+\DoxyCodeLine{00040\ }
+\DoxyCodeLine{00041\ \ \ \ \ \textcolor{keyword}{const}\ esp\_console\_cmd\_t\ wifi\_cmd\ =\ \{}
+\DoxyCodeLine{00042\ \ \ \ \ \ \ \ \ .command\ =\ \textcolor{stringliteral}{"{}wifi"{}},}
+\DoxyCodeLine{00043\ \ \ \ \ \ \ \ \ .help\ \ \ \ =\ \textcolor{stringliteral}{"{}Wi-\/Fi\ control:\ mode/ap/sta/status"{}},}
+\DoxyCodeLine{00044\ \ \ \ \ \ \ \ \ .hint\ \ \ \ =\ NULL,}
+\DoxyCodeLine{00045\ \ \ \ \ \ \ \ \ .func\ \ \ \ =\ \&wifi\_command,}
+\DoxyCodeLine{00046\ \ \ \ \ \ \ \ \ .argtable\ =\ NULL,}
+\DoxyCodeLine{00047\ \ \ \ \ \};}
+\DoxyCodeLine{00048\ \ \ \ \ ESP\_ERROR\_CHECK(esp\_console\_cmd\_register(\&wifi\_cmd));}
+\DoxyCodeLine{00049\ }
+\DoxyCodeLine{00050\ \ \ \ \ esp\_console\_repl\_config\_t\ repl\_config\ =\ ESP\_CONSOLE\_REPL\_CONFIG\_DEFAULT();}
+\DoxyCodeLine{00051\ \ \ \ \ repl\_config.prompt\ =\ \textcolor{stringliteral}{"{}wifi>\ "{}};}
+\DoxyCodeLine{00052\ \ \ \ \ repl\_config.max\_cmdline\_length\ =\ 256;}
+\DoxyCodeLine{00053\ }
+\DoxyCodeLine{00054\ \ \ \ \ esp\_console\_dev\_uart\_config\_t\ uart\_config\ =\ ESP\_CONSOLE\_DEV\_UART\_CONFIG\_DEFAULT();}
+\DoxyCodeLine{00055\ \ \ \ \ uart\_config.channel\ \ \ =\ CONFIG\_ESP\_CONSOLE\_UART\_NUM;}
+\DoxyCodeLine{00056\ \ \ \ \ uart\_config.baud\_rate\ =\ CONFIG\_ESP\_CONSOLE\_UART\_BAUDRATE;}
+\DoxyCodeLine{00057\ }
+\DoxyCodeLine{00058\ \ \ \ \ ESP\_ERROR\_CHECK(esp\_console\_new\_repl\_uart(\&uart\_config,\ \&repl\_config,\ \&s\_repl));}
+\DoxyCodeLine{00059\ \ \ \ \ ESP\_ERROR\_CHECK(esp\_console\_start\_repl(s\_repl));}
+\DoxyCodeLine{00060\ }
+\DoxyCodeLine{00061\ \ \ \ \ ESP\_LOGI(TAG,\ \textcolor{stringliteral}{"{}Console\ ready.\ Type\ 'help'\ to\ list\ commands."{}});}
+\DoxyCodeLine{00062\ \}}
+
+\end{DoxyCode}

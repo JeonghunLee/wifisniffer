@@ -1,0 +1,385 @@
+\doxysection{main/ring\+\_\+buf.c File Reference}
+\hypertarget{ring__buf_8c}{}\label{ring__buf_8c}\index{main/ring\_buf.c@{main/ring\_buf.c}}
+
+
+Mutex-\/protected ring buffer implementation used by the Wi-\/\+Fi sniffer pipeline.  
+
+
+{\ttfamily \#include "{}ring\+\_\+buf.\+h"{}}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include "{}freertos/\+Free\+RTOS.\+h"{}}\newline
+{\ttfamily \#include "{}freertos/semphr.\+h"{}}\newline
+{\ttfamily \#include "{}esp\+\_\+heap\+\_\+caps.\+h"{}}\newline
+{\ttfamily \#include "{}esp\+\_\+log.\+h"{}}\newline
+Include dependency graph for ring\+\_\+buf.\+c\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{ring__buf_8c__incl}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structring__buf}{ring\+\_\+buf}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+esp\+\_\+err\+\_\+t \mbox{\hyperlink{ring__buf_8c_a353604a4161df830bf57a1ffdc444f77}{ring\+\_\+buf\+\_\+create}} (\mbox{\hyperlink{structring__buf}{ring\+\_\+buf\+\_\+t}} \texorpdfstring{$\ast$}{*}\texorpdfstring{$\ast$}{*}out, uint32\+\_\+t cap, uint32\+\_\+t slot\+\_\+size, bool try\+\_\+psram)
+\item 
+void \mbox{\hyperlink{ring__buf_8c_ad843a3a17e2c9ca41f5eacfd0c523c54}{ring\+\_\+buf\+\_\+destroy}} (\mbox{\hyperlink{structring__buf}{ring\+\_\+buf\+\_\+t}} \texorpdfstring{$\ast$}{*}rb)
+\begin{DoxyCompactList}\small\item\em Destroy a ring buffer instance and free its resources. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{ring__buf_8c_a9cd2d306710b8fd1f3f78f068ff411dd}{ring\+\_\+buf\+\_\+push}} (\mbox{\hyperlink{structring__buf}{ring\+\_\+buf\+\_\+t}} \texorpdfstring{$\ast$}{*}rb, const \mbox{\hyperlink{structring__slot__hdr__t}{ring\+\_\+slot\+\_\+hdr\+\_\+t}} \texorpdfstring{$\ast$}{*}hdr, const uint8\+\_\+t \texorpdfstring{$\ast$}{*}payload)
+\begin{DoxyCompactList}\small\item\em Push a payload into the next free slot. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{ring__buf_8c_a2a3250aca112d5e89b21931945374e9d}{ring\+\_\+buf\+\_\+pop}} (\mbox{\hyperlink{structring__buf}{ring\+\_\+buf\+\_\+t}} \texorpdfstring{$\ast$}{*}rb, \mbox{\hyperlink{structring__slot__hdr__t}{ring\+\_\+slot\+\_\+hdr\+\_\+t}} \texorpdfstring{$\ast$}{*}hdr, uint8\+\_\+t \texorpdfstring{$\ast$}{*}payload)
+\begin{DoxyCompactList}\small\item\em Pop the oldest slot into the supplied buffers. \end{DoxyCompactList}\item 
+uint32\+\_\+t \mbox{\hyperlink{ring__buf_8c_ab94ddb9b9132e515bb238f5ecf142390}{ring\+\_\+buf\+\_\+size}} (const \mbox{\hyperlink{structring__buf}{ring\+\_\+buf\+\_\+t}} \texorpdfstring{$\ast$}{*}rb)
+\begin{DoxyCompactList}\small\item\em Get the current number of occupied slots in the ring buffer. \end{DoxyCompactList}\item 
+uint32\+\_\+t \mbox{\hyperlink{ring__buf_8c_ad6404e293895d958da7da1fc4ea1b071}{ring\+\_\+buf\+\_\+cap}} (const \mbox{\hyperlink{structring__buf}{ring\+\_\+buf\+\_\+t}} \texorpdfstring{$\ast$}{*}rb)
+\begin{DoxyCompactList}\small\item\em Get the total capacity of the ring buffer. \end{DoxyCompactList}\item 
+uint32\+\_\+t \mbox{\hyperlink{ring__buf_8c_ae90410ce05cf9ff498ebeb016d117c77}{ring\+\_\+buf\+\_\+free}} (const \mbox{\hyperlink{structring__buf}{ring\+\_\+buf\+\_\+t}} \texorpdfstring{$\ast$}{*}rb)
+\begin{DoxyCompactList}\small\item\em Get the number of free slots remaining in the ring buffer. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{ring__buf_8c_aefee112a250e3d0a618e357e1061a9fd}{ring\+\_\+buf\+\_\+reset}} (\mbox{\hyperlink{structring__buf}{ring\+\_\+buf\+\_\+t}} \texorpdfstring{$\ast$}{*}rb)
+\begin{DoxyCompactList}\small\item\em Reset head/tail indices to empty the buffer. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Mutex-\/protected ring buffer implementation used by the Wi-\/\+Fi sniffer pipeline. 
+
+
+
+Definition in file \mbox{\hyperlink{ring__buf_8c_source}{ring\+\_\+buf.\+c}}.
+
+
+
+\doxysubsection{Function Documentation}
+\Hypertarget{ring__buf_8c_ad6404e293895d958da7da1fc4ea1b071}\label{ring__buf_8c_ad6404e293895d958da7da1fc4ea1b071} 
+\index{ring\_buf.c@{ring\_buf.c}!ring\_buf\_cap@{ring\_buf\_cap}}
+\index{ring\_buf\_cap@{ring\_buf\_cap}!ring\_buf.c@{ring\_buf.c}}
+\doxysubsubsection{\texorpdfstring{ring\_buf\_cap()}{ring\_buf\_cap()}}
+{\footnotesize\ttfamily uint32\+\_\+t ring\+\_\+buf\+\_\+cap (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structring__buf}{ring\+\_\+buf\+\_\+t}} \texorpdfstring{$\ast$}{*}}]{rb }\end{DoxyParamCaption})}
+
+
+
+Get the total capacity of the ring buffer. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em rb} & Ring buffer handle. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Total capacity of the ring buffer. 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{ring__buf_8c_source_l00150}{150}} of file \mbox{\hyperlink{ring__buf_8c_source}{ring\+\_\+buf.\+c}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00151\ \{}
+\DoxyCodeLine{00152\ \ \ \textcolor{keywordflow}{return}\ rb\ ?\ rb-\/>cap\ :\ 0;}
+\DoxyCodeLine{00153\ \}}
+
+\end{DoxyCode}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=299pt]{ring__buf_8c_ad6404e293895d958da7da1fc4ea1b071_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{ring__buf_8c_a353604a4161df830bf57a1ffdc444f77}\label{ring__buf_8c_a353604a4161df830bf57a1ffdc444f77} 
+\index{ring\_buf.c@{ring\_buf.c}!ring\_buf\_create@{ring\_buf\_create}}
+\index{ring\_buf\_create@{ring\_buf\_create}!ring\_buf.c@{ring\_buf.c}}
+\doxysubsubsection{\texorpdfstring{ring\_buf\_create()}{ring\_buf\_create()}}
+{\footnotesize\ttfamily esp\+\_\+err\+\_\+t ring\+\_\+buf\+\_\+create (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structring__buf}{ring\+\_\+buf\+\_\+t}} \texorpdfstring{$\ast$}{*}\texorpdfstring{$\ast$}{*}}]{out,  }\item[{uint32\+\_\+t}]{cap,  }\item[{uint32\+\_\+t}]{slot\+\_\+size,  }\item[{bool}]{try\+\_\+psram }\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{ring__buf_8c_source_l00033}{33}} of file \mbox{\hyperlink{ring__buf_8c_source}{ring\+\_\+buf.\+c}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00034\ \{}
+\DoxyCodeLine{00035\ \ \ \textcolor{keywordflow}{if}\ (!out\ ||\ !cap\ ||\ !slot\_size)\ }
+\DoxyCodeLine{00036\ \ \ \ \ \textcolor{keywordflow}{return}\ ESP\_ERR\_INVALID\_ARG;}
+\DoxyCodeLine{00037\ \ \ }
+\DoxyCodeLine{00038\ \ \ \mbox{\hyperlink{structring__buf}{ring\_buf\_t}}\ *rb\ =\ heap\_caps\_malloc(\textcolor{keyword}{sizeof}(*rb),\ MALLOC\_CAP\_8BIT);}
+\DoxyCodeLine{00039\ \ \ }
+\DoxyCodeLine{00040\ \ \ \textcolor{keywordflow}{if}\ (!rb)\ }
+\DoxyCodeLine{00041\ \ \ \ \ \textcolor{keywordflow}{return}\ ESP\_ERR\_NO\_MEM;}
+\DoxyCodeLine{00042\ \ \ }
+\DoxyCodeLine{00043\ \ \ memset(rb,\ 0,\ \textcolor{keyword}{sizeof}(*rb));}
+\DoxyCodeLine{00044\ \ \ }
+\DoxyCodeLine{00045\ \ \ rb-\/>cap\ =\ cap;\ }
+\DoxyCodeLine{00046\ \ \ rb-\/>slot\_size\ =\ slot\_size;}
+\DoxyCodeLine{00047\ \ \ rb-\/>lock\ =\ xSemaphoreCreateMutex();}
+\DoxyCodeLine{00048\ }
+\DoxyCodeLine{00049\ \ \ \textcolor{keywordflow}{if}\ (!rb-\/>lock)\ \{\ }
+\DoxyCodeLine{00050\ \ \ \ \ free(rb);\ }
+\DoxyCodeLine{00051\ \ \ \ \ \textcolor{keywordflow}{return}\ ESP\_ERR\_NO\_MEM;\ }
+\DoxyCodeLine{00052\ \ \ \}}
+\DoxyCodeLine{00053\ }
+\DoxyCodeLine{00054\ \ \ \textcolor{keywordtype}{int}\ caps\ =\ MALLOC\_CAP\_8BIT\ |\ (try\_psram\ ?\ MALLOC\_CAP\_SPIRAM\ :\ 0);}
+\DoxyCodeLine{00055\ \ \ \textcolor{keywordtype}{size\_t}\ bytes\ =\ (size\_t)cap\ *\ slot\_size;}
+\DoxyCodeLine{00056\ \ \ rb-\/>slots\ =\ heap\_caps\_malloc(bytes,\ caps);}
+\DoxyCodeLine{00057\ \ \ }
+\DoxyCodeLine{00058\ \ \ \textcolor{keywordflow}{if}\ (!rb-\/>slots)\ \{\ }
+\DoxyCodeLine{00059\ \ \ \ \ vSemaphoreDelete(rb-\/>lock);\ }
+\DoxyCodeLine{00060\ \ \ \ \ free(rb);\ }
+\DoxyCodeLine{00061\ \ \ \ \ \textcolor{keywordflow}{return}\ ESP\_ERR\_NO\_MEM;\ }
+\DoxyCodeLine{00062\ \ \ \}}
+\DoxyCodeLine{00063\ \ \ *out\ =\ rb;\ }
+\DoxyCodeLine{00064\ \ \ \textcolor{keywordflow}{return}\ ESP\_OK;}
+\DoxyCodeLine{00065\ \}}
+
+\end{DoxyCode}
+\Hypertarget{ring__buf_8c_ad843a3a17e2c9ca41f5eacfd0c523c54}\label{ring__buf_8c_ad843a3a17e2c9ca41f5eacfd0c523c54} 
+\index{ring\_buf.c@{ring\_buf.c}!ring\_buf\_destroy@{ring\_buf\_destroy}}
+\index{ring\_buf\_destroy@{ring\_buf\_destroy}!ring\_buf.c@{ring\_buf.c}}
+\doxysubsubsection{\texorpdfstring{ring\_buf\_destroy()}{ring\_buf\_destroy()}}
+{\footnotesize\ttfamily void ring\+\_\+buf\+\_\+destroy (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structring__buf}{ring\+\_\+buf\+\_\+t}} \texorpdfstring{$\ast$}{*}}]{rb }\end{DoxyParamCaption})}
+
+
+
+Destroy a ring buffer instance and free its resources. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em rb} & Ring buffer handle to destroy. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \mbox{\hyperlink{ring__buf_8c_source_l00072}{72}} of file \mbox{\hyperlink{ring__buf_8c_source}{ring\+\_\+buf.\+c}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00073\ \{}
+\DoxyCodeLine{00074\ \ \ \textcolor{keywordflow}{if}\ (!rb)\ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00075\ \ \ \textcolor{keywordflow}{if}\ (rb-\/>slots)\ free(rb-\/>slots);}
+\DoxyCodeLine{00076\ \ \ \textcolor{keywordflow}{if}\ (rb-\/>lock)\ vSemaphoreDelete(rb-\/>lock);}
+\DoxyCodeLine{00077\ \ \ free(rb);\ \ }
+\DoxyCodeLine{00078\ \}}
+
+\end{DoxyCode}
+\Hypertarget{ring__buf_8c_ae90410ce05cf9ff498ebeb016d117c77}\label{ring__buf_8c_ae90410ce05cf9ff498ebeb016d117c77} 
+\index{ring\_buf.c@{ring\_buf.c}!ring\_buf\_free@{ring\_buf\_free}}
+\index{ring\_buf\_free@{ring\_buf\_free}!ring\_buf.c@{ring\_buf.c}}
+\doxysubsubsection{\texorpdfstring{ring\_buf\_free()}{ring\_buf\_free()}}
+{\footnotesize\ttfamily uint32\+\_\+t ring\+\_\+buf\+\_\+free (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structring__buf}{ring\+\_\+buf\+\_\+t}} \texorpdfstring{$\ast$}{*}}]{rb }\end{DoxyParamCaption})}
+
+
+
+Get the number of free slots remaining in the ring buffer. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em rb} & Ring buffer handle. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Number of free slots. 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{ring__buf_8c_source_l00160}{160}} of file \mbox{\hyperlink{ring__buf_8c_source}{ring\+\_\+buf.\+c}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00161\ \{}
+\DoxyCodeLine{00162\ \ \ \ \ \textcolor{keywordflow}{if}\ (!rb)\ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{00163\ \ \ \ \ \textcolor{keywordflow}{return}\ rb-\/>cap\ -\/\ \mbox{\hyperlink{ring__buf_8c_ab94ddb9b9132e515bb238f5ecf142390}{ring\_buf\_size}}(rb)\ -\/\ 1;}
+\DoxyCodeLine{00164\ \}}
+
+\end{DoxyCode}
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=278pt]{ring__buf_8c_ae90410ce05cf9ff498ebeb016d117c77_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=301pt]{ring__buf_8c_ae90410ce05cf9ff498ebeb016d117c77_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{ring__buf_8c_a2a3250aca112d5e89b21931945374e9d}\label{ring__buf_8c_a2a3250aca112d5e89b21931945374e9d} 
+\index{ring\_buf.c@{ring\_buf.c}!ring\_buf\_pop@{ring\_buf\_pop}}
+\index{ring\_buf\_pop@{ring\_buf\_pop}!ring\_buf.c@{ring\_buf.c}}
+\doxysubsubsection{\texorpdfstring{ring\_buf\_pop()}{ring\_buf\_pop()}}
+{\footnotesize\ttfamily bool ring\+\_\+buf\+\_\+pop (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structring__buf}{ring\+\_\+buf\+\_\+t}} \texorpdfstring{$\ast$}{*}}]{rb,  }\item[{\mbox{\hyperlink{structring__slot__hdr__t}{ring\+\_\+slot\+\_\+hdr\+\_\+t}} \texorpdfstring{$\ast$}{*}}]{hdr,  }\item[{uint8\+\_\+t \texorpdfstring{$\ast$}{*}}]{payload }\end{DoxyParamCaption})}
+
+
+
+Pop the oldest slot into the supplied buffers. 
+
+Waits up to 1 ms while acquiring the internal mutex. ~\newline
+ 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em rb} & Ring buffer handle. \\
+\hline
+\mbox{\texttt{ out}}  & {\em hdr} & Location to receive the slot header metadata. \\
+\hline
+\mbox{\texttt{ out}}  & {\em payload} & Location to receive the payload data. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \mbox{\hyperlink{ring__buf_8c_source_l00114}{114}} of file \mbox{\hyperlink{ring__buf_8c_source}{ring\+\_\+buf.\+c}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00115\ \{}
+\DoxyCodeLine{00116\ \ \ \textcolor{keywordflow}{if}\ (!rb\ ||\ !hdr\ ||\ !payload)\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00117\ \ \ \textcolor{keywordtype}{bool}\ ok=\textcolor{keyword}{false};}
+\DoxyCodeLine{00118\ }
+\DoxyCodeLine{00119\ \ \ \textcolor{keywordflow}{if}\ (xSemaphoreTake(rb-\/>lock,\ pdMS\_TO\_TICKS(1))\ ==\ pdTRUE)\ \{}
+\DoxyCodeLine{00120\ \ \ \ \ \textcolor{keywordflow}{if}\ (rb-\/>tail\ !=\ rb-\/>head)\ \{}
+\DoxyCodeLine{00121\ \ \ \ \ \ \ uint8\_t\ *slot\ =\ rb-\/>slots\ +\ ((size\_t)rb-\/>tail\ *\ rb-\/>slot\_size);}
+\DoxyCodeLine{00122\ \ \ \ \ \ \ memcpy(hdr,\ slot,\ \textcolor{keyword}{sizeof}(*hdr));}
+\DoxyCodeLine{00123\ \ \ \ \ \ \ memcpy(payload,\ slot\ +\ \textcolor{keyword}{sizeof}(*hdr),\ hdr-\/>len);}
+\DoxyCodeLine{00124\ \ \ \ \ \ \ rb-\/>tail\ =\ nxt(rb-\/>tail,\ rb-\/>cap);}
+\DoxyCodeLine{00125\ \ \ \ \ \ \ ok=\textcolor{keyword}{true};}
+\DoxyCodeLine{00126\ \ \ \ \ \}}
+\DoxyCodeLine{00127\ \ \ \ \ xSemaphoreGive(rb-\/>lock);}
+\DoxyCodeLine{00128\ \ \ \}}
+\DoxyCodeLine{00129\ \ \ \textcolor{keywordflow}{return}\ ok;}
+\DoxyCodeLine{00130\ \}}
+
+\end{DoxyCode}
+\Hypertarget{ring__buf_8c_a9cd2d306710b8fd1f3f78f068ff411dd}\label{ring__buf_8c_a9cd2d306710b8fd1f3f78f068ff411dd} 
+\index{ring\_buf.c@{ring\_buf.c}!ring\_buf\_push@{ring\_buf\_push}}
+\index{ring\_buf\_push@{ring\_buf\_push}!ring\_buf.c@{ring\_buf.c}}
+\doxysubsubsection{\texorpdfstring{ring\_buf\_push()}{ring\_buf\_push()}}
+{\footnotesize\ttfamily bool ring\+\_\+buf\+\_\+push (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structring__buf}{ring\+\_\+buf\+\_\+t}} \texorpdfstring{$\ast$}{*}}]{rb,  }\item[{const \mbox{\hyperlink{structring__slot__hdr__t}{ring\+\_\+slot\+\_\+hdr\+\_\+t}} \texorpdfstring{$\ast$}{*}}]{hdr,  }\item[{const uint8\+\_\+t \texorpdfstring{$\ast$}{*}}]{payload }\end{DoxyParamCaption})}
+
+
+
+Push a payload into the next free slot. 
+
+Operates non-\/blocking and returns false when the buffer is full so callers can track drops. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em rb} & Ring buffer handle. \\
+\hline
+\mbox{\texttt{ in}}  & {\em hdr} & Pointer to the slot header metadata. \\
+\hline
+\mbox{\texttt{ in}}  & {\em payload} & Pointer to the payload data to store. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \mbox{\hyperlink{ring__buf_8c_source_l00087}{87}} of file \mbox{\hyperlink{ring__buf_8c_source}{ring\+\_\+buf.\+c}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00088\ \{}
+\DoxyCodeLine{00089\ \ \ \textcolor{keywordflow}{if}\ (!rb\ ||\ !hdr\ ||\ !payload)\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00090\ \ \ \textcolor{keywordtype}{bool}\ ok=\textcolor{keyword}{false};}
+\DoxyCodeLine{00091\ }
+\DoxyCodeLine{00092\ \ \ \textcolor{keywordflow}{if}\ (xSemaphoreTake(rb-\/>lock,\ 0)\ ==\ pdTRUE)\ \{\ \ \ \ }
+\DoxyCodeLine{00093\ \ \ \ \ uint32\_t\ next\ =\ nxt(rb-\/>head,\ rb-\/>cap);}
+\DoxyCodeLine{00094\ \ \ \ \ \textcolor{keywordflow}{if}\ (next\ !=\ rb-\/>tail)\ \{}
+\DoxyCodeLine{00095\ \ \ \ \ \ \ uint8\_t\ *slot\ =\ rb-\/>slots\ +\ ((size\_t)rb-\/>head\ *\ rb-\/>slot\_size);}
+\DoxyCodeLine{00096\ \ \ \ \ \ \ memcpy(slot,\ hdr,\ \textcolor{keyword}{sizeof}(*hdr));}
+\DoxyCodeLine{00097\ \ \ \ \ \ \ memcpy(slot\ +\ \textcolor{keyword}{sizeof}(*hdr),\ payload,\ hdr-\/>len);}
+\DoxyCodeLine{00098\ \ \ \ \ \ \ rb-\/>head\ =\ next;\ }
+\DoxyCodeLine{00099\ \ \ \ \ \ \ ok=\textcolor{keyword}{true};}
+\DoxyCodeLine{00100\ \ \ \ \ \}}
+\DoxyCodeLine{00101\ \ \ \ \ xSemaphoreGive(rb-\/>lock);}
+\DoxyCodeLine{00102\ \ \ \}}
+\DoxyCodeLine{00103\ \ \ \textcolor{keywordflow}{return}\ ok;}
+\DoxyCodeLine{00104\ \}}
+
+\end{DoxyCode}
+\Hypertarget{ring__buf_8c_aefee112a250e3d0a618e357e1061a9fd}\label{ring__buf_8c_aefee112a250e3d0a618e357e1061a9fd} 
+\index{ring\_buf.c@{ring\_buf.c}!ring\_buf\_reset@{ring\_buf\_reset}}
+\index{ring\_buf\_reset@{ring\_buf\_reset}!ring\_buf.c@{ring\_buf.c}}
+\doxysubsubsection{\texorpdfstring{ring\_buf\_reset()}{ring\_buf\_reset()}}
+{\footnotesize\ttfamily void ring\+\_\+buf\+\_\+reset (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structring__buf}{ring\+\_\+buf\+\_\+t}} \texorpdfstring{$\ast$}{*}}]{rb }\end{DoxyParamCaption})}
+
+
+
+Reset head/tail indices to empty the buffer. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em rb} & Ring buffer handle. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \mbox{\hyperlink{ring__buf_8c_source_l00170}{170}} of file \mbox{\hyperlink{ring__buf_8c_source}{ring\+\_\+buf.\+c}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00171\ \{}
+\DoxyCodeLine{00172\ \ \ \ \ \textcolor{keywordflow}{if}\ (!rb)\ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00173\ }
+\DoxyCodeLine{00174\ \ \ \ \ \textcolor{keywordflow}{if}\ (xSemaphoreTake(rb-\/>lock,\ portMAX\_DELAY)\ ==\ pdTRUE)\ \{}
+\DoxyCodeLine{00175\ \ \ \ \ \ \ \ \ rb-\/>head\ =\ 0;}
+\DoxyCodeLine{00176\ \ \ \ \ \ \ \ \ rb-\/>tail\ =\ 0;}
+\DoxyCodeLine{00177\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ 필요하면\ 버퍼\ 내용도\ 지우고\ 싶을\ 때:}}
+\DoxyCodeLine{00178\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ memset(rb-\/>slots,\ 0,\ (size\_t)rb-\/>cap\ *\ rb-\/>slot\_size);}}
+\DoxyCodeLine{00179\ \ \ \ \ \ \ \ \ xSemaphoreGive(rb-\/>lock);}
+\DoxyCodeLine{00180\ \ \ \ \ \}}
+\DoxyCodeLine{00181\ \}}
+
+\end{DoxyCode}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=303pt]{ring__buf_8c_aefee112a250e3d0a618e357e1061a9fd_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{ring__buf_8c_ab94ddb9b9132e515bb238f5ecf142390}\label{ring__buf_8c_ab94ddb9b9132e515bb238f5ecf142390} 
+\index{ring\_buf.c@{ring\_buf.c}!ring\_buf\_size@{ring\_buf\_size}}
+\index{ring\_buf\_size@{ring\_buf\_size}!ring\_buf.c@{ring\_buf.c}}
+\doxysubsubsection{\texorpdfstring{ring\_buf\_size()}{ring\_buf\_size()}}
+{\footnotesize\ttfamily uint32\+\_\+t ring\+\_\+buf\+\_\+size (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structring__buf}{ring\+\_\+buf\+\_\+t}} \texorpdfstring{$\ast$}{*}}]{rb }\end{DoxyParamCaption})}
+
+
+
+Get the current number of occupied slots in the ring buffer. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em rb} & Ring buffer handle. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Number of occupied slots. 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{ring__buf_8c_source_l00137}{137}} of file \mbox{\hyperlink{ring__buf_8c_source}{ring\+\_\+buf.\+c}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00138\ \{}
+\DoxyCodeLine{00139\ \ \ \textcolor{keywordflow}{if}\ (!rb)\ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{00140\ \ \ int32\_t\ diff\ =\ (int32\_t)rb-\/>head\ -\/\ (int32\_t)rb-\/>tail;}
+\DoxyCodeLine{00141\ \ \ \textcolor{keywordflow}{if}\ (diff\ <\ 0)\ diff\ +=\ (int32\_t)rb-\/>cap;}
+\DoxyCodeLine{00142\ \ \ \textcolor{keywordflow}{return}\ (uint32\_t)diff;}
+\DoxyCodeLine{00143\ \}}
+
+\end{DoxyCode}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{ring__buf_8c_ab94ddb9b9132e515bb238f5ecf142390_icgraph}
+\end{center}
+\end{figure}

@@ -1,0 +1,49 @@
+\doxysection{sniffer.\+h}
+\hypertarget{sniffer_8h_source}{}\label{sniffer_8h_source}\index{main/sniffer.h@{main/sniffer.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{sniffer_8h_source_l00001}00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{\Hypertarget{sniffer_8h_source_l00002}00002\ \textcolor{preprocessor}{\#include\ <stdint.h>}}
+\DoxyCodeLine{\Hypertarget{sniffer_8h_source_l00003}00003\ \textcolor{preprocessor}{\#include\ "{}esp\_err.h"{}}}
+\DoxyCodeLine{\Hypertarget{sniffer_8h_source_l00004}00004\ }
+\DoxyCodeLine{\Hypertarget{sniffer_8h_source_l00005}00005\ }
+\DoxyCodeLine{\Hypertarget{sniffer_8h_source_l00006}00006\ \textcolor{comment}{//\ Sniffer\ Maximum\ packet\ size\ and\ ring\ buffer\ sizes}}
+\DoxyCodeLine{\Hypertarget{sniffer_8h_source_l00008}00008\ \textcolor{preprocessor}{\#define\ MAX\_PACKET\_SIZE\ \ \ \ \ \ \ \ \ 1536}}
+\DoxyCodeLine{\Hypertarget{sniffer_8h_source_l00009}00009\ }
+\DoxyCodeLine{\Hypertarget{sniffer_8h_source_l00010}00010\ \textcolor{comment}{//\ Ring\ buffer\ 슬롯\ 개수\ (PSRAM\ 유무에\ 따라\ 다르게\ 설정)}}
+\DoxyCodeLine{\Hypertarget{sniffer_8h_source_l00012}00012\ \textcolor{preprocessor}{\#define\ RING\_SLOTS\_PSRAM\ \ \ \ \ \ \ \ 3072\ \ }\textcolor{comment}{//\ 약\ 5MB\ (3072\ *\ 4+16+1536\ =\ 5,018,112B)}}
+\DoxyCodeLine{\Hypertarget{sniffer_8h_source_l00014}00014\ \#define\ RING\_SLOTS\_INTERNAL\ \ \ \ \ 256}
+\DoxyCodeLine{\Hypertarget{sniffer_8h_source_l00015}00015\ }
+\DoxyCodeLine{\Hypertarget{sniffer_8h_source_l00016}00016\ }
+\DoxyCodeLine{\Hypertarget{sniffer_8h_source_l00017}00017\ \textcolor{comment}{//\ USB\ CDC\ Sync\ Magic\ and\ Packet\ Magic}}
+\DoxyCodeLine{\Hypertarget{sniffer_8h_source_l00018}00018\ \textcolor{preprocessor}{\#define\ SYNC\_MAGIC\ \ \ \ \ \ \ \ \ \ \ \ \ 0xDEADBEEF\ \ }\textcolor{comment}{//\ Stream\ and\ USB\ CDC\ Sync\ Magic}}
+\DoxyCodeLine{\Hypertarget{sniffer_8h_source_l00019}00019\ \textcolor{preprocessor}{\#define\ PACKET\_HEADER\_MAGIC\ \ \ \ 0xA5A5A5A5\ \ }\textcolor{comment}{//\ PACKET\_PREFIX\ Magic\ number}}
+\DoxyCodeLine{\Hypertarget{sniffer_8h_source_l00020}00020\ }
+\DoxyCodeLine{\Hypertarget{sniffer_8h_source_l00021}00021\ \textcolor{comment}{/*}}
+\DoxyCodeLine{\Hypertarget{sniffer_8h_source_l00022}00022\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{sniffer_8h_source_l00023}00023\ \textcolor{comment}{\ \ Ring\ Buffer\ +\ USB\_CDC\ Format:\ ring\_slot\_hdr\_t}}
+\DoxyCodeLine{\Hypertarget{sniffer_8h_source_l00024}00024\ \textcolor{comment}{\ \ \ \ \ \ -\/\ [SYNC\_MAGIC(4B)][Ring\ Buffer(8)][PACKET\_HEADER\_MAGIC+PACKET\_PREFIX(16B)][PAYLOAD]\ }}
+\DoxyCodeLine{\Hypertarget{sniffer_8h_source_l00025}00025\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{sniffer_8h_source_l00026}00026\ \textcolor{comment}{\ \ USB\_CDC\ Format:\ packet\_prefix\_t}}
+\DoxyCodeLine{\Hypertarget{sniffer_8h_source_l00027}00027\ \textcolor{comment}{\ \ \ \ \ \ -\/\ [SYNC\_MAGIC(4B)][PACKET\_HEADER\_MAGIC+PACKET\_PREFIX(16B)][PAYLOAD]}}
+\DoxyCodeLine{\Hypertarget{sniffer_8h_source_l00028}00028\ \textcolor{comment}{*/}\ }
+\DoxyCodeLine{\Hypertarget{sniffer_8h_source_l00029}00029\ }
+\DoxyCodeLine{\Hypertarget{sniffer_8h_source_l00030}00030\ \textcolor{comment}{/*\ on-\/wire\ prefix\ =\ 16B\ (packed)\ */}}
+\DoxyCodeLine{\Hypertarget{sniffer_8h_source_l00034}00034\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct\ }\_\_attribute\_\_((packed))\ \{}
+\DoxyCodeLine{\Hypertarget{sniffer_8h_source_l00035}00035\ \ \ uint32\_t\ magic;\ \ \ \ \ \textcolor{comment}{/*\ PACKET\_HEADER\_MAGIC\ */}}
+\DoxyCodeLine{\Hypertarget{sniffer_8h_source_l00036}00036\ \ \ uint32\_t\ ts\_sec;\ \ \ \ \textcolor{comment}{/*\ epoch\ seconds\ */}}
+\DoxyCodeLine{\Hypertarget{sniffer_8h_source_l00037}00037\ \ \ uint32\_t\ ts\_usec;\ \ \ \textcolor{comment}{/*\ microseconds\ */}}
+\DoxyCodeLine{\Hypertarget{sniffer_8h_source_l00038}00038\ \ \ uint8\_t\ \ channel;\ \ \ \textcolor{comment}{/*\ Wi-\/Fi\ channel\ */}}
+\DoxyCodeLine{\Hypertarget{sniffer_8h_source_l00039}00039\ \ \ int8\_t\ \ \ rssi;\ \ \ \ \ \ \textcolor{comment}{/*\ RSSI\ dBm\ */}}
+\DoxyCodeLine{\Hypertarget{sniffer_8h_source_l00040}00040\ \ \ uint16\_t\ len;\ \ \ \ \ \ \ \textcolor{comment}{/*\ payload\ length\ (<=\ MAX\_PACKET\_SIZE)\ */}}
+\DoxyCodeLine{\Hypertarget{sniffer_8h_source_l00041}00041\ \ \}\_\_attribute\_\_((packed))\ packet\_prefix\_t;}
+\DoxyCodeLine{\Hypertarget{sniffer_8h_source_l00042}00042\ }
+\DoxyCodeLine{\Hypertarget{sniffer_8h_source_l00043}00043\ }
+\DoxyCodeLine{\Hypertarget{sniffer_8h_source_l00044}00044\ }
+\DoxyCodeLine{\Hypertarget{sniffer_8h_source_l00045}00045\ \textcolor{comment}{/*\ Initialization\ and\ start\ helpers\ */}}
+\DoxyCodeLine{\Hypertarget{sniffer_8h_source_l00047}00047\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{sniffer_8c_af3f2c00029c37c09a9d581f521ee44c7}{sniffer\_init}}(\textcolor{keywordtype}{void});\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ ring\ buffer\ +\ streamer\ task}}
+\DoxyCodeLine{\Hypertarget{sniffer_8h_source_l00049}00049\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{sniffer_8c_aece9df03dd920b92c9296815619db4c3}{sniffer\_enable\_promiscuous}}(\textcolor{keywordtype}{void});\ \ \ \textcolor{comment}{//\ filter\ +\ callback\ +\ promiscuous\ on}}
+\DoxyCodeLine{\Hypertarget{sniffer_8h_source_l00051}00051\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{sniffer_8c_ac875b5b30914b5076359238e95f1b068}{sniffer\_ring\_reset}}(\textcolor{keywordtype}{void});\ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ ring\ buffer\ reset}}
+\DoxyCodeLine{\Hypertarget{sniffer_8h_source_l00053}00053\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{sniffer_8c_a3f1754a0286ce754699ab73c0b0a53ba}{sniffer\_print\_stats}}(\textcolor{keywordtype}{void});\ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ print\ captured/dropped\ counts\ (for\ cmd)}}
+
+\end{DoxyCode}

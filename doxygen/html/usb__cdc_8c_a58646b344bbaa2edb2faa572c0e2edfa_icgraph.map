@@ -1,0 +1,5 @@
+<map id="usb_cdc_ready" name="usb_cdc_ready">
+<area shape="rect" id="Node000001" title="Check whether the host has opened the CDC port and asserted DTR." alt="" coords="168,5,287,31"/>
+<area shape="rect" id="Node000002" href="$usb__cdc_8c.html#a667914e3820578cb214c3051b16a2d2c" title="Queue bytes for transmission to the host over the CDC endpoint." alt="" coords="5,5,120,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="154,21,121,21,121,15,154,15"/>
+</map>

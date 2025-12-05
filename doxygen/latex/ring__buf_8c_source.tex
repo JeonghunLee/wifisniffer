@@ -1,0 +1,139 @@
+\doxysection{ring\+\_\+buf.\+c}
+\hypertarget{ring__buf_8c_source}{}\label{ring__buf_8c_source}\index{main/ring\_buf.c@{main/ring\_buf.c}}
+\mbox{\hyperlink{ring__buf_8c}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00001}00001\ }
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00006}00006\ \textcolor{preprocessor}{\#include\ "{}ring\_buf.h"{}}}
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00007}00007\ \textcolor{preprocessor}{\#include\ <string.h>}}
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00008}00008\ \textcolor{preprocessor}{\#include\ "{}freertos/FreeRTOS.h"{}}}
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00009}00009\ \textcolor{preprocessor}{\#include\ "{}freertos/semphr.h"{}}}
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00010}00010\ \textcolor{preprocessor}{\#include\ "{}esp\_heap\_caps.h"{}}}
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00011}00011\ \textcolor{preprocessor}{\#include\ "{}esp\_log.h"{}}}
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00012}00012\ }
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00013}00013\ }
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00014}00014\ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *TAG\ =\ \textcolor{stringliteral}{"{}RING\_BUF"{}};}
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00015}00015\ }
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00016}\mbox{\hyperlink{structring__buf}{00016}}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structring__buf}{ring\_buf}}\ \{}
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00017}00017\ \ \ uint32\_t\ head,\ tail,\ cap,\ slot\_size;}
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00018}00018\ \ \ uint8\_t\ *slots;}
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00019}00019\ \ \ SemaphoreHandle\_t\ lock;}
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00020}00020\ \};}
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00021}00021\ }
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00022}00022\ }
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00023}00023\ }
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00029}00029\ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ uint32\_t\ nxt(uint32\_t\ i,\ uint32\_t\ cap)\{\ }
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00030}00030\ \ \ \textcolor{keywordflow}{return}\ (i+1U)\ \%\ cap;\ }
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00031}00031\ \}}
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00032}00032\ }
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00033}00033\ esp\_err\_t\ ring\_buf\_create(\mbox{\hyperlink{structring__buf}{ring\_buf\_t}}\ **out,\ uint32\_t\ cap,\ uint32\_t\ slot\_size,\ \textcolor{keywordtype}{bool}\ try\_psram)}
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00034}00034\ \{}
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00035}00035\ \ \ \textcolor{keywordflow}{if}\ (!out\ ||\ !cap\ ||\ !slot\_size)\ }
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00036}00036\ \ \ \ \ \textcolor{keywordflow}{return}\ ESP\_ERR\_INVALID\_ARG;}
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00037}00037\ \ \ }
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00038}00038\ \ \ \mbox{\hyperlink{structring__buf}{ring\_buf\_t}}\ *rb\ =\ heap\_caps\_malloc(\textcolor{keyword}{sizeof}(*rb),\ MALLOC\_CAP\_8BIT);}
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00039}00039\ \ \ }
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00040}00040\ \ \ \textcolor{keywordflow}{if}\ (!rb)\ }
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00041}00041\ \ \ \ \ \textcolor{keywordflow}{return}\ ESP\_ERR\_NO\_MEM;}
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00042}00042\ \ \ }
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00043}00043\ \ \ memset(rb,\ 0,\ \textcolor{keyword}{sizeof}(*rb));}
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00044}00044\ \ \ }
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00045}00045\ \ \ rb-\/>cap\ =\ cap;\ }
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00046}00046\ \ \ rb-\/>slot\_size\ =\ slot\_size;}
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00047}00047\ \ \ rb-\/>lock\ =\ xSemaphoreCreateMutex();}
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00048}00048\ }
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00049}00049\ \ \ \textcolor{keywordflow}{if}\ (!rb-\/>lock)\ \{\ }
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00050}00050\ \ \ \ \ free(rb);\ }
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00051}00051\ \ \ \ \ \textcolor{keywordflow}{return}\ ESP\_ERR\_NO\_MEM;\ }
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00052}00052\ \ \ \}}
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00053}00053\ }
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00054}00054\ \ \ \textcolor{keywordtype}{int}\ caps\ =\ MALLOC\_CAP\_8BIT\ |\ (try\_psram\ ?\ MALLOC\_CAP\_SPIRAM\ :\ 0);}
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00055}00055\ \ \ \textcolor{keywordtype}{size\_t}\ bytes\ =\ (size\_t)cap\ *\ slot\_size;}
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00056}00056\ \ \ rb-\/>slots\ =\ heap\_caps\_malloc(bytes,\ caps);}
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00057}00057\ \ \ }
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00058}00058\ \ \ \textcolor{keywordflow}{if}\ (!rb-\/>slots)\ \{\ }
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00059}00059\ \ \ \ \ vSemaphoreDelete(rb-\/>lock);\ }
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00060}00060\ \ \ \ \ free(rb);\ }
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00061}00061\ \ \ \ \ \textcolor{keywordflow}{return}\ ESP\_ERR\_NO\_MEM;\ }
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00062}00062\ \ \ \}}
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00063}00063\ \ \ *out\ =\ rb;\ }
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00064}00064\ \ \ \textcolor{keywordflow}{return}\ ESP\_OK;}
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00065}00065\ \}}
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00066}00066\ }
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00072}\mbox{\hyperlink{ring__buf_8c_ad843a3a17e2c9ca41f5eacfd0c523c54}{00072}}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{ring__buf_8c_ad843a3a17e2c9ca41f5eacfd0c523c54}{ring\_buf\_destroy}}(\mbox{\hyperlink{structring__buf}{ring\_buf\_t}}\ *rb)}
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00073}00073\ \{}
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00074}00074\ \ \ \textcolor{keywordflow}{if}\ (!rb)\ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00075}00075\ \ \ \textcolor{keywordflow}{if}\ (rb-\/>slots)\ free(rb-\/>slots);}
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00076}00076\ \ \ \textcolor{keywordflow}{if}\ (rb-\/>lock)\ vSemaphoreDelete(rb-\/>lock);}
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00077}00077\ \ \ free(rb);\ \ }
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00078}00078\ \}}
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00079}00079\ }
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00087}\mbox{\hyperlink{ring__buf_8c_a9cd2d306710b8fd1f3f78f068ff411dd}{00087}}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{ring__buf_8c_a9cd2d306710b8fd1f3f78f068ff411dd}{ring\_buf\_push}}(\mbox{\hyperlink{structring__buf}{ring\_buf\_t}}\ *rb,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{structring__slot__hdr__t}{ring\_slot\_hdr\_t}}\ *hdr,\ \textcolor{keyword}{const}\ uint8\_t\ *payload)}
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00088}00088\ \{}
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00089}00089\ \ \ \textcolor{keywordflow}{if}\ (!rb\ ||\ !hdr\ ||\ !payload)\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00090}00090\ \ \ \textcolor{keywordtype}{bool}\ ok=\textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00091}00091\ }
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00092}00092\ \ \ \textcolor{keywordflow}{if}\ (xSemaphoreTake(rb-\/>lock,\ 0)\ ==\ pdTRUE)\ \{\ \ \ \ }
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00093}00093\ \ \ \ \ uint32\_t\ next\ =\ nxt(rb-\/>head,\ rb-\/>cap);}
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00094}00094\ \ \ \ \ \textcolor{keywordflow}{if}\ (next\ !=\ rb-\/>tail)\ \{}
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00095}00095\ \ \ \ \ \ \ uint8\_t\ *slot\ =\ rb-\/>slots\ +\ ((size\_t)rb-\/>head\ *\ rb-\/>slot\_size);}
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00096}00096\ \ \ \ \ \ \ memcpy(slot,\ hdr,\ \textcolor{keyword}{sizeof}(*hdr));}
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00097}00097\ \ \ \ \ \ \ memcpy(slot\ +\ \textcolor{keyword}{sizeof}(*hdr),\ payload,\ hdr-\/>len);}
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00098}00098\ \ \ \ \ \ \ rb-\/>head\ =\ next;\ }
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00099}00099\ \ \ \ \ \ \ ok=\textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00100}00100\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00101}00101\ \ \ \ \ xSemaphoreGive(rb-\/>lock);}
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00102}00102\ \ \ \}}
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00103}00103\ \ \ \textcolor{keywordflow}{return}\ ok;}
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00104}00104\ \}}
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00105}00105\ }
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00114}\mbox{\hyperlink{ring__buf_8c_a2a3250aca112d5e89b21931945374e9d}{00114}}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{ring__buf_8c_a2a3250aca112d5e89b21931945374e9d}{ring\_buf\_pop}}(\mbox{\hyperlink{structring__buf}{ring\_buf\_t}}\ *rb,\ \mbox{\hyperlink{structring__slot__hdr__t}{ring\_slot\_hdr\_t}}\ *hdr,\ uint8\_t\ *payload)}
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00115}00115\ \{}
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00116}00116\ \ \ \textcolor{keywordflow}{if}\ (!rb\ ||\ !hdr\ ||\ !payload)\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00117}00117\ \ \ \textcolor{keywordtype}{bool}\ ok=\textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00118}00118\ }
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00119}00119\ \ \ \textcolor{keywordflow}{if}\ (xSemaphoreTake(rb-\/>lock,\ pdMS\_TO\_TICKS(1))\ ==\ pdTRUE)\ \{}
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00120}00120\ \ \ \ \ \textcolor{keywordflow}{if}\ (rb-\/>tail\ !=\ rb-\/>head)\ \{}
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00121}00121\ \ \ \ \ \ \ uint8\_t\ *slot\ =\ rb-\/>slots\ +\ ((size\_t)rb-\/>tail\ *\ rb-\/>slot\_size);}
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00122}00122\ \ \ \ \ \ \ memcpy(hdr,\ slot,\ \textcolor{keyword}{sizeof}(*hdr));}
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00123}00123\ \ \ \ \ \ \ memcpy(payload,\ slot\ +\ \textcolor{keyword}{sizeof}(*hdr),\ hdr-\/>len);}
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00124}00124\ \ \ \ \ \ \ rb-\/>tail\ =\ nxt(rb-\/>tail,\ rb-\/>cap);}
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00125}00125\ \ \ \ \ \ \ ok=\textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00126}00126\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00127}00127\ \ \ \ \ xSemaphoreGive(rb-\/>lock);}
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00128}00128\ \ \ \}}
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00129}00129\ \ \ \textcolor{keywordflow}{return}\ ok;}
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00130}00130\ \}}
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00131}00131\ }
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00137}\mbox{\hyperlink{ring__buf_8c_ab94ddb9b9132e515bb238f5ecf142390}{00137}}\ uint32\_t\ \mbox{\hyperlink{ring__buf_8c_ab94ddb9b9132e515bb238f5ecf142390}{ring\_buf\_size}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{structring__buf}{ring\_buf\_t}}\ *rb)}
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00138}00138\ \{}
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00139}00139\ \ \ \textcolor{keywordflow}{if}\ (!rb)\ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00140}00140\ \ \ int32\_t\ diff\ =\ (int32\_t)rb-\/>head\ -\/\ (int32\_t)rb-\/>tail;}
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00141}00141\ \ \ \textcolor{keywordflow}{if}\ (diff\ <\ 0)\ diff\ +=\ (int32\_t)rb-\/>cap;}
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00142}00142\ \ \ \textcolor{keywordflow}{return}\ (uint32\_t)diff;}
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00143}00143\ \}}
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00144}00144\ }
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00150}\mbox{\hyperlink{ring__buf_8c_ad6404e293895d958da7da1fc4ea1b071}{00150}}\ uint32\_t\ \mbox{\hyperlink{ring__buf_8c_ad6404e293895d958da7da1fc4ea1b071}{ring\_buf\_cap}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{structring__buf}{ring\_buf\_t}}\ *rb)}
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00151}00151\ \{}
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00152}00152\ \ \ \textcolor{keywordflow}{return}\ rb\ ?\ rb-\/>cap\ :\ 0;}
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00153}00153\ \}}
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00154}00154\ }
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00160}\mbox{\hyperlink{ring__buf_8c_ae90410ce05cf9ff498ebeb016d117c77}{00160}}\ uint32\_t\ \mbox{\hyperlink{ring__buf_8c_ae90410ce05cf9ff498ebeb016d117c77}{ring\_buf\_free}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{structring__buf}{ring\_buf\_t}}\ *rb)}
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00161}00161\ \{}
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00162}00162\ \ \ \ \ \textcolor{keywordflow}{if}\ (!rb)\ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00163}00163\ \ \ \ \ \textcolor{keywordflow}{return}\ rb-\/>cap\ -\/\ \mbox{\hyperlink{ring__buf_8c_ab94ddb9b9132e515bb238f5ecf142390}{ring\_buf\_size}}(rb)\ -\/\ 1;}
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00164}00164\ \}}
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00165}00165\ }
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00170}\mbox{\hyperlink{ring__buf_8c_aefee112a250e3d0a618e357e1061a9fd}{00170}}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{ring__buf_8c_aefee112a250e3d0a618e357e1061a9fd}{ring\_buf\_reset}}(\mbox{\hyperlink{structring__buf}{ring\_buf\_t}}\ *rb)}
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00171}00171\ \{}
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00172}00172\ \ \ \ \ \textcolor{keywordflow}{if}\ (!rb)\ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00173}00173\ }
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00174}00174\ \ \ \ \ \textcolor{keywordflow}{if}\ (xSemaphoreTake(rb-\/>lock,\ portMAX\_DELAY)\ ==\ pdTRUE)\ \{}
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00175}00175\ \ \ \ \ \ \ \ \ rb-\/>head\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00176}00176\ \ \ \ \ \ \ \ \ rb-\/>tail\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00177}00177\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ 필요하면\ 버퍼\ 내용도\ 지우고\ 싶을\ 때:}}
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00178}00178\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ memset(rb-\/>slots,\ 0,\ (size\_t)rb-\/>cap\ *\ rb-\/>slot\_size);}}
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00179}00179\ \ \ \ \ \ \ \ \ xSemaphoreGive(rb-\/>lock);}
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00180}00180\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{ring__buf_8c_source_l00181}00181\ \}}
+
+\end{DoxyCode}

@@ -1,0 +1,31 @@
+\doxysection{ring\+\_\+buf.\+h}
+\hypertarget{ring__buf_8h_source}{}\label{ring__buf_8h_source}\index{main/ring\_buf.h@{main/ring\_buf.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{ring__buf_8h_source_l00001}00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{\Hypertarget{ring__buf_8h_source_l00002}00002\ }
+\DoxyCodeLine{\Hypertarget{ring__buf_8h_source_l00003}00003\ \textcolor{preprocessor}{\#include\ <stdint.h>}}
+\DoxyCodeLine{\Hypertarget{ring__buf_8h_source_l00004}00004\ \textcolor{preprocessor}{\#include\ <stdbool.h>}}
+\DoxyCodeLine{\Hypertarget{ring__buf_8h_source_l00005}00005\ \textcolor{preprocessor}{\#include\ "{}esp\_err.h"{}}}
+\DoxyCodeLine{\Hypertarget{ring__buf_8h_source_l00006}00006\ }
+\DoxyCodeLine{\Hypertarget{ring__buf_8h_source_l00007}00007\ \textcolor{comment}{/*\ 단일\ 슬롯\ =\ 헤더\ +\ payload(MAX)\ 크기\ */}}
+\DoxyCodeLine{\Hypertarget{ring__buf_8h_source_l00013}\mbox{\hyperlink{structring__slot__hdr__t}{00013}}\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct\ }\{}
+\DoxyCodeLine{\Hypertarget{ring__buf_8h_source_l00014}00014\ \ \ uint32\_t\ magic;\ \ \ \ \ \textcolor{comment}{/*\ 패킷\ 식별용(상위에서\ 사용)\ */}}
+\DoxyCodeLine{\Hypertarget{ring__buf_8h_source_l00015}00015\ \ \ uint16\_t\ len;\ \ \ \ \ \ \ \textcolor{comment}{/*\ payload\ 길이\ */}}
+\DoxyCodeLine{\Hypertarget{ring__buf_8h_source_l00016}00016\ \ \ uint16\_t\ \_rsv;\ \ \ \ \ \ \textcolor{comment}{/*\ 정렬\ */}}
+\DoxyCodeLine{\Hypertarget{ring__buf_8h_source_l00017}00017\ \}\ \mbox{\hyperlink{structring__slot__hdr__t}{ring\_slot\_hdr\_t}};}
+\DoxyCodeLine{\Hypertarget{ring__buf_8h_source_l00018}00018\ }
+\DoxyCodeLine{\Hypertarget{ring__buf_8h_source_l00019}00019\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structring__buf}{ring\_buf}}\ \mbox{\hyperlink{structring__buf}{ring\_buf\_t}};}
+\DoxyCodeLine{\Hypertarget{ring__buf_8h_source_l00020}00020\ }
+\DoxyCodeLine{\Hypertarget{ring__buf_8h_source_l00021}00021\ \textcolor{comment}{/*\ cap\ =\ 슬롯\ 개수,\ slot\_size\ =\ 헤더+payload\ 전체\ 바이트\ */}}
+\DoxyCodeLine{\Hypertarget{ring__buf_8h_source_l00022}00022\ }
+\DoxyCodeLine{\Hypertarget{ring__buf_8h_source_l00023}00023\ esp\_err\_t\ ring\_buf\_create(\mbox{\hyperlink{structring__buf}{ring\_buf\_t}}\ **out,\ uint32\_t\ cap,\ uint32\_t\ slot\_size,\ \textcolor{keywordtype}{bool}\ try\_psram);}
+\DoxyCodeLine{\Hypertarget{ring__buf_8h_source_l00024}00024\ \textcolor{keywordtype}{void}\ \ \ \ \ \ \mbox{\hyperlink{ring__buf_8c_ad843a3a17e2c9ca41f5eacfd0c523c54}{ring\_buf\_destroy}}(\mbox{\hyperlink{structring__buf}{ring\_buf\_t}}\ *rb);}
+\DoxyCodeLine{\Hypertarget{ring__buf_8h_source_l00025}00025\ \textcolor{keywordtype}{bool}\ \ \ \ \ \ \mbox{\hyperlink{ring__buf_8c_a9cd2d306710b8fd1f3f78f068ff411dd}{ring\_buf\_push}}(\mbox{\hyperlink{structring__buf}{ring\_buf\_t}}\ *rb,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{structring__slot__hdr__t}{ring\_slot\_hdr\_t}}\ *hdr,\ \textcolor{keyword}{const}\ uint8\_t\ *payload);}
+\DoxyCodeLine{\Hypertarget{ring__buf_8h_source_l00026}00026\ \textcolor{keywordtype}{bool}\ \ \ \ \ \ \mbox{\hyperlink{ring__buf_8c_a2a3250aca112d5e89b21931945374e9d}{ring\_buf\_pop}}\ (\mbox{\hyperlink{structring__buf}{ring\_buf\_t}}\ *rb,\ \ \ \ \ \ \ \mbox{\hyperlink{structring__slot__hdr__t}{ring\_slot\_hdr\_t}}\ *hdr,\ \ \ \ \ \ \ uint8\_t\ *payload);}
+\DoxyCodeLine{\Hypertarget{ring__buf_8h_source_l00027}00027\ uint32\_t\ \ \mbox{\hyperlink{ring__buf_8c_ab94ddb9b9132e515bb238f5ecf142390}{ring\_buf\_size}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{structring__buf}{ring\_buf\_t}}\ *rb);\ \ \ \textcolor{comment}{/*\ 현재\ 저장된\ 슬롯\ 수\ */}}
+\DoxyCodeLine{\Hypertarget{ring__buf_8h_source_l00028}00028\ uint32\_t\ \ \mbox{\hyperlink{ring__buf_8c_ad6404e293895d958da7da1fc4ea1b071}{ring\_buf\_cap}}\ (\textcolor{keyword}{const}\ \mbox{\hyperlink{structring__buf}{ring\_buf\_t}}\ *rb);\ \ \ \textcolor{comment}{/*\ 총\ 슬롯\ 개수\ */}}
+\DoxyCodeLine{\Hypertarget{ring__buf_8h_source_l00029}00029\ uint32\_t\ \ \mbox{\hyperlink{ring__buf_8c_ae90410ce05cf9ff498ebeb016d117c77}{ring\_buf\_free}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{structring__buf}{ring\_buf\_t}}\ *rb);\ \ \ \textcolor{comment}{/*\ 남은\ 슬롯\ 수\ */}}
+\DoxyCodeLine{\Hypertarget{ring__buf_8h_source_l00030}00030\ \textcolor{keywordtype}{void}\ \ \ \ \ \ \mbox{\hyperlink{ring__buf_8c_aefee112a250e3d0a618e357e1061a9fd}{ring\_buf\_reset}}(\mbox{\hyperlink{structring__buf}{ring\_buf\_t}}\ *rb);\ \ \textcolor{comment}{/*\ 링\ 버퍼\ 초기화\ */}}
+
+\end{DoxyCode}

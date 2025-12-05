@@ -1,0 +1,209 @@
+\doxysection{sniffer.\+c}
+\hypertarget{sniffer_8c_source}{}\label{sniffer_8c_source}\index{main/sniffer.c@{main/sniffer.c}}
+\mbox{\hyperlink{sniffer_8c}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00001}00001\ }
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00006}00006\ \textcolor{preprocessor}{\#include\ <string.h>}}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00007}00007\ \textcolor{preprocessor}{\#include\ <sys/time.h>}}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00008}00008\ \textcolor{preprocessor}{\#include\ "{}esp\_wifi.h"{}}}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00009}00009\ \textcolor{preprocessor}{\#include\ "{}esp\_event.h"{}}}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00010}00010\ \textcolor{preprocessor}{\#include\ "{}esp\_netif.h"{}}}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00011}00011\ \textcolor{preprocessor}{\#include\ "{}esp\_log.h"{}}}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00012}00012\ \textcolor{preprocessor}{\#include\ "{}nvs\_flash.h"{}}\ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ ADD\ THIS}}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00013}00013\ \textcolor{preprocessor}{\#include\ "{}freertos/FreeRTOS.h"{}}}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00014}00014\ \textcolor{preprocessor}{\#include\ "{}freertos/task.h"{}}}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00015}00015\ \textcolor{preprocessor}{\#include\ "{}esp\_heap\_caps.h"{}}}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00016}00016\ }
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00017}00017\ \textcolor{comment}{//\ Project\ headers}}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00018}00018\ \textcolor{preprocessor}{\#include\ "{}sniffer.h"{}}}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00019}00019\ \textcolor{preprocessor}{\#include\ "{}ring\_buf.h"{}}}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00020}00020\ \textcolor{preprocessor}{\#include\ "{}usb\_cdc.h"{}}\ \textcolor{comment}{//usb\_cdc\_ready(),\ usb\_cdc\_write()}}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00021}00021\ }
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00022}00022\ \textcolor{preprocessor}{\#define\ SLOT\_SIZE\ (sizeof(packet\_prefix\_t)\ +\ MAX\_PACKET\_SIZE)}}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00023}00023\ }
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00024}00024\ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *TAG\ =\ \textcolor{stringliteral}{"{}SNFFER"{}};}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00025}00025\ }
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00026}00026\ \textcolor{keyword}{static}\ \mbox{\hyperlink{structring__buf}{ring\_buf\_t}}\ *g\_rb\ =\ NULL;}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00027}00027\ \textcolor{keyword}{static}\ uint32\_t\ captured\_count\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00028}00028\ \textcolor{keyword}{static}\ uint32\_t\ dropped\_count\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00029}00029\ }
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00033}00033\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ have\_psram(\textcolor{keywordtype}{void})\{\ }
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00034}00034\ \ \ \textcolor{keywordflow}{return}\ heap\_caps\_get\_free\_size(MALLOC\_CAP\_SPIRAM)\ >\ 0;\ }
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00035}00035\ \}}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00036}00036\ }
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00040}00040\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ wifi\_promiscuous\_cb(\textcolor{keywordtype}{void}\ *buf,\ wifi\_promiscuous\_pkt\_type\_t\ type)\ \{}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00041}00041\ \ \ \ \ \textcolor{keywordflow}{if}\ (type!=WIFI\_PKT\_MGMT\ \&\&\ type!=WIFI\_PKT\_DATA\ \&\&}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00042}00042\ \ \ \ \ \ \ \ \ type!=WIFI\_PKT\_CTRL\ \&\&\ type!=WIFI\_PKT\_MISC)\ \{}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00043}00043\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00044}00044\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00045}00045\ }
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00046}00046\ \ \ \ \ captured\_count++;}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00047}00047\ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00048}00048\ \ \ \ \ \textcolor{comment}{//\ Log\ every\ 100\ packets}}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00049}00049\ \ \ \ \ \textcolor{keywordflow}{if}\ (captured\_count\ \%\ 100\ ==\ 0)\ \{}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00050}00050\ \ \ \ \ \ \ ESP\_LOGI(TAG,\ \textcolor{stringliteral}{"{}Captured:\ \%lu,\ Dropped:\ \%lu\ \ (WIFI\ Packet)"{}}}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00051}00051\ \ \ \ \ \ \ \ \ \ \ ,captured\_count}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00052}00052\ \ \ \ \ \ \ \ \ \ \ ,dropped\_count);}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00053}00053\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00054}00054\ }
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00055}00055\ \ \ \ \ wifi\_promiscuous\_pkt\_t\ *p\ =\ (wifi\_promiscuous\_pkt\_t\ *)buf;}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00056}00056\ \ \ \ \ uint16\_t\ len\ =\ p-\/>rx\_ctrl.sig\_len;}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00057}00057\ \ \ \ \ \textcolor{keywordflow}{if}\ (len\ >\ MAX\_PACKET\_SIZE)\ len\ =\ MAX\_PACKET\_SIZE;}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00058}00058\ }
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00059}00059\ \ \ \ \ \textcolor{keyword}{struct\ }timeval\ tv;\ }
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00060}00060\ \ \ \ \ gettimeofday(\&tv,\ NULL);}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00061}00061\ }
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00062}00062\ \ \ \ \ packet\_prefix\_t\ ph\ =\ \{}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00063}00063\ \ \ \ \ \ \ .magic\ \ \ =\ PACKET\_HEADER\_MAGIC,}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00064}00064\ \ \ \ \ \ \ .ts\_sec\ \ =\ (uint32\_t)tv.tv\_sec,}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00065}00065\ \ \ \ \ \ \ .ts\_usec\ =\ (uint32\_t)tv.tv\_usec,}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00066}00066\ \ \ \ \ \ \ .channel\ =\ p-\/>rx\_ctrl.channel,}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00067}00067\ \ \ \ \ \ \ .rssi\ \ \ \ =\ p-\/>rx\_ctrl.rssi,}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00068}00068\ \ \ \ \ \ \ .len\ \ \ \ \ =\ len}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00069}00069\ \ \ \ \ \};}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00070}00070\ }
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00071}00071\ \ \ \ \ uint8\_t\ frame[\textcolor{keyword}{sizeof}(packet\_prefix\_t)\ +\ MAX\_PACKET\_SIZE];}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00072}00072\ \ \ \ \ memcpy(frame,\ \&ph,\ \textcolor{keyword}{sizeof}(ph));}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00073}00073\ \ \ \ \ memcpy(frame\ +\ \textcolor{keyword}{sizeof}(ph),\ p-\/>payload,\ len);}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00074}00074\ }
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00075}00075\ \ \ \ \ \mbox{\hyperlink{structring__slot__hdr__t}{ring\_slot\_hdr\_t}}\ sh\ =\ \{}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00076}00076\ \ \ \ \ \ \ \ \ .magic\ =\ PACKET\_HEADER\_MAGIC,}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00077}00077\ \ \ \ \ \ \ \ \ .len\ \ \ =\ (uint16\_t)(\textcolor{keyword}{sizeof}(ph)\ +\ len)}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00078}00078\ \ \ \ \ \};}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00079}00079\ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00080}00080\ \ \ \ \ \textcolor{comment}{//\ Push\ data\ to\ ring\ buffer}}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00081}00081\ \ \ \ \ \textcolor{keywordflow}{if}\ (!\mbox{\hyperlink{ring__buf_8c_a9cd2d306710b8fd1f3f78f068ff411dd}{ring\_buf\_push}}(g\_rb,\ \&sh,\ frame))\ \{}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00082}00082\ \ \ \ \ \ \ dropped\_count++;}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00083}00083\ \ \ \ \ \ \ uint16\_t\ rb\_size\ =\ \mbox{\hyperlink{ring__buf_8c_ab94ddb9b9132e515bb238f5ecf142390}{ring\_buf\_size}}(g\_rb);}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00084}00084\ \ \ \ \ \ \ ESP\_LOGW(TAG,\ \textcolor{stringliteral}{"{}Dropped\ packet\ (Ring\ buffer\ size:\ \%u)"{}},\ rb\_size);}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00085}00085\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00086}00086\ \}}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00087}00087\ }
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00088}00088\ \textcolor{comment}{/*\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/\ Streamer\ task:\ Ring\ →\ CDC\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/\ */}}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00092}00092\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ streamer\_task(\textcolor{keywordtype}{void}\ *arg)}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00093}00093\ \{}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00094}00094\ \ \ (void)arg;}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00095}00095\ \ \ \mbox{\hyperlink{structring__slot__hdr__t}{ring\_slot\_hdr\_t}}\ sh;}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00096}00096\ \ \ }
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00097}00097\ \ \ uint8\_t\ *ring\_data\ =\ (uint8\_t*)heap\_caps\_malloc(\textcolor{keyword}{sizeof}(packet\_prefix\_t)\ +\ MAX\_PACKET\_SIZE,\ MALLOC\_CAP\_8BIT);}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00098}00098\ }
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00099}00099\ \ \ \textcolor{keywordtype}{size\_t}\ max\_tx\_size\ =\ \textcolor{keyword}{sizeof}(uint32\_t)\ +\ \textcolor{keyword}{sizeof}(uint32\_t)\ +\ \textcolor{keyword}{sizeof}(packet\_prefix\_t)\ +\ MAX\_PACKET\_SIZE;}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00100}00100\ }
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00101}00101\ \ \ uint8\_t\ *tx\_buf\ =\ (uint8\_t*)heap\_caps\_malloc(max\_tx\_size,\ MALLOC\_CAP\_8BIT);}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00102}00102\ }
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00103}00103\ \ \ ESP\_LOGI(TAG,\ \textcolor{stringliteral}{"{}Streamer\ task\ started"{}});}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00104}00104\ \ \ }
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00105}00105\ \ \ uint32\_t\ loop\_count\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00106}00106\ \ \ uint32\_t\ packets\_sent\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00107}00107\ \ \ }
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00108}00108\ \ \ \textcolor{keywordflow}{for}\ (;;)\ \{}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00109}00109\ \ \ \ \ \textcolor{comment}{//\ Debug:\ Print\ status\ every\ 5\ seconds}}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00110}00110\ \ \ \ \ \textcolor{keywordflow}{if}\ (loop\_count\ \%\ 2500\ ==\ 0)\ \{\ \ \textcolor{comment}{//\ 2500\ *\ 2ms\ =\ 5\ seconds}}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00111}00111\ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ cdc\_ready\ =\ \mbox{\hyperlink{usb__cdc_8c_a58646b344bbaa2edb2faa572c0e2edfa}{usb\_cdc\_ready}}();}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00112}00112\ \ \ \ \ \ \ ESP\_LOGI(TAG,\ \textcolor{stringliteral}{"{}USB\ CDC\ ready:\ \%s,\ USB\ CDC\ sent:\ \%lu\ packets"{}}}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00113}00113\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ,cdc\_ready\ ?\ \textcolor{stringliteral}{"{}YES"{}}\ :\ \textcolor{stringliteral}{"{}NO"{}}}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00114}00114\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ,packets\_sent);}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00115}00115\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00116}00116\ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00117}00117\ \ \ \ \ loop\_count++;}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00118}00118\ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00119}00119\ \ \ \ \ \textcolor{comment}{//read\ data\ from\ ring\ buffer}}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00120}00120\ \ \ \ \ \textcolor{keywordflow}{if}\ (\mbox{\hyperlink{ring__buf_8c_a2a3250aca112d5e89b21931945374e9d}{ring\_buf\_pop}}(g\_rb,\ \&sh,\ ring\_data))\ \{}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00121}00121\ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00122}00122\ \ \ \ \ \ \ \textcolor{comment}{//\ Check\ USB\ ready\ before\ sending}}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00123}00123\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!\mbox{\hyperlink{usb__cdc_8c_a58646b344bbaa2edb2faa572c0e2edfa}{usb\_cdc\_ready}}())\ \{}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00124}00124\ \ \ \ \ \ \ \ \ ESP\_LOGW(TAG,\ \textcolor{stringliteral}{"{}USB\ CDC\ not\ ready,\ dropping\ packet"{}});}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00125}00125\ \ \ \ \ \ \ \ \ vTaskDelay(pdMS\_TO\_TICKS(100));}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00126}00126\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00127}00127\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00128}00128\ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00129}00129\ \ \ \ \ \ \ uint32\_t\ sync\_magic\ =\ SYNC\_MAGIC;}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00130}00130\ \ \ \ \ \ \ uint32\_t\ rec\_len\ =\ sh.len;}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00131}00131\ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00132}00132\ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ offset\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00133}00133\ \ \ \ \ \ \ memcpy(tx\_buf\ +\ offset,\ \&sync\_magic,\ \textcolor{keyword}{sizeof}(uint32\_t));}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00134}00134\ \ \ \ \ \ \ offset\ +=\ \textcolor{keyword}{sizeof}(uint32\_t);}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00135}00135\ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00136}00136\ \ \ \ \ \ \ memcpy(tx\_buf\ +\ offset,\ \&rec\_len,\ \textcolor{keyword}{sizeof}(uint32\_t));}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00137}00137\ \ \ \ \ \ \ offset\ +=\ \textcolor{keyword}{sizeof}(uint32\_t);}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00138}00138\ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00139}00139\ \ \ \ \ \ \ memcpy(tx\_buf\ +\ offset,\ ring\_data,\ sh.len);}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00140}00140\ \ \ \ \ \ \ offset\ +=\ sh.len;}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00141}00141\ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00142}00142\ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ written\ =\ \mbox{\hyperlink{usb__cdc_8c_a667914e3820578cb214c3051b16a2d2c}{usb\_cdc\_write}}(tx\_buf,\ offset);}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00143}00143\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (written\ >\ 0)\ \{}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00144}00144\ \ \ \ \ \ \ \ \ packets\_sent++;}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00145}00145\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (packets\_sent\ \%\ 100\ ==\ 0)\ \{}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00146}00146\ \ \ \ \ \ \ \ \ \ \ uint16\_t\ rb\_size\ =\ \mbox{\hyperlink{ring__buf_8c_ab94ddb9b9132e515bb238f5ecf142390}{ring\_buf\_size}}(g\_rb);}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00147}00147\ \ \ \ \ \ \ \ \ \ \ ESP\_LOGI(TAG,\ \textcolor{stringliteral}{"{}USB\ CDC\ Sent:\ \%lu\ packets\ (Ring\ buffer\ size:\ \%u)"{}}}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00148}00148\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ,packets\_sent}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00149}00149\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ,rb\_size);}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00150}00150\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00151}00151\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00152}00152\ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00153}00153\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00154}00154\ \ \ \ \ \ \ vTaskDelay(pdMS\_TO\_TICKS(2));}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00155}00155\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00156}00156\ \ \ \}}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00157}00157\ \}}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00158}00158\ }
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00159}00159\ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/\ Public\ API\ implementations\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00160}00160\ }
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00164}\mbox{\hyperlink{sniffer_8c_af3f2c00029c37c09a9d581f521ee44c7}{00164}}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{sniffer_8c_af3f2c00029c37c09a9d581f521ee44c7}{sniffer\_init}}(\textcolor{keywordtype}{void})}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00165}00165\ \{\ \ }
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00166}00166\ \ \ \textcolor{comment}{//\ STEP.1\ Create\ ring\ buffer}}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00167}00167\ \ \ uint32\_t\ cap\ =\ have\_psram()\ ?\ RING\_SLOTS\_PSRAM\ :\ RING\_SLOTS\_INTERNAL;}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00168}00168\ \ \ ESP\_ERROR\_CHECK(ring\_buf\_create(\&g\_rb,\ cap,\ SLOT\_SIZE,\ have\_psram()));}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00169}00169\ \ \ }
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00170}00170\ \ \ \textcolor{comment}{//\ STEP.2\ Start\ streamer\ task}}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00171}00171\ \ \ xTaskCreate(streamer\_task,\ \textcolor{stringliteral}{"{}streamer"{}},\ 4096,\ NULL,\ 5,\ NULL);}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00172}00172\ }
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00173}00173\ \ \ ESP\_LOGI(TAG,\ \textcolor{stringliteral}{"{}Sniffer\ started\ (Ring+CDC,\ prefix+payload\ stored)"{}});}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00174}00174\ \}}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00175}00175\ }
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00179}\mbox{\hyperlink{sniffer_8c_aece9df03dd920b92c9296815619db4c3}{00179}}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{sniffer_8c_aece9df03dd920b92c9296815619db4c3}{sniffer\_enable\_promiscuous}}(\textcolor{keywordtype}{void})}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00180}00180\ \{}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00181}00181\ \ \ \ \ \textcolor{comment}{//\ Setup\ Wi-\/Fi\ promiscuous\ filter}}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00182}00182\ \ \ \ \ \textcolor{comment}{//\ \ https://docs.espressif.com/projects/esp-\/idf/en/release-\/v5.4/esp32/api-\/reference/network/esp\_wifi.html}}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00183}00183\ \ \ \ \ \textcolor{comment}{//\ \ https://docs.espressif.com/projects/esp-\/idf/en/release-\/v5.4/esp32/api-\/reference/network/esp\_wifi.html\#id5}}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00184}00184\ \ \ \ \ wifi\_promiscuous\_filter\_t\ filt\ =\ \{}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00185}00185\ \ \ \ \ \ \ \ \ .filter\_mask\ =\ WIFI\_PROMIS\_FILTER\_MASK\_MGMT\ |}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00186}00186\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ WIFI\_PROMIS\_FILTER\_MASK\_DATA\ |}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00187}00187\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ WIFI\_PROMIS\_FILTER\_MASK\_CTRL,}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00188}00188\ \ \ \ \ \};}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00189}00189\ }
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00190}00190\ \ \ \ \ esp\_err\_t\ err\ =\ esp\_wifi\_set\_promiscuous(\textcolor{keyword}{false});}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00191}00191\ \ \ \ \ \textcolor{keywordflow}{if}\ (err\ !=\ ESP\_OK)\ \{}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00192}00192\ \ \ \ \ \ \ \ \ ESP\_LOGW(TAG,\ \textcolor{stringliteral}{"{}set\_promiscuous(false)\ failed:\ \%d"{}},\ err);}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00193}00193\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00194}00194\ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00195}00195\ \ \ \ \ \textcolor{comment}{//\ Setup\ filter\ and\ callback}}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00196}00196\ \ \ \ \ ESP\_ERROR\_CHECK(esp\_wifi\_set\_promiscuous\_filter(\&filt));}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00197}00197\ \ \ \ \ ESP\_ERROR\_CHECK(esp\_wifi\_set\_promiscuous\_rx\_cb(\&wifi\_promiscuous\_cb));}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00198}00198\ \ \ \ \ ESP\_ERROR\_CHECK(esp\_wifi\_set\_promiscuous(\textcolor{keyword}{true}));}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00199}00199\ }
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00200}00200\ \ \ \ \ ESP\_LOGI(TAG,\ \textcolor{stringliteral}{"{}Promiscuous\ mode\ enabled"{}});}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00201}00201\ \}}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00202}00202\ }
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00203}00203\ }
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00207}\mbox{\hyperlink{sniffer_8c_ac875b5b30914b5076359238e95f1b068}{00207}}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{sniffer_8c_ac875b5b30914b5076359238e95f1b068}{sniffer\_ring\_reset}}(\textcolor{keywordtype}{void})}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00208}00208\ \{}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00209}00209\ \ \ \ \ \textcolor{keywordflow}{if}\ (!g\_rb)\ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00210}00210\ \ \ \ \ \mbox{\hyperlink{ring__buf_8c_aefee112a250e3d0a618e357e1061a9fd}{ring\_buf\_reset}}(g\_rb);}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00211}00211\ \ \ \ \ captured\_count\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00212}00212\ \ \ \ \ dropped\_count\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00213}00213\ \}}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00214}00214\ }
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00218}\mbox{\hyperlink{sniffer_8c_a3f1754a0286ce754699ab73c0b0a53ba}{00218}}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{sniffer_8c_a3f1754a0286ce754699ab73c0b0a53ba}{sniffer\_print\_stats}}(\textcolor{keywordtype}{void})}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00219}00219\ \{}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00220}00220\ \ \ \ \ uint32\_t\ used\ =\ \mbox{\hyperlink{ring__buf_8c_ab94ddb9b9132e515bb238f5ecf142390}{ring\_buf\_size}}(g\_rb);}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00221}00221\ \ \ \ \ uint32\_t\ free\ =\ \mbox{\hyperlink{ring__buf_8c_ae90410ce05cf9ff498ebeb016d117c77}{ring\_buf\_free}}(g\_rb);}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00222}00222\ \ \ \ \ uint32\_t\ cap\ =\ \mbox{\hyperlink{ring__buf_8c_ad6404e293895d958da7da1fc4ea1b071}{ring\_buf\_cap}}(g\_rb);}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00223}00223\ }
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00224}00224\ \ \ \ \ printf(\textcolor{stringliteral}{"{}Sniffer\ (Ring\ buffer)\ status:\(\backslash\)n"{}});}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00225}00225\ \ \ \ \ printf(\textcolor{stringliteral}{"{}\ \ -\/\ Ring\ Buf:\ \%lu\ used/\ \%lu\ free\ /\ \%lu\ total\ (usable=\%lu)\(\backslash\)n"{}},\ used,\ free,\ cap\ ,\ cap\ -\/\ 1);}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00226}00226\ \ \ \ \ printf(\textcolor{stringliteral}{"{}\ \ -\/\ Captured:\ \%lu\(\backslash\)n"{}},\ captured\_count);}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00227}00227\ \ \ \ \ printf(\textcolor{stringliteral}{"{}\ \ -\/\ Dropped\ :\ \%lu\(\backslash\)n"{}},\ dropped\_count);}
+\DoxyCodeLine{\Hypertarget{sniffer_8c_source_l00228}00228\ \}}
+
+\end{DoxyCode}

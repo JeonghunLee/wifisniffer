@@ -1,0 +1,90 @@
+\doxysection{usb\+\_\+cdc.\+c}
+\hypertarget{usb__cdc_8c_source}{}\label{usb__cdc_8c_source}\index{main/usb\_cdc.c@{main/usb\_cdc.c}}
+\mbox{\hyperlink{usb__cdc_8c}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{usb__cdc_8c_source_l00001}00001\ }
+\DoxyCodeLine{\Hypertarget{usb__cdc_8c_source_l00006}00006\ \textcolor{preprocessor}{\#include\ "{}usb\_cdc.h"{}}}
+\DoxyCodeLine{\Hypertarget{usb__cdc_8c_source_l00007}00007\ \textcolor{preprocessor}{\#include\ "{}tinyusb.h"{}}}
+\DoxyCodeLine{\Hypertarget{usb__cdc_8c_source_l00008}00008\ \textcolor{preprocessor}{\#include\ "{}tusb\_cdc\_acm.h"{}}}
+\DoxyCodeLine{\Hypertarget{usb__cdc_8c_source_l00009}00009\ \textcolor{preprocessor}{\#include\ "{}esp\_log.h"{}}}
+\DoxyCodeLine{\Hypertarget{usb__cdc_8c_source_l00010}00010\ }
+\DoxyCodeLine{\Hypertarget{usb__cdc_8c_source_l00011}00011\ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *TAG\ =\ \textcolor{stringliteral}{"{}USB\_CDC"{}};}
+\DoxyCodeLine{\Hypertarget{usb__cdc_8c_source_l00012}00012\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ s\_cdc\_ready\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{usb__cdc_8c_source_l00013}00013\ }
+\DoxyCodeLine{\Hypertarget{usb__cdc_8c_source_l00014}00014\ \textcolor{comment}{/*\ -\/-\/-\/\ line\ state\ callback:\ DTR\ 올라올\ 때만\ ready\ -\/-\/-\/\ */}}
+\DoxyCodeLine{\Hypertarget{usb__cdc_8c_source_l00018}00018\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ line\_state\_changed\_cb(\textcolor{keywordtype}{int}\ itf,\ cdcacm\_event\_t\ *event)}
+\DoxyCodeLine{\Hypertarget{usb__cdc_8c_source_l00019}00019\ \{}
+\DoxyCodeLine{\Hypertarget{usb__cdc_8c_source_l00020}00020\ \ \ \ \ (void)itf;}
+\DoxyCodeLine{\Hypertarget{usb__cdc_8c_source_l00021}00021\ }
+\DoxyCodeLine{\Hypertarget{usb__cdc_8c_source_l00022}00022\ \ \ \ \ \textcolor{keywordtype}{bool}\ dtr\ =\ \textcolor{keyword}{event}-\/>line\_state\_changed\_data.dtr;\ \ \ \textcolor{comment}{//\ 호스트가\ 포트\ open\ 하면\ 1}}
+\DoxyCodeLine{\Hypertarget{usb__cdc_8c_source_l00023}00023\ \ \ \ \ \textcolor{keywordtype}{bool}\ rts\ =\ \textcolor{keyword}{event}-\/>line\_state\_changed\_data.rts;\ \ \ \textcolor{comment}{//\ 필요하면\ 같이\ 사용}}
+\DoxyCodeLine{\Hypertarget{usb__cdc_8c_source_l00024}00024\ }
+\DoxyCodeLine{\Hypertarget{usb__cdc_8c_source_l00025}00025\ \ \ \ \ s\_cdc\_ready\ =\ dtr;}
+\DoxyCodeLine{\Hypertarget{usb__cdc_8c_source_l00026}00026\ \ \ \ \ ESP\_LOGI(TAG,\ \textcolor{stringliteral}{"{}line\_state:\ DTR=\%d,\ RTS=\%d\ -\/>\ ready=\%d"{}},\ dtr,\ rts,\ s\_cdc\_ready);}
+\DoxyCodeLine{\Hypertarget{usb__cdc_8c_source_l00027}00027\ \}}
+\DoxyCodeLine{\Hypertarget{usb__cdc_8c_source_l00028}00028\ }
+\DoxyCodeLine{\Hypertarget{usb__cdc_8c_source_l00033}\mbox{\hyperlink{usb__cdc_8c_ad7f5fefcb59d3ecfcd976eb481ad5d2c}{00033}}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{usb__cdc_8c_ad7f5fefcb59d3ecfcd976eb481ad5d2c}{usb\_cdc\_init}}(\textcolor{keywordtype}{void})}
+\DoxyCodeLine{\Hypertarget{usb__cdc_8c_source_l00034}00034\ \{}
+\DoxyCodeLine{\Hypertarget{usb__cdc_8c_source_l00035}00035\ \ \ \ \ \textcolor{comment}{//\ Initialize\ TinyUSB\ driver}}
+\DoxyCodeLine{\Hypertarget{usb__cdc_8c_source_l00036}00036\ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{usb__cdc_8c_source_l00037}00037\ \ \ \ \ tinyusb\_config\_t\ tusb\_cfg\ =\ \{}
+\DoxyCodeLine{\Hypertarget{usb__cdc_8c_source_l00038}00038\ \ \ \ \ \ \ \ \ .device\_descriptor\ \ \ \ \ \ \ =\ NULL,}
+\DoxyCodeLine{\Hypertarget{usb__cdc_8c_source_l00039}00039\ \ \ \ \ \ \ \ \ .string\_descriptor\ \ \ \ \ \ \ =\ NULL,}
+\DoxyCodeLine{\Hypertarget{usb__cdc_8c_source_l00040}00040\ \ \ \ \ \ \ \ \ .external\_phy\ \ \ \ \ \ \ \ \ \ \ \ =\ \textcolor{keyword}{false},}
+\DoxyCodeLine{\Hypertarget{usb__cdc_8c_source_l00041}00041\ \ \ \ \ \ \ \ \ .configuration\_descriptor=\ NULL,}
+\DoxyCodeLine{\Hypertarget{usb__cdc_8c_source_l00042}00042\ \ \ \ \ \};}
+\DoxyCodeLine{\Hypertarget{usb__cdc_8c_source_l00043}00043\ }
+\DoxyCodeLine{\Hypertarget{usb__cdc_8c_source_l00044}00044\ \ \ \ \ ESP\_ERROR\_CHECK(tinyusb\_driver\_install(\&tusb\_cfg));}
+\DoxyCodeLine{\Hypertarget{usb__cdc_8c_source_l00045}00045\ }
+\DoxyCodeLine{\Hypertarget{usb__cdc_8c_source_l00046}00046\ \ \ \ \ \textcolor{comment}{//\ Initialize\ CDC-\/ACM}}
+\DoxyCodeLine{\Hypertarget{usb__cdc_8c_source_l00047}00047\ \ \ \ \ tinyusb\_config\_cdcacm\_t\ acm\_cfg\ =\ \{}
+\DoxyCodeLine{\Hypertarget{usb__cdc_8c_source_l00048}00048\ \ \ \ \ \ \ \ \ .usb\_dev\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ =\ TINYUSB\_USBDEV\_0,}
+\DoxyCodeLine{\Hypertarget{usb__cdc_8c_source_l00049}00049\ \ \ \ \ \ \ \ \ .cdc\_port\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ =\ TINYUSB\_CDC\_ACM\_0,}
+\DoxyCodeLine{\Hypertarget{usb__cdc_8c_source_l00050}00050\ \ \ \ \ \ \ \ \ .rx\_unread\_buf\_sz\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ =\ 64,}
+\DoxyCodeLine{\Hypertarget{usb__cdc_8c_source_l00051}00051\ \ \ \ \ \ \ \ \ .callback\_rx\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ =\ NULL,}
+\DoxyCodeLine{\Hypertarget{usb__cdc_8c_source_l00052}00052\ \ \ \ \ \ \ \ \ .callback\_rx\_wanted\_char\ \ \ \ \ \ \ \ =\ NULL,}
+\DoxyCodeLine{\Hypertarget{usb__cdc_8c_source_l00053}00053\ \ \ \ \ \ \ \ \ .callback\_line\_state\_changed\ \ \ \ =\ line\_state\_changed\_cb,}
+\DoxyCodeLine{\Hypertarget{usb__cdc_8c_source_l00054}00054\ \ \ \ \ \ \ \ \ .callback\_line\_coding\_changed\ \ \ =\ NULL,}
+\DoxyCodeLine{\Hypertarget{usb__cdc_8c_source_l00055}00055\ \ \ \ \ \};}
+\DoxyCodeLine{\Hypertarget{usb__cdc_8c_source_l00056}00056\ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{usb__cdc_8c_source_l00057}00057\ \ \ \ \ ESP\_ERROR\_CHECK(tusb\_cdc\_acm\_init(\&acm\_cfg));}
+\DoxyCodeLine{\Hypertarget{usb__cdc_8c_source_l00058}00058\ \ \ \ \ ESP\_LOGI(TAG,\ \textcolor{stringliteral}{"{}USB\ CDC\ initialized"{}});}
+\DoxyCodeLine{\Hypertarget{usb__cdc_8c_source_l00059}00059\ \}}
+\DoxyCodeLine{\Hypertarget{usb__cdc_8c_source_l00060}00060\ }
+\DoxyCodeLine{\Hypertarget{usb__cdc_8c_source_l00065}\mbox{\hyperlink{usb__cdc_8c_a58646b344bbaa2edb2faa572c0e2edfa}{00065}}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{usb__cdc_8c_a58646b344bbaa2edb2faa572c0e2edfa}{usb\_cdc\_ready}}(\textcolor{keywordtype}{void})}
+\DoxyCodeLine{\Hypertarget{usb__cdc_8c_source_l00066}00066\ \{}
+\DoxyCodeLine{\Hypertarget{usb__cdc_8c_source_l00067}00067\ \ \ \ \ \textcolor{comment}{//\ 호스트가\ 실제로\ 포트를\ 연\ 상태인지\ +\ TinyUSB\ 연결\ 여부}}
+\DoxyCodeLine{\Hypertarget{usb__cdc_8c_source_l00068}00068\ \ \ \ \ \textcolor{comment}{//\ Use\ TinyUSB's\ direct\ API\ to\ check\ connection\ state}}
+\DoxyCodeLine{\Hypertarget{usb__cdc_8c_source_l00069}00069\ \ \ \ \ \textcolor{keywordflow}{return}\ s\_cdc\_ready\ \&\&\ tud\_cdc\_connected();}
+\DoxyCodeLine{\Hypertarget{usb__cdc_8c_source_l00070}00070\ \}}
+\DoxyCodeLine{\Hypertarget{usb__cdc_8c_source_l00071}00071\ }
+\DoxyCodeLine{\Hypertarget{usb__cdc_8c_source_l00078}\mbox{\hyperlink{usb__cdc_8c_a667914e3820578cb214c3051b16a2d2c}{00078}}\ \textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{usb__cdc_8c_a667914e3820578cb214c3051b16a2d2c}{usb\_cdc\_write}}(\textcolor{keyword}{const}\ uint8\_t\ *data,\ \textcolor{keywordtype}{size\_t}\ len)}
+\DoxyCodeLine{\Hypertarget{usb__cdc_8c_source_l00079}00079\ \{}
+\DoxyCodeLine{\Hypertarget{usb__cdc_8c_source_l00080}00080\ \ \ \ \ \textcolor{keywordflow}{if}\ (!\mbox{\hyperlink{usb__cdc_8c_a58646b344bbaa2edb2faa572c0e2edfa}{usb\_cdc\_ready}}())\ \{}
+\DoxyCodeLine{\Hypertarget{usb__cdc_8c_source_l00081}00081\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{\Hypertarget{usb__cdc_8c_source_l00082}00082\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{usb__cdc_8c_source_l00083}00083\ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{usb__cdc_8c_source_l00084}00084\ \ \ \ \ \textcolor{comment}{//\ Use\ TinyUSB\ CDC\ ACM\ write\ function}}
+\DoxyCodeLine{\Hypertarget{usb__cdc_8c_source_l00085}00085\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ queued\ =\ tinyusb\_cdcacm\_write\_queue(TINYUSB\_CDC\_ACM\_0,\ data,\ len);}
+\DoxyCodeLine{\Hypertarget{usb__cdc_8c_source_l00086}00086\ \ \ \ \ tinyusb\_cdcacm\_write\_flush(TINYUSB\_CDC\_ACM\_0,\ 0);\ \ \textcolor{comment}{//\ 바로\ 전송\ \ \ \ }}
+\DoxyCodeLine{\Hypertarget{usb__cdc_8c_source_l00087}00087\ \ \ \ \ \textcolor{keywordflow}{return}\ queued;}
+\DoxyCodeLine{\Hypertarget{usb__cdc_8c_source_l00088}00088\ \}}
+\DoxyCodeLine{\Hypertarget{usb__cdc_8c_source_l00089}00089\ }
+\DoxyCodeLine{\Hypertarget{usb__cdc_8c_source_l00096}\mbox{\hyperlink{usb__cdc_8c_aaf6a13f8d90b8d1326efce17d8533c36}{00096}}\ \textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{usb__cdc_8c_aaf6a13f8d90b8d1326efce17d8533c36}{usb\_cdc\_read}}(uint8\_t\ *data,\ \textcolor{keywordtype}{size\_t}\ len)}
+\DoxyCodeLine{\Hypertarget{usb__cdc_8c_source_l00097}00097\ \{}
+\DoxyCodeLine{\Hypertarget{usb__cdc_8c_source_l00098}00098\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ rx\_size\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{usb__cdc_8c_source_l00099}00099\ \ \ \ \ esp\_err\_t\ ret\ =\ tinyusb\_cdcacm\_read(TINYUSB\_CDC\_ACM\_0,\ data,\ len,\ \&rx\_size);}
+\DoxyCodeLine{\Hypertarget{usb__cdc_8c_source_l00100}00100\ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{usb__cdc_8c_source_l00101}00101\ \ \ \ \ \textcolor{keywordflow}{if}\ (ret\ !=\ ESP\_OK)\ \{}
+\DoxyCodeLine{\Hypertarget{usb__cdc_8c_source_l00102}00102\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{\Hypertarget{usb__cdc_8c_source_l00103}00103\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{usb__cdc_8c_source_l00104}00104\ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{usb__cdc_8c_source_l00105}00105\ \ \ \ \ \textcolor{keywordflow}{return}\ rx\_size;}
+\DoxyCodeLine{\Hypertarget{usb__cdc_8c_source_l00106}00106\ \}}
+\DoxyCodeLine{\Hypertarget{usb__cdc_8c_source_l00107}00107\ }
+\DoxyCodeLine{\Hypertarget{usb__cdc_8c_source_l00111}\mbox{\hyperlink{usb__cdc_8c_a00c519adc370605a08c0ef79c88307a9}{00111}}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{usb__cdc_8c_a00c519adc370605a08c0ef79c88307a9}{usb\_cdc\_flush}}(\textcolor{keywordtype}{void})}
+\DoxyCodeLine{\Hypertarget{usb__cdc_8c_source_l00112}00112\ \{}
+\DoxyCodeLine{\Hypertarget{usb__cdc_8c_source_l00113}00113\ \ \ \ \ tinyusb\_cdcacm\_write\_flush(TINYUSB\_CDC\_ACM\_0,\ 0);}
+\DoxyCodeLine{\Hypertarget{usb__cdc_8c_source_l00114}00114\ \}}
+
+\end{DoxyCode}

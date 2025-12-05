@@ -1,0 +1,5 @@
+<map id="ring_buf_free" name="ring_buf_free">
+<area shape="rect" id="Node000001" title="Get the number of free slots remaining in the ring buffer." alt="" coords="192,5,300,31"/>
+<area shape="rect" id="Node000002" href="$sniffer_8c.html#a3f1754a0286ce754699ab73c0b0a53ba" title="Print current ring usage and capture statistics." alt="" coords="5,5,144,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="178,21,144,21,144,15,178,15"/>
+</map>

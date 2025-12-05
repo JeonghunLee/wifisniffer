@@ -1,0 +1,9 @@
+<map id="wifi_mgr_set_ap_ssid" name="wifi_mgr_set_ap_ssid">
+<area shape="rect" id="Node000001" title="Update SoftAP SSID and refresh promiscuous mode if active." alt="" coords="5,31,167,56"/>
+<area shape="rect" id="Node000002" href="$sniffer_8c.html#aece9df03dd920b92c9296815619db4c3" title="Enable promiscuous capture with the predefined filter set." alt="" coords="215,5,419,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="167,32,201,28,201,33,167,37"/>
+<area shape="rect" id="Node000003" href="$wifi_8c.html#aa10886611772ba3c0e0a00dae83eec1f" title="Prime cached Wi&#45;Fi configs and record the current mode." alt="" coords="263,55,370,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="167,49,250,58,249,63,167,54"/>
+<area shape="rect" id="Node000004" href="$wifi_8c.html#a1ccfac3b661e1c212b38b3e7810f3f53" title="Convert Wi&#45;Fi mode enum to a short string for status printing." alt="" coords="467,55,653,80"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="370,65,453,65,453,70,370,70"/>
+</map>

@@ -1,0 +1,183 @@
+\doxysection{cmd.\+c}
+\hypertarget{cmd_8c_source}{}\label{cmd_8c_source}\index{main/cmd.c@{main/cmd.c}}
+\mbox{\hyperlink{cmd_8c}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00001}00001\ }
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00006}00006\ \textcolor{preprocessor}{\#include\ <stdio.h>}}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00007}00007\ \textcolor{preprocessor}{\#include\ <string.h>}}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00008}00008\ \textcolor{preprocessor}{\#include\ <strings.h>}}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00009}00009\ }
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00010}00010\ \textcolor{preprocessor}{\#include\ "{}esp\_console.h"{}}}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00011}00011\ \textcolor{preprocessor}{\#include\ "{}esp\_err.h"{}}}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00012}00012\ \textcolor{preprocessor}{\#include\ "{}esp\_log.h"{}}}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00013}00013\ \textcolor{preprocessor}{\#include\ "{}sdkconfig.h"{}}}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00014}00014\ }
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00015}00015\ \textcolor{comment}{//\ Project\ headers}}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00016}00016\ \textcolor{preprocessor}{\#include\ "{}cmd.h"{}}}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00017}00017\ \textcolor{preprocessor}{\#include\ "{}wifi.h"{}}}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00018}00018\ \textcolor{preprocessor}{\#include\ "{}sniffer.h"{}}}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00019}00019\ }
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00020}00020\ }
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00021}00021\ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *TAG\ =\ \textcolor{stringliteral}{"{}ESP\_CMD"{}};}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00022}00022\ }
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00023}00023\ \textcolor{keyword}{static}\ esp\_console\_repl\_t\ *s\_repl\ =\ NULL;}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00024}00024\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ s\_initialized\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00025}00025\ }
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00026}00026\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ print\_usage(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00027}00027\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{int}\ \ wifi\_command(\textcolor{keywordtype}{int}\ argc,\ \textcolor{keywordtype}{char}\ **argv);}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00028}00028\ }
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00032}\mbox{\hyperlink{cmd_8c_aa2fcb6356b44efb0f80d437a819a4e2c}{00032}}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{cmd_8c_aa2fcb6356b44efb0f80d437a819a4e2c}{command\_init}}(\textcolor{keywordtype}{void})}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00033}00033\ \{}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00034}00034\ \ \ \ \ \textcolor{keywordflow}{if}\ (s\_initialized)\ \{}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00035}00035\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00036}00036\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00037}00037\ \ \ \ \ s\_initialized\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00038}00038\ }
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00039}00039\ \ \ \ \ ESP\_ERROR\_CHECK(esp\_console\_register\_help\_command());}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00040}00040\ }
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00041}00041\ \ \ \ \ \textcolor{keyword}{const}\ esp\_console\_cmd\_t\ wifi\_cmd\ =\ \{}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00042}00042\ \ \ \ \ \ \ \ \ .command\ =\ \textcolor{stringliteral}{"{}wifi"{}},}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00043}00043\ \ \ \ \ \ \ \ \ .help\ \ \ \ =\ \textcolor{stringliteral}{"{}Wi-\/Fi\ control:\ mode/ap/sta/status"{}},}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00044}00044\ \ \ \ \ \ \ \ \ .hint\ \ \ \ =\ NULL,}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00045}00045\ \ \ \ \ \ \ \ \ .func\ \ \ \ =\ \&wifi\_command,}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00046}00046\ \ \ \ \ \ \ \ \ .argtable\ =\ NULL,}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00047}00047\ \ \ \ \ \};}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00048}00048\ \ \ \ \ ESP\_ERROR\_CHECK(esp\_console\_cmd\_register(\&wifi\_cmd));}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00049}00049\ }
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00050}00050\ \ \ \ \ esp\_console\_repl\_config\_t\ repl\_config\ =\ ESP\_CONSOLE\_REPL\_CONFIG\_DEFAULT();}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00051}00051\ \ \ \ \ repl\_config.prompt\ =\ \textcolor{stringliteral}{"{}wifi>\ "{}};}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00052}00052\ \ \ \ \ repl\_config.max\_cmdline\_length\ =\ 256;}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00053}00053\ }
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00054}00054\ \ \ \ \ esp\_console\_dev\_uart\_config\_t\ uart\_config\ =\ ESP\_CONSOLE\_DEV\_UART\_CONFIG\_DEFAULT();}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00055}00055\ \ \ \ \ uart\_config.channel\ \ \ =\ CONFIG\_ESP\_CONSOLE\_UART\_NUM;}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00056}00056\ \ \ \ \ uart\_config.baud\_rate\ =\ CONFIG\_ESP\_CONSOLE\_UART\_BAUDRATE;}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00057}00057\ }
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00058}00058\ \ \ \ \ ESP\_ERROR\_CHECK(esp\_console\_new\_repl\_uart(\&uart\_config,\ \&repl\_config,\ \&s\_repl));}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00059}00059\ \ \ \ \ ESP\_ERROR\_CHECK(esp\_console\_start\_repl(s\_repl));}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00060}00060\ }
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00061}00061\ \ \ \ \ ESP\_LOGI(TAG,\ \textcolor{stringliteral}{"{}Console\ ready.\ Type\ 'help'\ to\ list\ commands."{}});}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00062}00062\ \}}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00063}00063\ }
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00067}00067\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ print\_usage(\textcolor{keywordtype}{void})}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00068}00068\ \{}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00069}00069\ \ \ \ \ printf(\textcolor{stringliteral}{"{}Usage:\(\backslash\)n"{}});}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00070}00070\ \ \ \ \ printf(\textcolor{stringliteral}{"{}\ \ wifi\ mode\ <ap|sta|ap+sta|null>\(\backslash\)n"{}});}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00071}00071\ \ \ \ \ printf(\textcolor{stringliteral}{"{}\ \ wifi\ sta\ ssid\ \(\backslash\)"{}<ssid>\(\backslash\)"{}\(\backslash\)n"{}});}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00072}00072\ \ \ \ \ printf(\textcolor{stringliteral}{"{}\ \ wifi\ sta\ pw\ \(\backslash\)"{}<password>\(\backslash\)"{}\(\backslash\)n"{}});}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00073}00073\ \ \ \ \ printf(\textcolor{stringliteral}{"{}\ \ wifi\ ap\ ssid\ \(\backslash\)"{}<ssid>\(\backslash\)"{}\(\backslash\)n"{}});}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00074}00074\ \ \ \ \ printf(\textcolor{stringliteral}{"{}\ \ wifi\ ap\ pw\ \(\backslash\)"{}<password>\(\backslash\)"{}\ \ (>=8\ chars)\ or\ empty\ to\ open\(\backslash\)n"{}});}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00075}00075\ \ \ \ \ printf(\textcolor{stringliteral}{"{}\ \ wifi\ ch\ <1-\/13>\(\backslash\)n"{}});}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00076}00076\ \ \ \ \ printf(\textcolor{stringliteral}{"{}\ \ wifi\ ring\ reset\(\backslash\)n"{}});\ \ \ }
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00077}00077\ \ \ \ \ printf(\textcolor{stringliteral}{"{}\ \ wifi\ status\(\backslash\)n"{}});}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00078}00078\ \ }
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00079}00079\ \}}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00080}00080\ }
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00087}00087\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{int}\ wifi\_command(\textcolor{keywordtype}{int}\ argc,\ \textcolor{keywordtype}{char}\ **argv)}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00088}00088\ \{}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00089}00089\ \ \ \ \ \textcolor{keywordflow}{if}\ (argc\ <\ 2)\ \{}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00090}00090\ \ \ \ \ \ \ \ \ print\_usage();}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00091}00091\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00092}00092\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00093}00093\ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00094}00094\ \ \ \ \ \textcolor{comment}{//\ wifi\ mode\ <mode>}}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00095}00095\ \ \ \ \ \textcolor{keywordflow}{if}\ (strcasecmp(argv[1],\ \textcolor{stringliteral}{"{}mode"{}})\ ==\ 0)\ \{}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00096}00096\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (argc\ <\ 3)\ \{}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00097}00097\ \ \ \ \ \ \ \ \ \ \ \ \ print\_usage();}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00098}00098\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00099}00099\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00100}00100\ \ \ \ \ \ \ \ \ esp\_err\_t\ err\ =\ \mbox{\hyperlink{wifi_8c_a1192cabd1e0fd0948ae7942b7201668d}{wifi\_mgr\_set\_mode\_str}}(argv[2]);}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00101}00101\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (err\ !=\ ESP\_OK)\ \{}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00102}00102\ \ \ \ \ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}Failed\ to\ set\ mode\ '\%s':\ \%s\(\backslash\)n"{}},}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00103}00103\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ argv[2],\ esp\_err\_to\_name(err));}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00104}00104\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00105}00105\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00106}00106\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00107}00107\ }
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00108}00108\ \ \ \ \ \textcolor{comment}{//\ wifi\ sta\ ssid\ <ssid>\ /\ pw\ <password>}}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00109}00109\ \ \ \ \ \textcolor{keywordflow}{if}\ (strcasecmp(argv[1],\ \textcolor{stringliteral}{"{}sta"{}})\ ==\ 0)\ \{}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00110}00110\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (argc\ <\ 4)\ \{}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00111}00111\ \ \ \ \ \ \ \ \ \ \ \ \ print\_usage();}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00112}00112\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00113}00113\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00114}00114\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00115}00115\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ wifi\ sta\ ssid\ <ssid>\ /\ pw\ <password>}}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00116}00116\ \ \ \ \ \ \ \ \ esp\_err\_t\ err\ =\ ESP\_OK;}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00117}00117\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (strcasecmp(argv[2],\ \textcolor{stringliteral}{"{}ssid"{}})\ ==\ 0)\ \{}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00118}00118\ \ \ \ \ \ \ \ \ \ \ \ \ err\ =\ \mbox{\hyperlink{wifi_8c_afd0442b8f0eea2d94cc3306fa93905c5}{wifi\_mgr\_set\_sta\_ssid}}(argv[3]);}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00119}00119\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (strcasecmp(argv[2],\ \textcolor{stringliteral}{"{}pw"{}})\ ==\ 0\ ||}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00120}00120\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ strcasecmp(argv[2],\ \textcolor{stringliteral}{"{}password"{}})\ ==\ 0)\ \{}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00121}00121\ \ \ \ \ \ \ \ \ \ \ \ \ err\ =\ \mbox{\hyperlink{wifi_8c_adb1b9bcac58b750454246bc88b78fe15}{wifi\_mgr\_set\_sta\_password}}(argv[3]);}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00122}00122\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00123}00123\ \ \ \ \ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}Unknown\ STA\ field\ '\%s'\(\backslash\)n"{}},\ argv[2]);}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00124}00124\ \ \ \ \ \ \ \ \ \ \ \ \ print\_usage();}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00125}00125\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00126}00126\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00127}00127\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (err\ !=\ ESP\_OK)\ \{}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00128}00128\ \ \ \ \ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}Failed\ to\ update\ STA\ config:\ \%s\(\backslash\)n"{}},\ esp\_err\_to\_name(err));}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00129}00129\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00130}00130\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00131}00131\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00132}00132\ }
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00133}00133\ \ \ \ \ \textcolor{comment}{//\ wifi\ ap\ ssid/pw}}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00134}00134\ \ \ \ \ \textcolor{keywordflow}{if}\ (strcasecmp(argv[1],\ \textcolor{stringliteral}{"{}ap"{}})\ ==\ 0)\ \{}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00135}00135\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (argc\ <\ 4)\ \{}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00136}00136\ \ \ \ \ \ \ \ \ \ \ \ \ print\_usage();}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00137}00137\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00138}00138\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00139}00139\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ wifi\ ap\ ssid\ <ssid>\ /\ pw\ <password>}}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00140}00140\ \ \ \ \ \ \ \ \ esp\_err\_t\ err\ =\ ESP\_OK;}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00141}00141\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (strcasecmp(argv[2],\ \textcolor{stringliteral}{"{}ssid"{}})\ ==\ 0)\ \{}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00142}00142\ \ \ \ \ \ \ \ \ \ \ \ \ err\ =\ \mbox{\hyperlink{wifi_8c_a36d6884f1f016c7dca7a8dc3b86d62ca}{wifi\_mgr\_set\_ap\_ssid}}(argv[3]);}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00143}00143\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (strcasecmp(argv[2],\ \textcolor{stringliteral}{"{}pw"{}})\ ==\ 0\ ||}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00144}00144\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ strcasecmp(argv[2],\ \textcolor{stringliteral}{"{}password"{}})\ ==\ 0)\ \{}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00145}00145\ \ \ \ \ \ \ \ \ \ \ \ \ err\ =\ \mbox{\hyperlink{wifi_8c_aea02fef844d7a0cde1fa5507ae392b6e}{wifi\_mgr\_set\_ap\_password}}(argv[3]);}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00146}00146\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00147}00147\ \ \ \ \ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}Unknown\ AP\ field\ '\%s'\(\backslash\)n"{}},\ argv[2]);}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00148}00148\ \ \ \ \ \ \ \ \ \ \ \ \ print\_usage();}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00149}00149\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00150}00150\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00151}00151\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (err\ !=\ ESP\_OK)\ \{}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00152}00152\ \ \ \ \ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}Failed\ to\ update\ AP\ config:\ \%s\(\backslash\)n"{}},\ esp\_err\_to\_name(err));}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00153}00153\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00154}00154\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00155}00155\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00156}00156\ }
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00157}00157\ \ \ \ \ \textcolor{comment}{//\ wifi\ status}}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00158}00158\ \ \ \ \ \textcolor{keywordflow}{if}\ (strcasecmp(argv[1],\ \textcolor{stringliteral}{"{}status"{}})\ ==\ 0)\ \{}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00159}00159\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{wifi_8c_a03dd315406b5f0eb5b84a286c43ba7cc}{wifi\_mgr\_print\_status}}();}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00160}00160\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{sniffer_8c_a3f1754a0286ce754699ab73c0b0a53ba}{sniffer\_print\_stats}}();}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00161}00161\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00162}00162\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00163}00163\ }
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00164}00164\ \ \ \ \ \textcolor{comment}{//\ wifi\ ch\ 1\string~13}}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00165}00165\ \ \ \ \ \textcolor{keywordflow}{if}\ (strcasecmp(argv[1],\ \textcolor{stringliteral}{"{}ch"{}})\ ==\ 0\ ||\ strcasecmp(argv[1],\ \textcolor{stringliteral}{"{}channel"{}})\ ==\ 0)\ \{}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00166}00166\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (argc\ <\ 3)\ \{}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00167}00167\ \ \ \ \ \ \ \ \ \ \ \ \ print\_usage();}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00168}00168\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00169}00169\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00170}00170\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ ch\ =\ atoi(argv[2]);}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00171}00171\ \ \ \ \ \ \ \ \ esp\_err\_t\ err\ =\ \mbox{\hyperlink{wifi_8c_aa7e1c1f464177418ca578460692cc56c}{wifi\_mgr\_set\_channel}}((uint8\_t)ch);}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00172}00172\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (err\ !=\ ESP\_OK)\ \{}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00173}00173\ \ \ \ \ \ \ \ \ \ \ \ \ printf(\textcolor{stringliteral}{"{}Failed\ to\ set\ channel:\ \%s\(\backslash\)n"{}},\ esp\_err\_to\_name(err));}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00174}00174\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00175}00175\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00176}00176\ \ \ \ \ \}\ \ \ \ }
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00177}00177\ }
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00178}00178\ \ \ \ \ \textcolor{comment}{//\ wifi\ ring\ reset\ }}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00179}00179\ \ \ \ \ \textcolor{keywordflow}{if}\ (strcasecmp(argv[1],\ \textcolor{stringliteral}{"{}ring"{}})\ ==\ 0)\ \{}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00180}00180\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00181}00181\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (strcasecmp(argv[2],\ \textcolor{stringliteral}{"{}reset"{}})\ ==\ 0)\ \{}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00182}00182\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{sniffer_8c_ac875b5b30914b5076359238e95f1b068}{sniffer\_ring\_reset}}();}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00183}00183\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{sniffer_8c_a3f1754a0286ce754699ab73c0b0a53ba}{sniffer\_print\_stats}}();}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00184}00184\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00185}00185\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00186}00186\ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00187}00187\ }
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00188}00188\ \ \ \ \ \}\ \ \ }
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00189}00189\ }
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00190}00190\ \ \ \ \ printf(\textcolor{stringliteral}{"{}Unknown\ wifi\ command\ '\%s'\(\backslash\)n"{}},\ argv[1]);}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00191}00191\ \ \ \ \ print\_usage();}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00192}00192\ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{\Hypertarget{cmd_8c_source_l00193}00193\ \}}
+
+\end{DoxyCode}

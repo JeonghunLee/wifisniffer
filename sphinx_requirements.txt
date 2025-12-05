@@ -1,0 +1,10 @@
+sphinx>=7.0
+breathe>=4.35.0
+# 선택: C/C++ 구조 자동 트리 생성하고 싶으면
+exhale
+# 테마(선호에 따라)
+sphinx-rtd-theme>=2.0
+# Markdown도 쓰고 싶으면 (index.rst + 나머지 md 가능하게)
+myst-parser>=3.0
+# Sphinx 확장 기능들
+linkify-it-py>=2.0.0

@@ -1,0 +1,9 @@
+<map id="wifi_mgr_set_channel" name="wifi_mgr_set_channel">
+<area shape="rect" id="Node000001" title="Change the primary channel while respecting mode restrictions." alt="" coords="5,31,168,56"/>
+<area shape="rect" id="Node000002" href="$sniffer_8c.html#aece9df03dd920b92c9296815619db4c3" title="Enable promiscuous capture with the predefined filter set." alt="" coords="216,5,420,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="168,32,202,28,203,33,169,37"/>
+<area shape="rect" id="Node000003" href="$wifi_8c.html#aa10886611772ba3c0e0a00dae83eec1f" title="Prime cached Wi&#45;Fi configs and record the current mode." alt="" coords="265,55,371,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="169,49,251,58,251,63,168,54"/>
+<area shape="rect" id="Node000004" href="$wifi_8c.html#a1ccfac3b661e1c212b38b3e7810f3f53" title="Convert Wi&#45;Fi mode enum to a short string for status printing." alt="" coords="468,55,655,80"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="372,65,454,65,454,70,372,70"/>
+</map>

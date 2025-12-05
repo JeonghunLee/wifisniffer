@@ -1,0 +1,21 @@
+<map id="wifi_mgr_mode_to_string" name="wifi_mgr_mode_to_string">
+<area shape="rect" id="Node000001" title="Convert Wi&#45;Fi mode enum to a short string for status printing." alt="" coords="687,155,873,180"/>
+<area shape="rect" id="Node000002" href="$wifi_8c.html#aa10886611772ba3c0e0a00dae83eec1f" title="Prime cached Wi&#45;Fi configs and record the current mode." alt="" coords="504,129,611,155"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="673,158,610,151,611,145,673,153"/>
+<area shape="rect" id="Node000010" href="$wifi_8c.html#a03dd315406b5f0eb5b84a286c43ba7cc" title="Print a snapshot of cached and runtime Wi&#45;Fi configuration." alt="" coords="476,179,639,204"/>
+<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="673,181,639,185,638,180,673,176"/>
+<area shape="rect" id="Node000003" href="$wifi_8c.html#aea02fef844d7a0cde1fa5507ae392b6e" title="Update SoftAP password (empty string toggles open auth) and refresh sniffer." alt="" coords="229,5,426,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="532,122,486,82,427,44,397,33,399,28,429,40,489,78,535,118"/>
+<area shape="rect" id="Node000004" href="$wifi_8c.html#a36d6884f1f016c7dca7a8dc3b86d62ca" title="Update SoftAP SSID and refresh promiscuous mode if active." alt="" coords="247,55,408,80"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="513,126,427,94,387,83,388,78,429,89,515,121"/>
+<area shape="rect" id="Node000005" href="$wifi_8c.html#aa7e1c1f464177418ca578460692cc56c" title="Change the primary channel while respecting mode restrictions." alt="" coords="246,104,409,129"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="490,137,408,128,409,123,491,132"/>
+<area shape="rect" id="Node000006" href="$wifi_8c.html#a8b9e69709cc12e34d6a40845505d30a0" title="Apply a specific Wi&#45;Fi mode using stored STA/AP configurations." alt="" coords="253,153,402,179"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="491,152,402,161,402,156,490,146"/>
+<area shape="rect" id="Node000008" href="$wifi_8c.html#adb1b9bcac58b750454246bc88b78fe15" title="Update STA password and refresh promiscuous mode if active." alt="" coords="227,203,428,228"/>
+<area shape="poly" id="edge7_Node000002_Node000008" title=" " alt="" coords="497,161,477,168,429,192,388,205,386,200,427,188,475,164,495,156"/>
+<area shape="rect" id="Node000009" href="$wifi_8c.html#afd0442b8f0eea2d94cc3306fa93905c5" title="Update STA SSID and refresh promiscuous mode if already active." alt="" coords="245,252,410,277"/>
+<area shape="poly" id="edge8_Node000002_Node000009" title=" " alt="" coords="493,159,478,168,462,186,455,204,447,223,430,241,405,254,403,250,426,237,442,220,450,202,458,183,474,164,490,155"/>
+<area shape="rect" id="Node000007" href="$wifi_8c.html#a1192cabd1e0fd0948ae7942b7201668d" title="Parse a textual mode and forward to wifi_mgr_set_mode." alt="" coords="5,153,179,179"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="239,169,179,169,179,163,239,163"/>
+</map>

@@ -1,0 +1,9 @@
+<map id="wifi_mgr_set_mode_str" name="wifi_mgr_set_mode_str">
+<area shape="rect" id="Node000001" title="Parse a textual mode and forward to wifi_mgr_set_mode." alt="" coords="5,5,179,31"/>
+<area shape="rect" id="Node000002" href="$wifi_8c.html#a8b9e69709cc12e34d6a40845505d30a0" title="Apply a specific Wi&#45;Fi mode using stored STA/AP configurations." alt="" coords="227,5,376,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="179,15,213,15,213,21,179,21"/>
+<area shape="rect" id="Node000003" href="$wifi_8c.html#aa10886611772ba3c0e0a00dae83eec1f" title="Prime cached Wi&#45;Fi configs and record the current mode." alt="" coords="424,5,531,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="376,15,411,15,411,21,376,21"/>
+<area shape="rect" id="Node000004" href="$wifi_8c.html#a1ccfac3b661e1c212b38b3e7810f3f53" title="Convert Wi&#45;Fi mode enum to a short string for status printing." alt="" coords="579,5,765,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="531,15,565,15,565,21,531,21"/>
+</map>

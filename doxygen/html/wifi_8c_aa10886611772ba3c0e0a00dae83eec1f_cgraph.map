@@ -1,0 +1,5 @@
+<map id="wifi_mgr_init" name="wifi_mgr_init">
+<area shape="rect" id="Node000001" title="Prime cached Wi&#45;Fi configs and record the current mode." alt="" coords="5,5,112,31"/>
+<area shape="rect" id="Node000002" href="$wifi_8c.html#a1ccfac3b661e1c212b38b3e7810f3f53" title="Convert Wi&#45;Fi mode enum to a short string for status printing." alt="" coords="160,5,347,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="112,15,146,15,146,21,112,21"/>
+</map>

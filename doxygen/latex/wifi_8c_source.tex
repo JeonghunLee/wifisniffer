@@ -1,0 +1,355 @@
+\doxysection{wifi.\+c}
+\hypertarget{wifi_8c_source}{}\label{wifi_8c_source}\index{main/wifi.c@{main/wifi.c}}
+\mbox{\hyperlink{wifi_8c}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00001}00001\ }
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00005}00005\ \textcolor{comment}{//\ wifi.c}}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00006}00006\ \textcolor{preprocessor}{\#include\ "{}wifi.h"{}}}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00007}00007\ }
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00008}00008\ \textcolor{preprocessor}{\#include\ <string.h>}}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00009}00009\ \textcolor{preprocessor}{\#include\ <stdio.h>}}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00010}00010\ }
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00011}00011\ \textcolor{preprocessor}{\#include\ "{}esp\_wifi.h"{}}}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00012}00012\ \textcolor{preprocessor}{\#include\ "{}esp\_log.h"{}}}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00013}00013\ \textcolor{preprocessor}{\#include\ "{}sniffer.h"{}}\ \ \ }
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00014}00014\ }
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00015}00015\ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *TAG\ =\ \textcolor{stringliteral}{"{}WIFI\_MGR"{}};}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00016}00016\ }
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00017}00017\ \textcolor{comment}{//\ \ wifi\ manager\ 내부\ 상태}}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00018}00018\ \textcolor{keyword}{static}\ wifi\_config\_t\ s\_sta\_config;}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00019}00019\ \textcolor{keyword}{static}\ wifi\_config\_t\ s\_ap\_config;}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00020}00020\ \textcolor{keyword}{static}\ wifi\_mode\_t\ \ \ s\_current\_mode\ =\ WIFI\_MODE\_NULL;}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00021}00021\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ \ \ \ \ \ \ \ \ \ s\_initialized\ \ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00022}00022\ }
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00023}00023\ \textcolor{comment}{//\ Forward\ declarations}}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00024}00024\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ ensure\_ap\_defaults(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00025}00025\ \textcolor{keyword}{static}\ esp\_err\_t\ apply\_wifi\_mode\_internal(wifi\_mode\_t\ mode);}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00026}00026\ \textcolor{keyword}{static}\ esp\_err\_t\ update\_sta\_ssid(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *ssid);}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00027}00027\ \textcolor{keyword}{static}\ esp\_err\_t\ update\_sta\_password(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *password);}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00028}00028\ \textcolor{keyword}{static}\ esp\_err\_t\ update\_ap\_ssid(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *ssid);}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00029}00029\ \textcolor{keyword}{static}\ esp\_err\_t\ update\_ap\_password(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *password);}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00030}00030\ }
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00031}00031\ \textcolor{comment}{//\ WIFI\ AP\ MODE\ defaults}}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00032}00032\ }
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00034}\mbox{\hyperlink{wifi_8c_ae04ba72d72202a9d8808cdbc8f39fc8b}{00034}}\ \textcolor{preprocessor}{\#define\ WIFI\_AP\_DEFAULT\_CHANNEL\ \ \ \ \ \ \ \ \ 1}}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00035}00035\ \textcolor{preprocessor}{\#define\ WIFI\_AP\_DEFAULT\_MAX\_CONNECTION\ \ 4}}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00036}00036\ \textcolor{preprocessor}{\#define\ WIFI\_AP\_DEFAULT\_BEACON\_INTERVAL\ 100}}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00037}00037\ }
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00038}00038\ \textcolor{comment}{//\ AP\ 설정\ 기본값\ 보장}}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00042}00042\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ ensure\_ap\_defaults(\textcolor{keywordtype}{void})}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00043}00043\ \{}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00044}00044\ \ \ \ \ \textcolor{keywordflow}{if}\ (s\_ap\_config.ap.channel\ ==\ 0)\ \{}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00045}00045\ \ \ \ \ \ \ \ \ s\_ap\_config.ap.channel\ =\ \mbox{\hyperlink{wifi_8c_ae04ba72d72202a9d8808cdbc8f39fc8b}{WIFI\_AP\_DEFAULT\_CHANNEL}};}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00046}00046\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00047}00047\ \ \ \ \ \textcolor{keywordflow}{if}\ (s\_ap\_config.ap.max\_connection\ ==\ 0)\ \{}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00048}00048\ \ \ \ \ \ \ \ \ s\_ap\_config.ap.max\_connection\ =\ WIFI\_AP\_DEFAULT\_MAX\_CONNECTION;}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00049}00049\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00050}00050\ \ \ \ \ \textcolor{keywordflow}{if}\ (s\_ap\_config.ap.beacon\_interval\ ==\ 0)\ \{}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00051}00051\ \ \ \ \ \ \ \ \ s\_ap\_config.ap.beacon\_interval\ =\ WIFI\_AP\_DEFAULT\_BEACON\_INTERVAL;}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00052}00052\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00053}00053\ \}}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00054}00054\ }
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00055}00055\ \textcolor{comment}{//\ 모드\ 문자열을\ Wi-\/Fi\ 모드로\ 변환}}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00061}\mbox{\hyperlink{wifi_8c_a1ccfac3b661e1c212b38b3e7810f3f53}{00061}}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *\mbox{\hyperlink{wifi_8c_a1ccfac3b661e1c212b38b3e7810f3f53}{wifi\_mgr\_mode\_to\_string}}(wifi\_mode\_t\ mode)}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00062}00062\ \{}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00063}00063\ \ \ \ \ \textcolor{keywordflow}{switch}\ (mode)\ \{}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00064}00064\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ WIFI\_MODE\_NULL:\ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}null"{}};}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00065}00065\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ WIFI\_MODE\_STA:\ \ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}sta"{}};}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00066}00066\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ WIFI\_MODE\_AP:\ \ \ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}ap"{}};}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00067}00067\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ WIFI\_MODE\_APSTA:\textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}ap+sta"{}};}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00068}00068\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{default}:\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}unknown"{}};}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00069}00069\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00070}00070\ \}}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00071}00071\ }
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00072}00072\ }
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00077}\mbox{\hyperlink{wifi_8c_aa10886611772ba3c0e0a00dae83eec1f}{00077}}\ esp\_err\_t\ \mbox{\hyperlink{wifi_8c_aa10886611772ba3c0e0a00dae83eec1f}{wifi\_mgr\_init}}(\textcolor{keywordtype}{void})}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00078}00078\ \{}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00079}00079\ \ \ \ \ \textcolor{keywordflow}{if}\ (s\_initialized)\ \{}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00080}00080\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ ESP\_OK;}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00081}00081\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00082}00082\ \ \ \ \ s\_initialized\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00083}00083\ }
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00084}00084\ \ \ \ \ memset(\&s\_sta\_config,\ 0,\ \textcolor{keyword}{sizeof}(s\_sta\_config));}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00085}00085\ \ \ \ \ memset(\&s\_ap\_config,\ 0,\ \textcolor{keyword}{sizeof}(s\_ap\_config));}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00086}00086\ }
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00087}00087\ \ \ \ \ (void)esp\_wifi\_get\_config(WIFI\_IF\_STA,\ \&s\_sta\_config);}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00088}00088\ \ \ \ \ \textcolor{keywordflow}{if}\ (esp\_wifi\_get\_config(WIFI\_IF\_AP,\ \&s\_ap\_config)\ !=\ ESP\_OK)\ \{}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00089}00089\ \ \ \ \ \ \ \ \ memset(\&s\_ap\_config,\ 0,\ \textcolor{keyword}{sizeof}(s\_ap\_config));}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00090}00090\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00091}00091\ \ \ \ \ ensure\_ap\_defaults();}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00092}00092\ \ \ \ \ (void)esp\_wifi\_get\_mode(\&s\_current\_mode);}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00093}00093\ }
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00094}00094\ \ \ \ \ ESP\_LOGI(TAG,\ \textcolor{stringliteral}{"{}wifi\_mgr\_init:\ mode=\%s"{}},\ \mbox{\hyperlink{wifi_8c_a1ccfac3b661e1c212b38b3e7810f3f53}{wifi\_mgr\_mode\_to\_string}}(s\_current\_mode));}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00095}00095\ \ \ \ \ \textcolor{keywordflow}{return}\ ESP\_OK;}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00096}00096\ \}}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00097}00097\ }
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00098}00098\ }
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00104}\mbox{\hyperlink{wifi_8c_a8b9e69709cc12e34d6a40845505d30a0}{00104}}\ esp\_err\_t\ \mbox{\hyperlink{wifi_8c_a8b9e69709cc12e34d6a40845505d30a0}{wifi\_mgr\_set\_mode}}(wifi\_mode\_t\ mode)}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00105}00105\ \{}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00106}00106\ \ \ \ \ ESP\_ERROR\_CHECK(\mbox{\hyperlink{wifi_8c_aa10886611772ba3c0e0a00dae83eec1f}{wifi\_mgr\_init}}());}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00107}00107\ \ \ \ \ \textcolor{keywordflow}{return}\ apply\_wifi\_mode\_internal(mode);}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00108}00108\ \}}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00109}00109\ }
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00115}\mbox{\hyperlink{wifi_8c_a1192cabd1e0fd0948ae7942b7201668d}{00115}}\ esp\_err\_t\ \mbox{\hyperlink{wifi_8c_a1192cabd1e0fd0948ae7942b7201668d}{wifi\_mgr\_set\_mode\_str}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *mode\_str)}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00116}00116\ \{}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00117}00117\ \ \ \ \ \textcolor{keywordflow}{if}\ (mode\_str\ ==\ NULL)\ \{}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00118}00118\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ ESP\_ERR\_INVALID\_ARG;}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00119}00119\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00120}00120\ }
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00121}00121\ \ \ \ \ wifi\_mode\_t\ mode\ =\ WIFI\_MODE\_NULL;}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00122}00122\ }
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00123}00123\ \ \ \ \ \textcolor{keywordflow}{if}\ (strcasecmp(mode\_str,\ \textcolor{stringliteral}{"{}null"{}})\ ==\ 0)\ \{}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00124}00124\ \ \ \ \ \ \ \ \ mode\ =\ WIFI\_MODE\_NULL;}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00125}00125\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00126}00126\ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (strcasecmp(mode\_str,\ \textcolor{stringliteral}{"{}sta"{}})\ ==\ 0)\ \{}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00127}00127\ \ \ \ \ \ \ \ \ mode\ =\ WIFI\_MODE\_STA;}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00128}00128\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00129}00129\ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (strcasecmp(mode\_str,\ \textcolor{stringliteral}{"{}ap"{}})\ ==\ 0)\ \{}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00130}00130\ \ \ \ \ \ \ \ \ mode\ =\ WIFI\_MODE\_AP;}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00131}00131\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00132}00132\ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (strcasecmp(mode\_str,\ \textcolor{stringliteral}{"{}ap+sta"{}})\ ==\ 0\ ||}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00133}00133\ \ \ \ \ \ \ \ \ \ \ \ \ \ strcasecmp(mode\_str,\ \textcolor{stringliteral}{"{}apsta"{}})\ ==\ 0\ ||}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00134}00134\ \ \ \ \ \ \ \ \ \ \ \ \ \ strcasecmp(mode\_str,\ \textcolor{stringliteral}{"{}sta+ap"{}})\ ==\ 0)\ \{}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00135}00135\ \ \ \ \ \ \ \ \ mode\ =\ WIFI\_MODE\_APSTA;}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00136}00136\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00137}00137\ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00138}00138\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ ESP\_ERR\_INVALID\_ARG;}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00139}00139\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00140}00140\ }
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00141}00141\ \ \ \ \ \textcolor{comment}{//\ 모드\ 적용}}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00142}00142\ \ \ \ \ esp\_err\_t\ err\ =\ \mbox{\hyperlink{wifi_8c_a8b9e69709cc12e34d6a40845505d30a0}{wifi\_mgr\_set\_mode}}(mode);}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00143}00143\ \ \ \ \ \textcolor{keywordflow}{if}\ (err\ !=\ ESP\_OK)\ \{}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00144}00144\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ err;}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00145}00145\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00146}00146\ }
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00147}00147\ \ \ \ \ \textcolor{keywordflow}{return}\ ESP\_OK;}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00148}00148\ \}}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00149}00149\ }
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00150}00150\ }
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00156}\mbox{\hyperlink{wifi_8c_afd0442b8f0eea2d94cc3306fa93905c5}{00156}}\ esp\_err\_t\ \mbox{\hyperlink{wifi_8c_afd0442b8f0eea2d94cc3306fa93905c5}{wifi\_mgr\_set\_sta\_ssid}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *ssid)}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00157}00157\ \{}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00158}00158\ \ \ \ \ ESP\_ERROR\_CHECK(\mbox{\hyperlink{wifi_8c_aa10886611772ba3c0e0a00dae83eec1f}{wifi\_mgr\_init}}());}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00159}00159\ \ \ \ \ esp\_err\_t\ err\ =\ update\_sta\_ssid(ssid);}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00160}00160\ \ \ \ \ \textcolor{keywordflow}{if}\ (err\ ==\ ESP\_OK\ \&\&}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00161}00161\ \ \ \ \ \ \ \ \ (s\_current\_mode\ ==\ WIFI\_MODE\_STA\ ||\ s\_current\_mode\ ==\ WIFI\_MODE\_APSTA))\ \{}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00162}00162\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{sniffer_8c_aece9df03dd920b92c9296815619db4c3}{sniffer\_enable\_promiscuous}}();}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00163}00163\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00164}00164\ \ \ \ \ \textcolor{keywordflow}{return}\ err;}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00165}00165\ \}}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00166}00166\ }
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00172}\mbox{\hyperlink{wifi_8c_adb1b9bcac58b750454246bc88b78fe15}{00172}}\ esp\_err\_t\ \mbox{\hyperlink{wifi_8c_adb1b9bcac58b750454246bc88b78fe15}{wifi\_mgr\_set\_sta\_password}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *password)}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00173}00173\ \{}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00174}00174\ \ \ \ \ ESP\_ERROR\_CHECK(\mbox{\hyperlink{wifi_8c_aa10886611772ba3c0e0a00dae83eec1f}{wifi\_mgr\_init}}());}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00175}00175\ \ \ \ \ esp\_err\_t\ err\ =\ update\_sta\_password(password);}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00176}00176\ \ \ \ \ \textcolor{keywordflow}{if}\ (err\ ==\ ESP\_OK\ \&\&}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00177}00177\ \ \ \ \ \ \ \ \ (s\_current\_mode\ ==\ WIFI\_MODE\_STA\ ||\ s\_current\_mode\ ==\ WIFI\_MODE\_APSTA))\ \{}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00178}00178\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{sniffer_8c_aece9df03dd920b92c9296815619db4c3}{sniffer\_enable\_promiscuous}}();}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00179}00179\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00180}00180\ \ \ \ \ \textcolor{keywordflow}{return}\ err;}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00181}00181\ \}}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00182}00182\ }
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00188}\mbox{\hyperlink{wifi_8c_a36d6884f1f016c7dca7a8dc3b86d62ca}{00188}}\ esp\_err\_t\ \mbox{\hyperlink{wifi_8c_a36d6884f1f016c7dca7a8dc3b86d62ca}{wifi\_mgr\_set\_ap\_ssid}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *ssid)}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00189}00189\ \{}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00190}00190\ \ \ \ \ ESP\_ERROR\_CHECK(\mbox{\hyperlink{wifi_8c_aa10886611772ba3c0e0a00dae83eec1f}{wifi\_mgr\_init}}());}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00191}00191\ \ \ \ \ esp\_err\_t\ err\ =\ update\_ap\_ssid(ssid);}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00192}00192\ \ \ \ \ \textcolor{keywordflow}{if}\ (err\ ==\ ESP\_OK\ \&\&}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00193}00193\ \ \ \ \ \ \ \ \ (s\_current\_mode\ ==\ WIFI\_MODE\_AP\ ||\ s\_current\_mode\ ==\ WIFI\_MODE\_APSTA))\ \{}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00194}00194\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{sniffer_8c_aece9df03dd920b92c9296815619db4c3}{sniffer\_enable\_promiscuous}}();}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00195}00195\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00196}00196\ \ \ \ \ \textcolor{keywordflow}{return}\ err;}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00197}00197\ \}}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00198}00198\ }
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00204}\mbox{\hyperlink{wifi_8c_aea02fef844d7a0cde1fa5507ae392b6e}{00204}}\ esp\_err\_t\ \mbox{\hyperlink{wifi_8c_aea02fef844d7a0cde1fa5507ae392b6e}{wifi\_mgr\_set\_ap\_password}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *password)}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00205}00205\ \{}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00206}00206\ \ \ \ \ ESP\_ERROR\_CHECK(\mbox{\hyperlink{wifi_8c_aa10886611772ba3c0e0a00dae83eec1f}{wifi\_mgr\_init}}());}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00207}00207\ \ \ \ \ esp\_err\_t\ err\ =\ update\_ap\_password(password);}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00208}00208\ \ \ \ \ \textcolor{keywordflow}{if}\ (err\ ==\ ESP\_OK\ \&\&}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00209}00209\ \ \ \ \ \ \ \ \ (s\_current\_mode\ ==\ WIFI\_MODE\_AP\ ||\ s\_current\_mode\ ==\ WIFI\_MODE\_APSTA))\ \{}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00210}00210\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{sniffer_8c_aece9df03dd920b92c9296815619db4c3}{sniffer\_enable\_promiscuous}}();}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00211}00211\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00212}00212\ \ \ \ \ \textcolor{keywordflow}{return}\ err;}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00213}00213\ \}}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00214}00214\ }
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00220}\mbox{\hyperlink{wifi_8c_aa7e1c1f464177418ca578460692cc56c}{00220}}\ esp\_err\_t\ \mbox{\hyperlink{wifi_8c_aa7e1c1f464177418ca578460692cc56c}{wifi\_mgr\_set\_channel}}(uint8\_t\ primary)}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00221}00221\ \{}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00222}00222\ \ \ \ \ wifi\_mode\_t\ mode\ =\ WIFI\_MODE\_NULL;}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00223}00223\ }
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00224}00224\ \ \ \ \ \textcolor{keywordflow}{if}\ (primary\ <\ 1\ ||\ primary\ >\ 13)\ \{\ \ \ \textcolor{comment}{//\ 필요하면\ 14까지\ 허용}}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00225}00225\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ ESP\_ERR\_INVALID\_ARG;}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00226}00226\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00227}00227\ }
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00228}00228\ \ \ \ \ ESP\_ERROR\_CHECK(\mbox{\hyperlink{wifi_8c_aa10886611772ba3c0e0a00dae83eec1f}{wifi\_mgr\_init}}());}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00229}00229\ \ \ \ \ (void)esp\_wifi\_get\_mode(\&mode);}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00230}00230\ }
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00231}00231\ \ \ \ \ \textcolor{comment}{//\ 1)\ STA\ /\ APSTA인\ 경우:\ 경고\ 또는\ 막기}}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00232}00232\ \ \ \ \ \textcolor{keywordflow}{if}\ (mode\ ==\ WIFI\_MODE\_STA\ ||\ mode\ ==\ WIFI\_MODE\_APSTA)\ \{}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00233}00233\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ 여기서\ 정책\ 결정:}}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00234}00234\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ \ \ -\/\ 그냥\ 막을지}}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00235}00235\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ \ \ -\/\ 또는\ 경고만\ 찍고\ 시도할지}}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00236}00236\ \ \ \ \ \ \ \ \ ESP\_LOGW(TAG,}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00237}00237\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}Channel\ change\ in\ STA/APSTA\ mode\ may\ be\ invalid\ or\ break\ connection.\ "{}}}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00238}00238\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}Use\ NULL/AP\ mode\ for\ sniffer\ channel\ hopping."{}});}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00239}00239\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ 나는\ 아예\ 막는\ 쪽이\ 더\ 안전하다고\ 봄}}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00240}00240\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ ESP\_ERR\_INVALID\_STATE;}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00241}00241\ \ \ \ \ \}\ \ \ \ }
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00242}00242\ \ \ \ \ \textcolor{comment}{//\ 2)\ NULL\ /\ AP\ 모드인\ 경우:\ 채널\ 변경\ 시도}}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00243}00243\ \ \ \ \ esp\_err\_t\ err\ =\ esp\_wifi\_set\_channel(primary,\ WIFI\_SECOND\_CHAN\_NONE);}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00244}00244\ \ \ \ \ \textcolor{keywordflow}{if}\ (err\ !=\ ESP\_OK)\ \{}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00245}00245\ \ \ \ \ \ \ \ \ ESP\_LOGE(TAG,\ \textcolor{stringliteral}{"{}esp\_wifi\_set\_channel\ failed:\ \%s"{}},\ esp\_err\_to\_name(err));}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00246}00246\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ err;}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00247}00247\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00248}00248\ }
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00249}00249\ \ \ \ \ \textcolor{comment}{//\ 채널\ 변경\ 후\ 스니퍼\ 다시\ 세팅\ (필요시)}}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00250}00250\ \ \ \ \ \mbox{\hyperlink{sniffer_8c_aece9df03dd920b92c9296815619db4c3}{sniffer\_enable\_promiscuous}}();}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00251}00251\ }
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00252}00252\ \ \ \ \ ESP\_LOGI(TAG,\ \textcolor{stringliteral}{"{}Wi-\/Fi\ channel\ set\ to\ \%u"{}},\ primary);}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00253}00253\ \ \ \ \ \textcolor{keywordflow}{return}\ ESP\_OK;}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00254}00254\ \}}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00255}00255\ }
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00256}00256\ }
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00260}\mbox{\hyperlink{wifi_8c_a03dd315406b5f0eb5b84a286c43ba7cc}{00260}}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{wifi_8c_a03dd315406b5f0eb5b84a286c43ba7cc}{wifi\_mgr\_print\_status}}(\textcolor{keywordtype}{void})}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00261}00261\ \{}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00262}00262\ \ \ \ \ wifi\_mode\_t\ mode\ =\ WIFI\_MODE\_NULL;}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00263}00263\ \ \ \ \ (void)esp\_wifi\_get\_mode(\&mode);}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00264}00264\ }
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00265}00265\ \ \ \ \ wifi\_config\_t\ sta;}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00266}00266\ \ \ \ \ wifi\_config\_t\ ap;}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00267}00267\ \ \ \ \ memset(\&sta,\ 0,\ \textcolor{keyword}{sizeof}(sta));}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00268}00268\ \ \ \ \ memset(\&ap,\ 0,\ \textcolor{keyword}{sizeof}(ap));}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00269}00269\ }
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00270}00270\ \ \ \ \ \textcolor{keywordflow}{if}\ (esp\_wifi\_get\_config(WIFI\_IF\_STA,\ \&sta)\ !=\ ESP\_OK)\ \{}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00271}00271\ \ \ \ \ \ \ \ \ sta\ =\ s\_sta\_config;}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00272}00272\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00273}00273\ \ \ \ \ \textcolor{keywordflow}{if}\ (esp\_wifi\_get\_config(WIFI\_IF\_AP,\ \&ap)\ !=\ ESP\_OK)\ \{}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00274}00274\ \ \ \ \ \ \ \ \ ap\ =\ s\_ap\_config;}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00275}00275\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00276}00276\ }
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00277}00277\ \ \ \ \ printf(\textcolor{stringliteral}{"{}Wi-\/Fi\ Status\ :\(\backslash\)n"{}});}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00278}00278\ \ \ \ \ printf(\textcolor{stringliteral}{"{}\ \ -\/\ Wi-\/Fi\ MODE:\ \%s\(\backslash\)n"{}},\ \mbox{\hyperlink{wifi_8c_a1ccfac3b661e1c212b38b3e7810f3f53}{wifi\_mgr\_mode\_to\_string}}(mode));\ \ \ \ }
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00279}00279\ \ \ \ \ printf(\textcolor{stringliteral}{"{}\ \ -\/\ STA\ SSID:\ \%s\(\backslash\)n"{}},\ sta.sta.ssid[0]\ ?\ (\textcolor{keywordtype}{char}\ *)sta.sta.ssid\ :\ \textcolor{stringliteral}{"{}<unset>"{}});}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00280}00280\ \ \ \ \ printf(\textcolor{stringliteral}{"{}\ \ -\/\ STA\ password:\ \%s\ (\%s)\(\backslash\)n"{}},\ sta.sta.password[0]\ ?\ \textcolor{stringliteral}{"{}<set>"{}}\ :\ \textcolor{stringliteral}{"{}<empty>"{}},sta.sta.password);}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00281}00281\ \ \ \ \ printf(\textcolor{stringliteral}{"{}\ \ -\/\ AP\ SSID:\ \%s\(\backslash\)n"{}},\ ap.ap.ssid[0]\ ?\ (\textcolor{keywordtype}{char}\ *)ap.ap.ssid\ :\ \textcolor{stringliteral}{"{}<unset>"{}});}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00282}00282\ \ \ \ \ printf(\textcolor{stringliteral}{"{}\ \ -\/\ AP\ password:\ \%s\(\backslash\)n"{}},}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00283}00283\ \ \ \ \ \ \ \ \ \ \ \ (ap.ap.authmode\ ==\ WIFI\_AUTH\_OPEN)\ ?\ \textcolor{stringliteral}{"{}<open>"{}}\ :\ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00284}00284\ \ \ \ \ \ \ \ \ \ \ \ (ap.ap.password[0]\ ?\ \textcolor{stringliteral}{"{}<set>"{}}\ :\ \textcolor{stringliteral}{"{}<invalid>"{}}));}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00285}00285\ \ \ \ \ printf(\textcolor{stringliteral}{"{}\ \ -\/\ AP\ channel:\ \%u\(\backslash\)n"{}},\ ap.ap.channel);}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00286}00286\ \}}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00287}00287\ }
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00288}00288\ \textcolor{comment}{//\ Wi-\/Fi\ 모드\ 적용\ 내부\ 함수}}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00294}00294\ \textcolor{keyword}{static}\ esp\_err\_t\ apply\_wifi\_mode\_internal(wifi\_mode\_t\ mode)}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00295}00295\ \{}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00296}00296\ \ \ \ \ esp\_err\_t\ err\ =\ esp\_wifi\_stop();}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00297}00297\ \ \ \ \ \textcolor{keywordflow}{if}\ (err\ !=\ ESP\_OK\ \&\&}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00298}00298\ \ \ \ \ \ \ \ \ err\ !=\ ESP\_ERR\_WIFI\_NOT\_INIT\ \&\&}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00299}00299\ \ \ \ \ \ \ \ \ err\ !=\ ESP\_ERR\_WIFI\_NOT\_STARTED)\ \{}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00300}00300\ \ \ \ \ \ \ \ \ ESP\_LOGE(TAG,\ \textcolor{stringliteral}{"{}esp\_wifi\_stop\ failed:\ \%s"{}},\ esp\_err\_to\_name(err));}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00301}00301\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ err;}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00302}00302\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00303}00303\ }
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00304}00304\ \ \ \ \ err\ =\ esp\_wifi\_set\_mode(mode);}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00305}00305\ \ \ \ \ \textcolor{keywordflow}{if}\ (err\ !=\ ESP\_OK)\ \{}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00306}00306\ \ \ \ \ \ \ \ \ ESP\_LOGE(TAG,\ \textcolor{stringliteral}{"{}esp\_wifi\_set\_mode\ failed:\ \%s"{}},\ esp\_err\_to\_name(err));}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00307}00307\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ err;}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00308}00308\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00309}00309\ }
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00310}00310\ \ \ \ \ \textcolor{keywordflow}{if}\ (mode\ ==\ WIFI\_MODE\_STA\ ||\ mode\ ==\ WIFI\_MODE\_APSTA)\ \{}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00311}00311\ \ \ \ \ \ \ \ \ err\ =\ esp\_wifi\_set\_config(WIFI\_IF\_STA,\ \&s\_sta\_config);}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00312}00312\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (err\ !=\ ESP\_OK)\ \{}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00313}00313\ \ \ \ \ \ \ \ \ \ \ \ \ ESP\_LOGE(TAG,\ \textcolor{stringliteral}{"{}STA\ config\ failed:\ \%s"{}},\ esp\_err\_to\_name(err));}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00314}00314\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ err;}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00315}00315\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00316}00316\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00317}00317\ }
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00318}00318\ \ \ \ \ \textcolor{keywordflow}{if}\ (mode\ ==\ WIFI\_MODE\_AP\ ||\ mode\ ==\ WIFI\_MODE\_APSTA)\ \{}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00319}00319\ \ \ \ \ \ \ \ \ wifi\_config\_t\ cfg\ =\ s\_ap\_config;}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00320}00320\ \ \ \ \ \ \ \ \ cfg.ap.ssid\_len\ =\ (uint8\_t)strnlen((\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *)cfg.ap.ssid,}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00321}00321\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{sizeof}(cfg.ap.ssid));}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00322}00322\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ pwd\_len\ =\ strnlen((\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *)cfg.ap.password,}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00323}00323\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{sizeof}(cfg.ap.password));}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00324}00324\ \ \ \ \ \ \ \ \ cfg.ap.authmode\ =\ (pwd\_len\ >=\ 8)\ ?\ WIFI\_AUTH\_WPA2\_PSK\ :\ WIFI\_AUTH\_OPEN;}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00325}00325\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (cfg.ap.authmode\ ==\ WIFI\_AUTH\_OPEN)\ \{}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00326}00326\ \ \ \ \ \ \ \ \ \ \ \ \ memset(cfg.ap.password,\ 0,\ \textcolor{keyword}{sizeof}(cfg.ap.password));}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00327}00327\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00328}00328\ \ \ \ \ \ \ \ \ ensure\_ap\_defaults();}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00329}00329\ \ \ \ \ \ \ \ \ err\ =\ esp\_wifi\_set\_config(WIFI\_IF\_AP,\ \&cfg);}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00330}00330\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (err\ !=\ ESP\_OK)\ \{}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00331}00331\ \ \ \ \ \ \ \ \ \ \ \ \ ESP\_LOGE(TAG,\ \textcolor{stringliteral}{"{}AP\ config\ failed:\ \%s"{}},\ esp\_err\_to\_name(err));}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00332}00332\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ err;}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00333}00333\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00334}00334\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00335}00335\ }
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00336}00336\ \ \ \ \ err\ =\ esp\_wifi\_start();}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00337}00337\ \ \ \ \ \textcolor{keywordflow}{if}\ (err\ !=\ ESP\_OK)\ \{}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00338}00338\ \ \ \ \ \ \ \ \ ESP\_LOGE(TAG,\ \textcolor{stringliteral}{"{}esp\_wifi\_start\ failed:\ \%s"{}},\ esp\_err\_to\_name(err));}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00339}00339\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ err;}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00340}00340\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00341}00341\ }
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00342}00342\ \ \ \ \ s\_current\_mode\ =\ mode;}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00343}00343\ }
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00344}00344\ \ \ \ \ \textcolor{comment}{//\ 여기서\ 스니퍼용\ promiscuous\ 모드\ 활성화}}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00345}00345\ \ \ \ \ \mbox{\hyperlink{sniffer_8c_aece9df03dd920b92c9296815619db4c3}{sniffer\_enable\_promiscuous}}();}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00346}00346\ }
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00347}00347\ \ \ \ \ ESP\_LOGI(TAG,\ \textcolor{stringliteral}{"{}Wi-\/Fi\ mode\ set\ to\ \%s"{}},\ \mbox{\hyperlink{wifi_8c_a1ccfac3b661e1c212b38b3e7810f3f53}{wifi\_mgr\_mode\_to\_string}}(mode));}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00348}00348\ \ \ \ \ \textcolor{keywordflow}{return}\ ESP\_OK;}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00349}00349\ \}}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00350}00350\ }
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00356}00356\ \textcolor{keyword}{static}\ esp\_err\_t\ update\_sta\_ssid(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *ssid)}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00357}00357\ \{}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00358}00358\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ len\ =\ strlen(ssid);}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00359}00359\ \ \ \ \ \textcolor{keywordflow}{if}\ (len\ ==\ 0\ ||\ len\ >\ \textcolor{keyword}{sizeof}(s\_sta\_config.sta.ssid))\ \{}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00360}00360\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ ESP\_ERR\_INVALID\_ARG;}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00361}00361\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00362}00362\ \ \ \ \ memset(s\_sta\_config.sta.ssid,\ 0,\ \textcolor{keyword}{sizeof}(s\_sta\_config.sta.ssid));}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00363}00363\ \ \ \ \ memcpy(s\_sta\_config.sta.ssid,\ ssid,\ len);}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00364}00364\ \ \ \ \ \textcolor{keywordflow}{return}\ esp\_wifi\_set\_config(WIFI\_IF\_STA,\ \&s\_sta\_config);}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00365}00365\ \}}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00366}00366\ }
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00372}00372\ \textcolor{keyword}{static}\ esp\_err\_t\ update\_sta\_password(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *password)}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00373}00373\ \{}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00374}00374\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ len\ =\ strlen(password);}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00375}00375\ \ \ \ \ \textcolor{keywordflow}{if}\ (len\ >\ \textcolor{keyword}{sizeof}(s\_sta\_config.sta.password)\ -\/\ 1)\ \{}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00376}00376\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ ESP\_ERR\_INVALID\_ARG;}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00377}00377\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00378}00378\ \ \ \ \ memset(s\_sta\_config.sta.password,\ 0,\ \textcolor{keyword}{sizeof}(s\_sta\_config.sta.password));}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00379}00379\ \ \ \ \ memcpy(s\_sta\_config.sta.password,\ password,\ len);}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00380}00380\ \ \ \ \ \textcolor{keywordflow}{return}\ esp\_wifi\_set\_config(WIFI\_IF\_STA,\ \&s\_sta\_config);}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00381}00381\ \}}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00382}00382\ }
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00388}00388\ \textcolor{keyword}{static}\ esp\_err\_t\ update\_ap\_ssid(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *ssid)}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00389}00389\ \{}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00390}00390\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ len\ =\ strlen(ssid);}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00391}00391\ \ \ \ \ \textcolor{keywordflow}{if}\ (len\ ==\ 0\ ||\ len\ >\ \textcolor{keyword}{sizeof}(s\_ap\_config.ap.ssid))\ \{}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00392}00392\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ ESP\_ERR\_INVALID\_ARG;}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00393}00393\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00394}00394\ \ \ \ \ memset(s\_ap\_config.ap.ssid,\ 0,\ \textcolor{keyword}{sizeof}(s\_ap\_config.ap.ssid));}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00395}00395\ \ \ \ \ memcpy(s\_ap\_config.ap.ssid,\ ssid,\ len);}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00396}00396\ \ \ \ \ s\_ap\_config.ap.ssid\_len\ =\ (uint8\_t)len;}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00397}00397\ \ \ \ \ ensure\_ap\_defaults();}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00398}00398\ \ \ \ \ \textcolor{keywordflow}{return}\ esp\_wifi\_set\_config(WIFI\_IF\_AP,\ \&s\_ap\_config);}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00399}00399\ \}}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00400}00400\ }
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00406}00406\ \textcolor{keyword}{static}\ esp\_err\_t\ update\_ap\_password(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *password)}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00407}00407\ \{}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00408}00408\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ len\ =\ strlen(password);}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00409}00409\ \ \ \ \ \textcolor{keywordflow}{if}\ (len\ ==\ 0)\ \{}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00410}00410\ \ \ \ \ \ \ \ \ memset(s\_ap\_config.ap.password,\ 0,\ \textcolor{keyword}{sizeof}(s\_ap\_config.ap.password));}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00411}00411\ \ \ \ \ \ \ \ \ s\_ap\_config.ap.authmode\ =\ WIFI\_AUTH\_OPEN;}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00412}00412\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00413}00413\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (len\ <\ 8\ ||\ len\ >\ \textcolor{keyword}{sizeof}(s\_ap\_config.ap.password)\ -\/\ 1)\ \{}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00414}00414\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ ESP\_ERR\_INVALID\_ARG;}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00415}00415\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00416}00416\ \ \ \ \ \ \ \ \ memset(s\_ap\_config.ap.password,\ 0,\ \textcolor{keyword}{sizeof}(s\_ap\_config.ap.password));}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00417}00417\ \ \ \ \ \ \ \ \ memcpy(s\_ap\_config.ap.password,\ password,\ len);}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00418}00418\ \ \ \ \ \ \ \ \ s\_ap\_config.ap.authmode\ =\ WIFI\_AUTH\_WPA2\_PSK;}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00419}00419\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00420}00420\ \ \ \ \ ensure\_ap\_defaults();}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00421}00421\ \ \ \ \ wifi\_config\_t\ cfg\ =\ s\_ap\_config;}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00422}00422\ \ \ \ \ cfg.ap.ssid\_len\ =\ (uint8\_t)strnlen((\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *)cfg.ap.ssid,}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00423}00423\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{sizeof}(cfg.ap.ssid));}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00424}00424\ \ \ \ \ \textcolor{keywordflow}{return}\ esp\_wifi\_set\_config(WIFI\_IF\_AP,\ \&cfg);}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00425}00425\ \}}
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00426}00426\ }
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00427}00427\ }
+\DoxyCodeLine{\Hypertarget{wifi_8c_source_l00428}00428\ }
+
+\end{DoxyCode}

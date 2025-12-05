@@ -1,0 +1,9 @@
+<map id="wifi_mgr_set_sta_password" name="wifi_mgr_set_sta_password">
+<area shape="rect" id="Node000001" title="Update STA password and refresh promiscuous mode if active." alt="" coords="5,31,207,56"/>
+<area shape="rect" id="Node000002" href="$sniffer_8c.html#aece9df03dd920b92c9296815619db4c3" title="Enable promiscuous capture with the predefined filter set." alt="" coords="255,5,459,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="207,31,241,27,241,32,207,36"/>
+<area shape="rect" id="Node000003" href="$wifi_8c.html#aa10886611772ba3c0e0a00dae83eec1f" title="Prime cached Wi&#45;Fi configs and record the current mode." alt="" coords="303,55,410,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="207,50,290,58,290,64,207,56"/>
+<area shape="rect" id="Node000004" href="$wifi_8c.html#a1ccfac3b661e1c212b38b3e7810f3f53" title="Convert Wi&#45;Fi mode enum to a short string for status printing." alt="" coords="507,55,693,80"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="410,65,493,65,493,70,410,70"/>
+</map>

@@ -1,0 +1,67 @@
+\doxysection{ring\+\_\+slot\+\_\+hdr\+\_\+t Struct Reference}
+\hypertarget{structring__slot__hdr__t}{}\label{structring__slot__hdr__t}\index{ring\_slot\_hdr\_t@{ring\_slot\_hdr\_t}}
+
+
+Metadata header stored immediately before each payload slot.  
+
+
+
+
+{\ttfamily \#include $<$ring\+\_\+buf.\+h$>$}
+
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+uint32\+\_\+t \mbox{\hyperlink{structring__slot__hdr__t_ae66dcc3a8a1fbb2e3bed7599f5501c9f}{magic}}
+\item 
+uint16\+\_\+t \mbox{\hyperlink{structring__slot__hdr__t_a9a614ec4335104a789f6ae2d1dec707b}{len}}
+\item 
+uint16\+\_\+t \mbox{\hyperlink{structring__slot__hdr__t_a6a931ec55a3cbb1ca9ec98b580ac7f4a}{\+\_\+rsv}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Metadata header stored immediately before each payload slot. 
+
+Upper layers reuse the magic value for integrity checks, and payload bytes follow this struct contiguously to keep DMA-\/friendly copies. Original inline comments remain for Korean context. 
+
+Definition at line \mbox{\hyperlink{ring__buf_8h_source_l00013}{13}} of file \mbox{\hyperlink{ring__buf_8h_source}{ring\+\_\+buf.\+h}}.
+
+
+
+\doxysubsection{Member Data Documentation}
+\Hypertarget{structring__slot__hdr__t_a6a931ec55a3cbb1ca9ec98b580ac7f4a}\label{structring__slot__hdr__t_a6a931ec55a3cbb1ca9ec98b580ac7f4a} 
+\index{ring\_slot\_hdr\_t@{ring\_slot\_hdr\_t}!\_rsv@{\_rsv}}
+\index{\_rsv@{\_rsv}!ring\_slot\_hdr\_t@{ring\_slot\_hdr\_t}}
+\doxysubsubsection{\texorpdfstring{\_rsv}{\_rsv}}
+{\footnotesize\ttfamily uint16\+\_\+t ring\+\_\+slot\+\_\+hdr\+\_\+t\+::\+\_\+rsv}
+
+
+
+Definition at line \mbox{\hyperlink{ring__buf_8h_source_l00016}{16}} of file \mbox{\hyperlink{ring__buf_8h_source}{ring\+\_\+buf.\+h}}.
+
+\Hypertarget{structring__slot__hdr__t_a9a614ec4335104a789f6ae2d1dec707b}\label{structring__slot__hdr__t_a9a614ec4335104a789f6ae2d1dec707b} 
+\index{ring\_slot\_hdr\_t@{ring\_slot\_hdr\_t}!len@{len}}
+\index{len@{len}!ring\_slot\_hdr\_t@{ring\_slot\_hdr\_t}}
+\doxysubsubsection{\texorpdfstring{len}{len}}
+{\footnotesize\ttfamily uint16\+\_\+t ring\+\_\+slot\+\_\+hdr\+\_\+t\+::len}
+
+
+
+Definition at line \mbox{\hyperlink{ring__buf_8h_source_l00015}{15}} of file \mbox{\hyperlink{ring__buf_8h_source}{ring\+\_\+buf.\+h}}.
+
+\Hypertarget{structring__slot__hdr__t_ae66dcc3a8a1fbb2e3bed7599f5501c9f}\label{structring__slot__hdr__t_ae66dcc3a8a1fbb2e3bed7599f5501c9f} 
+\index{ring\_slot\_hdr\_t@{ring\_slot\_hdr\_t}!magic@{magic}}
+\index{magic@{magic}!ring\_slot\_hdr\_t@{ring\_slot\_hdr\_t}}
+\doxysubsubsection{\texorpdfstring{magic}{magic}}
+{\footnotesize\ttfamily uint32\+\_\+t ring\+\_\+slot\+\_\+hdr\+\_\+t\+::magic}
+
+
+
+Definition at line \mbox{\hyperlink{ring__buf_8h_source_l00014}{14}} of file \mbox{\hyperlink{ring__buf_8h_source}{ring\+\_\+buf.\+h}}.
+
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+main/ring\+\_\+buf.\+h\end{DoxyCompactItemize}
