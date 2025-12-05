@@ -2,7 +2,7 @@
 
 <br/>
 
-[Go Back Index](inde_mkdocs.md#board)
+
 
 <br/>
 

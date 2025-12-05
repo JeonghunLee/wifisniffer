@@ -2,7 +2,6 @@
 
 <br/>
 
-[Go Back Index](index_mkdocs.md#wifi-sniffer)
 
 <br/>
 
