@@ -2,8 +2,6 @@ name: Deploy (mkdocs/doxygen) to GitHub Pages
 
 on:
   push:
-    branches:
-      - master
     tags:
       - 'v*'
   workflow_dispatch:

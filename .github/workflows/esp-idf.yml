@@ -2,11 +2,8 @@ name: "ESP-IDF Build and Release CI/CD (Docker v5.4)"
 
 on:
   push:
-    # create a release when a tag like v1.2.3 or v2025... is pushed    
-    branches: [ main ]
-    tags: ['v*']
-  pull_request:
-    branches: [ main ]
+    tags:
+      - 'v*'
 
 jobs:
   build-and-release:
