@@ -1,0 +1,95 @@
+site_name: WiFi Sniffer Docs
+site_description: ESP32-S3 Wi-Fi packet sniffer documentation
+site_author: Jeonghun Lee
+repo_url: https://github.com/JeonghunLee/wifisniffer
+repo_name: JeonghunLee/wifisniffer
+
+
+# index.md 가 없으면, 
+# 1. Home 모든 404 오류 
+# 2. mkdocs build 후 링크가 다 깨짐  
+
+nav:
+  - Home: index.md
+  - Hardware Setup: board.md
+  - Console Commands: command.md
+  - WIFI Captures:
+      - WIFI Sniffer-1: wifi_sniffer0.md
+      - WIFI Sniffer-2: wifi_sniffer1.md
+      - WIFI Sniffer-3: wifi_sniffer2.md
+  - Tool Wireshark: wireshark_0.md
+  - Setup mkdocs/doxygen:
+      - Setup Window: mkdocs_setup_window.md
+      - Setup WSL: mkdocs_setup_wsl.md     
+      - Setup Read the Docs: mkdocs_readthedocs.md    
+  - Setup sphinx/doxygen:      
+      - Setup Read the Docs: sphinx_readthedocs.md  
+  - API Reference (Doxygen): api_mkdocs_doxygen.md
+  
+plugins:
+  - search
+  - mermaid2
+  - offline
+
+# Material theme configuration
+# https://squidfunk.github.io/mkdocs-material/
+theme:
+  name: material
+  language: ko
+  palette:
+    - media: "(prefers-color-scheme)"
+      toggle:
+        icon: material/brightness-auto
+        name: Switch to light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      toggle:
+        icon: material/brightness-4
+        name: Switch to system preference
+  features:
+    - toc.follow
+    - navigation.instant
+    - navigation.instant.progress
+    - navigation.path
+    - navigation.top
+    - navigation.footer
+    - search.suggest
+    - search.highlight
+    - content.tabs.link
+    - content.code.annotation
+    - content.tooltips
+    - content.code.copy
+    - toc.integrate         # 이 줄이 TOC(Table of Contents)를 왼쪽 내비(sidebar)로 통합해줌 
+
+markdown_extensions:
+  - pymdownx.arithmatex
+  - pymdownx.betterem:
+      smart_enable: all
+  - pymdownx.caret
+  - pymdownx.critic
+  - pymdownx.details
+  - pymdownx.emoji:
+      emoji_generator: !!python/name:pymdownx.emoji.to_svg
+  - pymdownx.inlinehilite
+  - pymdownx.magiclink
+  - pymdownx.mark
+  - pymdownx.smartsymbols
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.tilde
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+
+extra_javascript:
+  - https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML
+
+extra_css:
+  - stylesheets/extra.css

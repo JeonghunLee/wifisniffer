@@ -40,8 +40,17 @@ jobs:
         run: |
           doxygen Doxyfile_mkdocs          
 
+      # index.md 준비 
+      - name: Prepare MkDocs index file
+        run: |
+          if [ -f docs/index_mkdocs.md ]; then
+            mv docs/index_mkdocs.md docs/index.md
+          fi
+          echo "index.md prepared."          
+
+      # 변경된 mkdocs_githubaction.yml 사용
       - name: Build site (MkDocs)
-        run: mkdocs build 
+        run: mkdocs build --config-file mkdocs_githubaction.yml
 
       - name: Deploy to GitHub Pages
         env:
