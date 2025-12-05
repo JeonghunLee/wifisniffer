@@ -44,8 +44,15 @@ exhale_args = {
 }
 
 
-# Git commit 정보 자동 추출
+#
+# Footer Info — Commit / Author / GitHub Link
+#
+
+from datetime import datetime
 import subprocess
+
+year = datetime.now().year
+copyright = f"{year}, {author}"
 
 def get_git_info():
     try:
@@ -61,7 +68,17 @@ def get_git_info():
     except:
         return "unknown"
 
-html_last_updated_fmt = "Updated | " + get_git_info()
+_GIT_HASH = get_git_info()
+_GITHUB_URL = (
+    f"https://github.com/JeonghunLee/wifisniffer/"
+    f"commit/{_GIT_HASH}"
+)
+
+# Footer Information 설정
+html_last_updated_fmt = (
+    f"Updated | commit: {_GIT_HASH} | "
+    f"<a href='{_GITHUB_URL}' target='_blank'>View on GitHub</a>"
+)
 
 
 # 템플릿 / 정적 파일
