@@ -21,7 +21,7 @@
 
 #define SLOT_SIZE (sizeof(packet_prefix_t) + MAX_PACKET_SIZE)
 
-static const char *TAG = "SNFFER";
+static const char *TAG = "SNIF";
 
 static ring_buf_t *g_rb = NULL;
 static uint32_t captured_count = 0;
