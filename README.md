@@ -29,7 +29,7 @@ A WiFi packet sniffer for ESP32-S3 based on ESP-IDF 5.4 that captures WiFi packe
 
 <br/>
 
-* Manual-1 (ReadTheDocs)  
+* **Manual-1 (ReadTheDocs)**  
     * Github and ReadTheDocs 연결사용     
     * Shpinx only 
     * [Web: wifisniffer Manaul](https://wifisniffer.readthedocs.io/ko/latest/)          
@@ -40,18 +40,14 @@ A WiFi packet sniffer for ESP32-S3 based on ESP-IDF 5.4 that captures WiFi packe
 
 <br/>
 
-* Manual-2 (Mkdocs based on Github Pages)            
+* **Manual-2 (Mkdocs based on Github Pages)**            
     * Github Pages only 
     * Mkdocs only (Material)        
     * [Web: Github Pages](https://jeonghunlee.github.io/wifisniffer/)   
 
 <br/>
 
-## ReadME
-
-<br/>
-
-* ReadME TEST 
+* ReadME TEST  
     * 좋은 것 같은데, 무료에서는 좀 한계가 있는 듯해서 아래에서 멈춤      
     * Github 연결은 되나 Sync는 유료    
     * Landing Page 하려면 유료   
@@ -63,15 +59,22 @@ A WiFi packet sniffer for ESP32-S3 based on ESP-IDF 5.4 that captures WiFi packe
 
 <br/>
 
-* Github Manual
+* Github Template Manual   
     * [Issue and Pull Request templates](https://github.blog/developer-skills/github/issue-and-pull-request-templates/)
         * github/ISSUE_TEMPLATE   
         * github/PULL_REQUEST_TEMPLATE or PULL_REQUEST_TEMPLATE.md
     * [Copilot Code Review](https://docs.github.com/ko/copilot/tutorials/review-ai-generated-code)    
 
+* Github Copilot Manual     
+    [Github Copilot](https://docs.github.com/ko/copilot)  
+    [Templates](https://docs.github.com/ko/copilot/tutorials/copilot-chat-cookbook/communicate-effectively/creating-templates)
+ 
+
+
 <br/>
 
-* Good Opensource Example:https://github.com/vllm-project/vllm        
+* Good Opensource Example   
+    * https://github.com/vllm-project/vllm        
     * ISSUE_TEMPLATE : https://github.com/vllm-project/vllm/tree/main/.github/ISSUE_TEMPLATE   
     * PULL_REQUEST_TEMPLATE: https://github.com/vllm-project/vllm/blob/main/.github/PULL_REQUEST_TEMPLATE.md
     * CODEOWNERS : https://github.com/vllm-project/vllm/blob/main/.github/CODEOWNERS   
@@ -80,10 +83,7 @@ A WiFi packet sniffer for ESP32-S3 based on ESP-IDF 5.4 that captures WiFi packe
 
 <br/>
 
-* Github Copilot      
-    [Github Copilot](https://docs.github.com/ko/copilot)  
-    [Templates](https://docs.github.com/ko/copilot/tutorials/copilot-chat-cookbook/communicate-effectively/creating-templates)
- 
+
 <br/>
 
 
