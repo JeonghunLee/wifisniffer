@@ -12,7 +12,7 @@ A WiFi packet sniffer for ESP32-S3 based on ESP-IDF 5.4 that captures WiFi packe
 - **ESP32-S3 Support**: Optimized for ESP32-S3 with native USB support
 
 
-## Manual
+## Github-Manual   
 
 <br/>
 
@@ -24,20 +24,26 @@ A WiFi packet sniffer for ESP32-S3 based on ESP-IDF 5.4 that captures WiFi packe
 
 <br/>
 
-## ReadTheDocs and Github Pages 
+## Documentations 
+
 
 <br/>
 
-Sometimes, Not working properly ReadTheDocs 
-
-* ReadTheDocs  
-    * Github 와 연결사용    
+* Manual-1 (ReadTheDocs)  
+    * Github and ReadTheDocs 연결사용     
+    * Shpinx only 
     * [Web: wifisniffer Manaul](https://wifisniffer.readthedocs.io/ko/latest/)          
 
+> [!NOTE]  
+> Sometimes, Not working properly ReadTheDocs Site (Server Problem) 
+>
+
 <br/>
 
-* Github Pages          
-    * [Github Pages](https://jeonghunlee.github.io/wifisniffer/)   
+* Manual-2 (Mkdocs based on Github Pages)            
+    * Github Pages only 
+    * Mkdocs only (Material)        
+    * [Web: Github Pages](https://jeonghunlee.github.io/wifisniffer/)   
 
 <br/>
 
@@ -53,6 +59,38 @@ Sometimes, Not working properly ReadTheDocs
 
 <br/>
 
+## Github Code Review and Pull Request 
+
+<br/>
+
+* Github Manual
+    * [Issue and Pull Request templates](https://github.blog/developer-skills/github/issue-and-pull-request-templates/)
+        * github/ISSUE_TEMPLATE   
+        * github/PULL_REQUEST_TEMPLATE or PULL_REQUEST_TEMPLATE.md
+    * [Copilot Code Review](https://docs.github.com/ko/copilot/tutorials/review-ai-generated-code)    
+
+<br/>
+
+* Good Opensource Example:https://github.com/vllm-project/vllm        
+    * ISSUE_TEMPLATE : https://github.com/vllm-project/vllm/tree/main/.github/ISSUE_TEMPLATE   
+    * PULL_REQUEST_TEMPLATE: https://github.com/vllm-project/vllm/blob/main/.github/PULL_REQUEST_TEMPLATE.md
+    * CODEOWNERS : https://github.com/vllm-project/vllm/blob/main/.github/CODEOWNERS   
+    * Options: 
+        * dependabot.yml : https://github.com/vllm-project/vllm/blob/main/.github/dependabot.yml   
+
+<br/>
+
+* Github Copilot      
+    [Github Copilot](https://docs.github.com/ko/copilot)  
+    [Templates](https://docs.github.com/ko/copilot/tutorials/copilot-chat-cookbook/communicate-effectively/creating-templates)
+ 
+<br/>
+
+
+
+<br/>
+
+
 ## Branchs 
 
 <br/>
@@ -61,7 +99,7 @@ Sometimes, Not working properly ReadTheDocs
 
 <br/>
 
-* Copilot TEST  
+* Copilot Branch TEST  
     [Copilot test1](https://github.com/JeonghunLee/wifisniffer/tree/copilot/create-wifi-sniffer-esp32-s3)               
     [Copilot test2](https://github.com/JeonghunLee/wifisniffer/tree/copilot/create-wifi-sniffer-usb-gadget)                       
 
