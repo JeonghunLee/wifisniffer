@@ -65,6 +65,13 @@ A WiFi packet sniffer for ESP32-S3 based on ESP-IDF 5.4 that captures WiFi packe
         * github/PULL_REQUEST_TEMPLATE or PULL_REQUEST_TEMPLATE.md
     * [Copilot Code Review](https://docs.github.com/ko/copilot/tutorials/review-ai-generated-code)    
 
+* Check Repository    
+    * [Discussions](https://github.com/JeonghunLee/wifisniffer/discussions)    
+    * [Insights->Community Standards](https://github.com/JeonghunLee/wifisniffer/community)     
+        * check your templates   
+    * [Security->dependabot](https://github.com/JeonghunLee/wifisniffer/security)   
+
+
 * Github Copilot Manual     
     [Github Copilot](https://docs.github.com/ko/copilot)  
     [Templates](https://docs.github.com/ko/copilot/tutorials/copilot-chat-cookbook/communicate-effectively/creating-templates)
@@ -80,7 +87,7 @@ A WiFi packet sniffer for ESP32-S3 based on ESP-IDF 5.4 that captures WiFi packe
     * CODEOWNERS : https://github.com/vllm-project/vllm/blob/main/.github/CODEOWNERS   
     * Options: 
         * dependabot.yml : https://github.com/vllm-project/vllm/blob/main/.github/dependabot.yml   
-
+        
 <br/>
 
 
