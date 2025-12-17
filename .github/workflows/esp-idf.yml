@@ -74,9 +74,9 @@ jobs:
             🚀 ESP32-S3 WiFi Sniffer Binary Release 
             ------------------------------------------
             * **Version**: ${{ github.ref_name }}
-            * **Target**: ${{ env.IDF_TARGET }}
+            * **Target**: **${{ env.IDF_TARGET }}**
 
-            📦 Included in ZIP:
+            📦 Included in ZIP: release-${{ github.ref_name }}-${{ env.IDF_TARGET }}.zip
             ```
             - bootloader.bin
             - partition-table.bin
@@ -90,7 +90,12 @@ jobs:
             ```
             esptool.py @flash_project_args
             ```
+            
+            📄 Documentation: 
+              [GitHub Pages](https://jeonghunlee.github.io/wifisniffer/)
+              [ReadTheDocs](https://esp32-wifi-sniffer.readthedocs.io/) 
 
+            ☑️ Check it below if you find this project useful! 
           generate_release_notes: true          
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}                  
