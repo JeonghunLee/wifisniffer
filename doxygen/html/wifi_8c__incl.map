@@ -1,21 +1,21 @@
-<map id="main/wifi.c" name="main/wifi.c">
-<area shape="rect" id="Node000001" title="Minimal Wi&#45;Fi configuration manager backing the sniffer console commands." alt="" coords="170,5,263,31"/>
-<area shape="rect" id="Node000002" href="$wifi_8h_source.html" title=" " alt="" coords="53,79,111,104"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="196,33,117,74,115,70,194,28"/>
-<area shape="rect" id="Node000004" title=" " alt="" coords="5,152,92,177"/>
-<area shape="poly" id="edge6_Node000001_Node000004" title=" " alt="" coords="170,23,137,28,102,39,69,55,43,80,37,93,35,108,41,138,36,139,30,108,32,92,38,77,66,51,100,34,136,23,169,18"/>
-<area shape="rect" id="Node000005" title=" " alt="" coords="135,79,205,104"/>
-<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="211,32,187,69,183,66,207,30"/>
-<area shape="rect" id="Node000006" title=" " alt="" coords="230,79,297,104"/>
-<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="227,30,250,66,246,69,222,32"/>
-<area shape="rect" id="Node000007" title=" " alt="" coords="321,79,405,104"/>
-<area shape="poly" id="edge7_Node000001_Node000007" title=" " alt="" coords="241,28,328,70,326,75,239,33"/>
-<area shape="rect" id="Node000008" href="$sniffer_8h_source.html" title=" " alt="" coords="430,79,505,104"/>
-<area shape="poly" id="edge8_Node000001_Node000008" title=" " alt="" coords="258,28,417,73,416,78,256,33"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="221,152,303,177"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="112,102,221,144,219,149,110,107"/>
-<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="79,105,62,141,57,139,74,103"/>
-<area shape="poly" id="edge10_Node000008_Node000003" title=" " alt="" coords="435,107,309,150,307,145,433,101"/>
-<area shape="rect" id="Node000009" title=" " alt="" coords="432,152,503,177"/>
-<area shape="poly" id="edge9_Node000008_Node000009" title=" " alt="" coords="470,104,470,138,465,138,465,104"/>
+<map id="components/wifi_sniffer/wifi.c" name="components/wifi_sniffer/wifi.c">
+<area shape="rect" id="Node000001" title="Minimal Wi&#45;Fi configuration manager backing the sniffer console commands." alt="" coords="128,5,305,45"/>
+<area shape="rect" id="Node000002" href="$wifi_8h_source.html" title=" " alt="" coords="53,93,111,119"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="186,48,115,89,112,84,183,43"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="5,167,92,192"/>
+<area shape="poly" id="edge6_Node000001_Node000004" title=" " alt="" coords="129,41,81,61,60,76,43,95,37,108,36,123,41,153,36,154,30,123,32,107,38,92,56,72,78,56,127,36"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="135,93,205,119"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="208,47,186,83,182,80,203,44"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="230,93,297,119"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="230,44,252,80,247,83,226,47"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="321,93,405,119"/>
+<area shape="poly" id="edge7_Node000001_Node000007" title=" " alt="" coords="253,43,331,84,328,89,251,48"/>
+<area shape="rect" id="Node000008" href="$sniffer_8h_source.html" title=" " alt="" coords="430,93,505,119"/>
+<area shape="poly" id="edge8_Node000001_Node000008" title=" " alt="" coords="277,43,418,87,417,92,276,48"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="221,167,303,192"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="112,116,221,159,219,164,110,121"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="79,120,62,155,57,153,74,118"/>
+<area shape="poly" id="edge10_Node000008_Node000003" title=" " alt="" coords="435,121,309,165,307,160,433,116"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="432,167,503,192"/>
+<area shape="poly" id="edge9_Node000008_Node000009" title=" " alt="" coords="470,119,470,153,465,153,465,119"/>
 </map>

@@ -384,9 +384,10 @@
     </span>
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
+    <nav class="md-nav" aria-label="Hardware">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
   <a href="#usb-ports" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -394,6 +395,22 @@
       
     </span>
   </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pinmap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PinMap
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -928,16 +945,24 @@
 </li>
 </ul>
 <p><br/></p>
-<h2 id="usb-ports">USB Ports</h2>
+<h3 id="usb-ports">USB Ports</h3>
 <p><br/></p>
 <ul>
 <li>USB Ports     </li>
-<li>COM A (CP2102N): 플래시 / 모니터(로그)<ul>
-<li>상위 USB To Serial 로 ESP32-S3 Monitor와 명령어 전달        </li>
+<li>Left USB:   <ul>
+<li>COM A (CP2102N): 플래시 / 모니터(로그)</li>
+<li>USB To Serial <ul>
+<li>ESP32-S3 Monitor 와 Console Commands                  </li>
 </ul>
 </li>
-<li>COM B (TinyUSB CDC)<ul>
+</ul>
+</li>
+<li>Right USB: <ul>
+<li>COM B (TinyUSB CDC) / ESP USB </li>
+<li>JTAG / USB    <ul>
 <li>Wi-Fi 스니퍼 캡처 스트림 (Python 파서로 pcap 저장 → Wireshark)        </li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -947,6 +972,11 @@
 <li>2번째는 TinyUSB 기반의 CDC를 이용하여 사용    </li>
 <li><a href="https://docs.espressif.com/projects/esp-iot-solution/en/latest/usb/usb_overview/tinyusb_guide.html">TinyUSB 이해</a>          </li>
 </ul>
+<p><br/></p>
+<h3 id="pinmap">PinMap</h3>
+<p><br/></p>
+<p><a href="https://docs.espressif.com/projects/esp-dev-kits/en/latest/esp32s3/esp32-s3-devkitc-1/user_guide_v1.0.html">https://docs.espressif.com/projects/esp-dev-kits/en/latest/esp32s3/esp32-s3-devkitc-1/user_guide_v1.0.html</a><br />
+<img alt="" src="imgs/ESP32-S3_DevKitC-1_pinlayout.jpg" /></p>
 <p><br/></p>
 
 

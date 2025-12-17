@@ -1,0 +1,61 @@
+\doxysection{main/main.c File Reference}
+\hypertarget{main_8c}{}\label{main_8c}\index{main/main.c@{main/main.c}}
+
+
+ESP-\/\+IDF entry point that wires together USB, Wi-\/\+Fi, and sniffer subsystems.  
+
+
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include "{}nvs\+\_\+flash.\+h"{}}\newline
+{\ttfamily \#include "{}esp\+\_\+netif.\+h"{}}\newline
+{\ttfamily \#include "{}esp\+\_\+event.\+h"{}}\newline
+{\ttfamily \#include "{}esp\+\_\+wifi.\+h"{}}\newline
+{\ttfamily \#include "{}esp\+\_\+log.\+h"{}}\newline
+{\ttfamily \#include "{}wifi\+\_\+sniffer.\+h"{}}\newline
+Include dependency graph for main.\+c\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{main_8c__incl}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{main_8c_a630544a7f0a2cc40d8a7fefab7e2fe70}{app\+\_\+main}} (void)
+\begin{DoxyCompactList}\small\item\em Application entry point invoked by ESP-\/\+IDF. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+ESP-\/\+IDF entry point that wires together USB, Wi-\/\+Fi, and sniffer subsystems. 
+
+
+
+Definition in file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+
+
+\doxysubsection{Function Documentation}
+\Hypertarget{main_8c_a630544a7f0a2cc40d8a7fefab7e2fe70}\label{main_8c_a630544a7f0a2cc40d8a7fefab7e2fe70} 
+\index{main.c@{main.c}!app\_main@{app\_main}}
+\index{app\_main@{app\_main}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{app\_main()}{app\_main()}}
+{\footnotesize\ttfamily void app\+\_\+main (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Application entry point invoked by ESP-\/\+IDF. 
+
+
+
+Definition at line \mbox{\hyperlink{main_8c_source_l00021}{21}} of file \mbox{\hyperlink{main_8c_source}{main.\+c}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00022\ \{}
+\DoxyCodeLine{00023\ \ \ \ \ ESP\_LOGW(TAG,\ \textcolor{stringliteral}{"{}Wi-\/Fi\ Sniffer\ starting..."{}});\ \ \ \ }
+\DoxyCodeLine{00024\ \ \ \ \ wifi\_sniffer\_init();}
+\DoxyCodeLine{00025\ \}}
+
+\end{DoxyCode}

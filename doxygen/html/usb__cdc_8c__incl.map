@@ -1,17 +1,17 @@
-<map id="main/usb_cdc.c" name="main/usb_cdc.c">
-<area shape="rect" id="Node000001" title="Thin wrapper around TinyUSB CDC&#45;ACM for the Wi&#45;Fi sniffer streamer." alt="" coords="257,5,380,31"/>
-<area shape="rect" id="Node000002" href="$usb__cdc_8h_source.html" title=" " alt="" coords="102,79,189,104"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="292,33,187,76,185,71,290,28"/>
-<area shape="rect" id="Node000006" title=" " alt="" coords="213,79,296,104"/>
-<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="310,33,276,70,272,67,306,29"/>
-<area shape="rect" id="Node000007" title=" " alt="" coords="321,79,447,104"/>
-<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="331,29,366,67,362,70,327,33"/>
-<area shape="rect" id="Node000008" title=" " alt="" coords="471,79,555,104"/>
-<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="351,28,470,71,468,76,349,33"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="5,152,80,177"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="130,106,72,146,69,142,127,102"/>
-<area shape="rect" id="Node000004" title=" " alt="" coords="104,152,187,177"/>
-<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="148,104,148,138,143,138,143,104"/>
-<area shape="rect" id="Node000005" title=" " alt="" coords="211,152,293,177"/>
-<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="164,102,225,142,222,147,161,106"/>
+<map id="components/wifi_sniffer/usb_cdc.c" name="components/wifi_sniffer/usb_cdc.c">
+<area shape="rect" id="Node000001" title="Thin wrapper around TinyUSB CDC&#45;ACM for the Wi&#45;Fi sniffer streamer." alt="" coords="230,5,407,45"/>
+<area shape="rect" id="Node000002" href="$usb__cdc_8h_source.html" title=" " alt="" coords="102,93,189,119"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="278,48,184,90,182,85,276,43"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="213,93,296,119"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="305,47,275,84,271,81,301,44"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="321,93,447,119"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="337,44,368,81,364,84,332,47"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="471,93,555,119"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="366,43,473,86,471,91,364,48"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="5,167,80,192"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="130,121,72,161,69,156,127,116"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="104,167,187,192"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="148,119,148,153,143,153,143,119"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="211,167,293,192"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="164,116,225,157,222,161,161,121"/>
 </map>

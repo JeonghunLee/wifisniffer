@@ -1,8 +1,7 @@
 var searchData=
 [
-  ['usb_5fcdc_5fflush_0',['usb_cdc_flush',['../usb__cdc_8c.html#a00c519adc370605a08c0ef79c88307a9',1,'usb_cdc.c']]],
-  ['usb_5fcdc_5finit_1',['usb_cdc_init',['../usb__cdc_8c.html#ad7f5fefcb59d3ecfcd976eb481ad5d2c',1,'usb_cdc.c']]],
-  ['usb_5fcdc_5fread_2',['usb_cdc_read',['../usb__cdc_8c.html#aaf6a13f8d90b8d1326efce17d8533c36',1,'usb_cdc.c']]],
-  ['usb_5fcdc_5fready_3',['usb_cdc_ready',['../usb__cdc_8c.html#a58646b344bbaa2edb2faa572c0e2edfa',1,'usb_cdc.c']]],
-  ['usb_5fcdc_5fwrite_4',['usb_cdc_write',['../usb__cdc_8c.html#a667914e3820578cb214c3051b16a2d2c',1,'usb_cdc.c']]]
+  ['sniffer_5fenable_5fpromiscuous_0',['sniffer_enable_promiscuous',['../sniffer_8c.html#aece9df03dd920b92c9296815619db4c3',1,'sniffer.c']]],
+  ['sniffer_5finit_1',['sniffer_init',['../sniffer_8c.html#af3f2c00029c37c09a9d581f521ee44c7',1,'sniffer.c']]],
+  ['sniffer_5fprint_5fstats_2',['sniffer_print_stats',['../sniffer_8c.html#a3f1754a0286ce754699ab73c0b0a53ba',1,'sniffer.c']]],
+  ['sniffer_5fring_5freset_3',['sniffer_ring_reset',['../sniffer_8c.html#ac875b5b30914b5076359238e95f1b068',1,'sniffer.c']]]
 ];

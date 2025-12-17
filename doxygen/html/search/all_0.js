@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['cmd_2ec_0',['cmd.c',['../cmd_8c.html',1,'']]],
-  ['command_5finit_1',['command_init',['../cmd_8c.html#aa2fcb6356b44efb0f80d437a819a4e2c',1,'cmd.c']]]
+  ['app_5fmain_0',['app_main',['../main_8c.html#a630544a7f0a2cc40d8a7fefab7e2fe70',1,'main.c']]]
 ];

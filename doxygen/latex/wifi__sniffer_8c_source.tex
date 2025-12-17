@@ -1,0 +1,64 @@
+\doxysection{wifi\+\_\+sniffer.\+c}
+\hypertarget{wifi__sniffer_8c_source}{}\label{wifi__sniffer_8c_source}\index{components/wifi\_sniffer/wifi\_sniffer.c@{components/wifi\_sniffer/wifi\_sniffer.c}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{wifi__sniffer_8c_source_l00001}00001\ }
+\DoxyCodeLine{\Hypertarget{wifi__sniffer_8c_source_l00005}00005\ \textcolor{comment}{//\ main.c}}
+\DoxyCodeLine{\Hypertarget{wifi__sniffer_8c_source_l00006}00006\ \textcolor{preprocessor}{\#include\ <stdio.h>}}
+\DoxyCodeLine{\Hypertarget{wifi__sniffer_8c_source_l00007}00007\ \textcolor{preprocessor}{\#include\ "{}nvs\_flash.h"{}}}
+\DoxyCodeLine{\Hypertarget{wifi__sniffer_8c_source_l00008}00008\ \textcolor{preprocessor}{\#include\ "{}esp\_netif.h"{}}}
+\DoxyCodeLine{\Hypertarget{wifi__sniffer_8c_source_l00009}00009\ \textcolor{preprocessor}{\#include\ "{}esp\_event.h"{}}}
+\DoxyCodeLine{\Hypertarget{wifi__sniffer_8c_source_l00010}00010\ \textcolor{preprocessor}{\#include\ "{}esp\_wifi.h"{}}}
+\DoxyCodeLine{\Hypertarget{wifi__sniffer_8c_source_l00011}00011\ \textcolor{preprocessor}{\#include\ "{}esp\_log.h"{}}}
+\DoxyCodeLine{\Hypertarget{wifi__sniffer_8c_source_l00012}00012\ }
+\DoxyCodeLine{\Hypertarget{wifi__sniffer_8c_source_l00013}00013\ \textcolor{preprocessor}{\#include\ "{}wifi.h"{}}\ \ \ \ \ \ \ \textcolor{comment}{//wifi\_mgr\_init()}}
+\DoxyCodeLine{\Hypertarget{wifi__sniffer_8c_source_l00014}00014\ \textcolor{preprocessor}{\#include\ "{}sniffer.h"{}}\ \ \ \ \textcolor{comment}{//sniffer\_init()}}
+\DoxyCodeLine{\Hypertarget{wifi__sniffer_8c_source_l00015}00015\ \textcolor{preprocessor}{\#include\ "{}cmd.h"{}}\ \ \ \ \ \ \ \ \textcolor{comment}{//command\_init()}}
+\DoxyCodeLine{\Hypertarget{wifi__sniffer_8c_source_l00016}00016\ \textcolor{preprocessor}{\#include\ "{}usb\_cdc.h"{}}\ \ \ \ \textcolor{comment}{//usb\_cdc\_init()}}
+\DoxyCodeLine{\Hypertarget{wifi__sniffer_8c_source_l00017}00017\ }
+\DoxyCodeLine{\Hypertarget{wifi__sniffer_8c_source_l00018}00018\ }
+\DoxyCodeLine{\Hypertarget{wifi__sniffer_8c_source_l00019}00019\ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *TAG\ =\ \textcolor{stringliteral}{"{}WIFI\_SNIF"{}};}
+\DoxyCodeLine{\Hypertarget{wifi__sniffer_8c_source_l00020}00020\ }
+\DoxyCodeLine{\Hypertarget{wifi__sniffer_8c_source_l00024}00024\ \textcolor{keywordtype}{void}\ wifi\_sniffer\_init(\textcolor{keywordtype}{void})}
+\DoxyCodeLine{\Hypertarget{wifi__sniffer_8c_source_l00025}00025\ \{}
+\DoxyCodeLine{\Hypertarget{wifi__sniffer_8c_source_l00026}00026\ \ \ \ \ \textcolor{comment}{//\ STEP.1\ NVS\ Flash\ Initializatio}}
+\DoxyCodeLine{\Hypertarget{wifi__sniffer_8c_source_l00027}00027\ \ \ \ \ esp\_err\_t\ ret\ =\ nvs\_flash\_init();}
+\DoxyCodeLine{\Hypertarget{wifi__sniffer_8c_source_l00028}00028\ \ \ \ \ \textcolor{keywordflow}{if}\ (ret\ ==\ ESP\_ERR\_NVS\_NO\_FREE\_PAGES\ ||\ ret\ ==\ ESP\_ERR\_NVS\_NEW\_VERSION\_FOUND)\ \{}
+\DoxyCodeLine{\Hypertarget{wifi__sniffer_8c_source_l00029}00029\ \ \ \ \ \ \ \ \ ESP\_ERROR\_CHECK(nvs\_flash\_erase());}
+\DoxyCodeLine{\Hypertarget{wifi__sniffer_8c_source_l00030}00030\ \ \ \ \ \ \ \ \ ret\ =\ nvs\_flash\_init();}
+\DoxyCodeLine{\Hypertarget{wifi__sniffer_8c_source_l00031}00031\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{wifi__sniffer_8c_source_l00032}00032\ \ \ \ \ ESP\_ERROR\_CHECK(ret);}
+\DoxyCodeLine{\Hypertarget{wifi__sniffer_8c_source_l00033}00033\ \ \ \ \ ESP\_LOGW(TAG,\ \textcolor{stringliteral}{"{}NVS\ initialized"{}});\ \ \ }
+\DoxyCodeLine{\Hypertarget{wifi__sniffer_8c_source_l00034}00034\ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{wifi__sniffer_8c_source_l00035}00035\ \ \ \ \ \textcolor{comment}{//\ STEP.2\ Initialize\ USB\ CDC\ before\ WiFi}}
+\DoxyCodeLine{\Hypertarget{wifi__sniffer_8c_source_l00036}00036\ \ \ \ \ \mbox{\hyperlink{usb__cdc_8c_ad7f5fefcb59d3ecfcd976eb481ad5d2c}{usb\_cdc\_init}}();\ \ \ \ }
+\DoxyCodeLine{\Hypertarget{wifi__sniffer_8c_source_l00037}00037\ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{wifi__sniffer_8c_source_l00038}00038\ \ \ \ \ \textcolor{comment}{//\ STEP.3\ Network\ Interface\ initialization/ESP\ Event\ Loop\ initialization}}
+\DoxyCodeLine{\Hypertarget{wifi__sniffer_8c_source_l00039}00039\ \ \ \ \ ESP\_ERROR\_CHECK(esp\_netif\_init());}
+\DoxyCodeLine{\Hypertarget{wifi__sniffer_8c_source_l00040}00040\ \ \ \ \ ESP\_ERROR\_CHECK(esp\_event\_loop\_create\_default());}
+\DoxyCodeLine{\Hypertarget{wifi__sniffer_8c_source_l00041}00041\ }
+\DoxyCodeLine{\Hypertarget{wifi__sniffer_8c_source_l00042}00042\ \ \ \ \ \textcolor{comment}{//\ STEP.4\ Initialize\ Wi-\/Fi\ driver\ in\ NULL\ mode}}
+\DoxyCodeLine{\Hypertarget{wifi__sniffer_8c_source_l00043}00043\ \ \ \ \ wifi\_init\_config\_t\ wcfg\ =\ WIFI\_INIT\_CONFIG\_DEFAULT();}
+\DoxyCodeLine{\Hypertarget{wifi__sniffer_8c_source_l00044}00044\ \ \ \ \ ESP\_ERROR\_CHECK(esp\_wifi\_init(\&wcfg));}
+\DoxyCodeLine{\Hypertarget{wifi__sniffer_8c_source_l00045}00045\ \ \ \ \ ESP\_ERROR\_CHECK(esp\_wifi\_set\_mode(WIFI\_MODE\_NULL));}
+\DoxyCodeLine{\Hypertarget{wifi__sniffer_8c_source_l00046}00046\ \ \ \ \ ESP\_ERROR\_CHECK(esp\_wifi\_start());}
+\DoxyCodeLine{\Hypertarget{wifi__sniffer_8c_source_l00047}00047\ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{wifi__sniffer_8c_source_l00048}00048\ \ \ \ \ \textcolor{comment}{//\ 필요하면\ 기본\ 채널\ 명시적으로\ 설정\ (예:\ 1ch)}}
+\DoxyCodeLine{\Hypertarget{wifi__sniffer_8c_source_l00049}00049\ \ \ \ \ ESP\_ERROR\_CHECK(esp\_wifi\_set\_channel(1,\ WIFI\_SECOND\_CHAN\_NONE));}
+\DoxyCodeLine{\Hypertarget{wifi__sniffer_8c_source_l00050}00050\ }
+\DoxyCodeLine{\Hypertarget{wifi__sniffer_8c_source_l00051}00051\ \ \ \ \ \textcolor{comment}{//\ STEP.5\ Initialize\ Sniffer\ (Ring\ Buffer,\ Streamer\ Task)}}
+\DoxyCodeLine{\Hypertarget{wifi__sniffer_8c_source_l00052}00052\ \ \ \ \ \mbox{\hyperlink{sniffer_8c_af3f2c00029c37c09a9d581f521ee44c7}{sniffer\_init}}();\ \ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{wifi__sniffer_8c_source_l00053}00053\ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{wifi__sniffer_8c_source_l00054}00054\ \ \ \ \ \textcolor{comment}{//\ STEP.6\ Enable\ Promiscuous\ Mode\ +\ Callback}}
+\DoxyCodeLine{\Hypertarget{wifi__sniffer_8c_source_l00055}00055\ \ \ \ \ \mbox{\hyperlink{sniffer_8c_aece9df03dd920b92c9296815619db4c3}{sniffer\_enable\_promiscuous}}();}
+\DoxyCodeLine{\Hypertarget{wifi__sniffer_8c_source_l00056}00056\ }
+\DoxyCodeLine{\Hypertarget{wifi__sniffer_8c_source_l00057}00057\ \ \ \ \ \textcolor{comment}{//\ STEP.7\ Initialize\ Wi-\/Fi\ Manager\ (config\ cache)}}
+\DoxyCodeLine{\Hypertarget{wifi__sniffer_8c_source_l00058}00058\ \ \ \ \ ESP\_ERROR\_CHECK(\mbox{\hyperlink{wifi_8c_aa10886611772ba3c0e0a00dae83eec1f}{wifi\_mgr\_init}}());}
+\DoxyCodeLine{\Hypertarget{wifi__sniffer_8c_source_l00059}00059\ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{wifi__sniffer_8c_source_l00060}00060\ \ \ \ \ \textcolor{comment}{//\ STEP.8\ Initialize\ Command\ Console}}
+\DoxyCodeLine{\Hypertarget{wifi__sniffer_8c_source_l00061}00061\ \ \ \ \ \mbox{\hyperlink{cmd_8c_aa2fcb6356b44efb0f80d437a819a4e2c}{command\_init}}();\ \ \ \ }
+\DoxyCodeLine{\Hypertarget{wifi__sniffer_8c_source_l00062}00062\ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{wifi__sniffer_8c_source_l00063}00063\ \ \ \ \ ESP\_LOGW(TAG,\ \textcolor{stringliteral}{"{}Command\ console\ initialized"{}});}
+\DoxyCodeLine{\Hypertarget{wifi__sniffer_8c_source_l00064}00064\ \}}
+
+\end{DoxyCode}
