@@ -67,15 +67,19 @@ pip freeze > requirements.txt
 <br/>
 
 
-## USB Ports 
+### USB Ports 
 
 <br/>
 
 * USB Ports     
-   1. COM A (CP2102N): 플래시 / 모니터(로그)
-      * 상위 USB To Serial 로 ESP32-S3 Monitor와 명령어 전달        
-   2. COM B (TinyUSB CDC)
-      * Wi-Fi 스니퍼 캡처 스트림 (Python 파서로 pcap 저장 → Wireshark)        
+   1. Left USB:   
+      * COM A (CP2102N): 플래시 / 모니터(로그)
+      * USB To Serial 
+         * ESP32-S3 Monitor 와 Console Commands                  
+   2. Right USB: 
+      * COM B (TinyUSB CDC) / ESP USB 
+      * JTAG / USB    
+         * Wi-Fi 스니퍼 캡처 스트림 (Python 파서로 pcap 저장 → Wireshark)        
 
 <br/>
 
@@ -85,3 +89,12 @@ pip freeze > requirements.txt
 
 <br/>
 
+### PinMap 
+
+<br/>
+
+https://docs.espressif.com/projects/esp-dev-kits/en/latest/esp32s3/esp32-s3-devkitc-1/user_guide_v1.0.html  
+![](./imgs/ESP32-S3_DevKitC-1_pinlayout.jpg)
+
+
+<br/>
