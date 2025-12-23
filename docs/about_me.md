@@ -27,16 +27,20 @@ I like learning the latest technologies and am interested in various things rela
 
 
 
-* [GitHub Profile](https://github.com/JeonghunLee)   
-  [Go Back Main GitHub Page](https://jeonghunlee.github.io/project_esp_series.html#wifi-sniffer-esp32-s3) 
+* GitHub Profile:https://github.com/JeonghunLee   
+  * WiFi Sniffer-GIT:https://github.com/JeonghunLee/wifisniffer   
 
 <br/>
 
-* WiFi Sniffer: 
-  [WIFI Sniffer GIT](https://github.com/JeonghunLee/wifisniffer)
+
+## Main Github Page    
 
 <br/>
 
+* Main GitHub Page: https://jeonghunlee.github.io/project_esp_series.html#wifi-sniffer-esp32-s3  
+
+
+<br/>
 
 ## My Technical Blog  
 
