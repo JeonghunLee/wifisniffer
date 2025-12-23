@@ -21,7 +21,8 @@ nav:
   - Setup sphinx/doxygen:      
       - Setup Read the Docs: sphinx_readthedocs.md  
   - API Reference (Doxygen): api_mkdocs_doxygen.md
-  
+  - Go To Main GitHub Page: https://jeonghunlee.github.io/project_esp_series.html#wifi-sniffer-esp32-s3  
+    
 plugins:
   - search
   - mermaid2
