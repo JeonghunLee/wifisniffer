@@ -31,24 +31,20 @@ I like learning the latest technologies and am interested in various things rela
 <br/>
 
 
-## My Blogger
+## My Technical Blog  
 
 <br/>
 
 **Please use tags below to find more useful information**   
+**My Technical Blog (Tag-based Categories)** 
 
-* **Main Blogger**: https://ahyuo79.blogspot.com 
-* Categories - ESP Tags 
-  * MCU-ESP32: https://ahyuo79.blogspot.com/search/label/MCU-ESP32 
-  * MCU-ESP32S3: https://ahyuo79.blogspot.com/search/label/MCU-ESP32S3 
-  * MCU-ESP32-MEM: https://ahyuo79.blogspot.com/search/label/MCU-ESP32-MEM 
-  * MCU-ESP32-BT: https://ahyuo79.blogspot.com/search/label/MCU-ESP32-BT  
-  * MCU-ESP32-WIFI: https://ahyuo79.blogspot.com/search/label/MCU-ESP32-WIFI  
-* Categories — Wireshark Tags
-  * Tool-Wireshark: https://ahyuo79.blogspot.com/search/label/Tool-Wireshark  
-* Categories — Documentation Tags
-  * DevOps-Sphinx: https://ahyuo79.blogspot.com/search/label/DevOps-Sphinx  
-  * DevOps-MkDocs: https://ahyuo79.blogspot.com/search/label/DevOps-Mkdocs  
-  * DevOps-ReadTheDocs: https://ahyuo79.blogspot.com/2021/06/readthedoc-doc-host.html 
-* Categories — USB Tags
-  * USB-Protocol: https://ahyuo79.blogspot.com/search/label/IF-USB   
+| Information   | Tags |  
+| ------------- | -----| 
+| ESP32 MEM   | [MCU-ESP32-MEM](https://ahyuo79.blogspot.com/search/label/MCU-ESP32-MEM) |        
+| ESP32 RF | [MCU-ESP32-BT](https://ahyuo79.blogspot.com/search/label/MCU-ESP32-BT) / [MCU-ESP32-WIFI](https://ahyuo79.blogspot.com/search/label/MCU-ESP32-WIFI) |          
+| ESP32/ESP32-S3 ALL | [MCU-ESP32](https://ahyuo79.blogspot.com/search/label/MCU-ESP32) / [MCU-ESP32S3](https://ahyuo79.blogspot.com/search/label/MCU-ESP32S3) |   
+| WIFI-Sensing | [RF-WIFI-Sensing](https://ahyuo79.blogspot.com/search/label/RF-WIFI-Sensing)  |     
+| Sniffer | [Tool-Wireshark](https://ahyuo79.blogspot.com/search/label/Tool-Wireshark) / [NET-Packet Sniffer](https://ahyuo79.blogspot.com/search/label/NET-Packet%20Sniffer) |  
+| DevOps DOCs| [DevOps-Sphinx](https://ahyuo79.blogspot.com/search/label/DevOps-Sphinx) / [DevOps-MkDocs](https://ahyuo79.blogspot.com/search/label/DevOps-Mkdocs) / [DevOps-ReadTheDocs](https://ahyuo79.blogspot.com/2021/06/readthedoc-doc-host.html)     |
+| USB | [IF-USB-CDC](https://ahyuo79.blogspot.com/search/label/IF-USB-CDC) / [IF-USB](https://ahyuo79.blogspot.com/search/label/IF-USB) |
+| Seucirty | [Security-SecureBoot](https://ahyuo79.blogspot.com/search/label/Security-SecureBoot) / [Security](https://ahyuo79.blogspot.com/search/label/Security)   |

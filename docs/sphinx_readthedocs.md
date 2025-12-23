@@ -12,10 +12,12 @@
 
 <br/>
 
-* [My Blog](https://ahyuo79.blogspot.com)    
-  * [DevOps-Sphinx](https://ahyuo79.blogspot.com/search/label/DevOps-Sphinx)    
-  * [DevOps-ReadTheDocs](https://ahyuo79.blogspot.com/2021/06/readthedoc-doc-host.html)     
 
+* **My Technical Blog (Tag-based Categories)** 
+
+| Information   | Tags |  
+| ------------- | -----| 
+| DevOps DOCs| [DevOps-Sphinx](https://ahyuo79.blogspot.com/search/label/DevOps-Sphinx) / [DevOps-MkDocs](https://ahyuo79.blogspot.com/search/label/DevOps-Mkdocs) / [DevOps-ReadTheDocs](https://ahyuo79.blogspot.com/2021/06/readthedoc-doc-host.html)     |
 
 <br/>
 
@@ -87,13 +89,14 @@ formats:
 
 <br/>
 
-[ReadTheDocs](https://app.readthedocs.org/dashboard/)
+
+[Display ReadTheDocs Dashboard](https://app.readthedocs.org/dashboard/)       
 
 <br/>
 
-* ReadTheDocs 이용   
+* ReadTheDocs 이용 (아래 DOC 확인)     
     * [CFG: wifisniffer](https://app.readthedocs.org/projects/wifisniffer/)             
-    * [Web: wifisniffer KR](https://wifisniffer.readthedocs.io/ko/latest/)                 
+    * [DOC: wifisniffer KR](https://wifisniffer.readthedocs.io/ko/latest/)                 
 
 
 
