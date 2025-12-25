@@ -69,6 +69,7 @@ theme:
     - toc.integrate         # 이 줄이 TOC(Table of Contents)를 왼쪽 내비(sidebar)로 통합해줌 
 
 markdown_extensions:
+  - admonition              # 
   - pymdownx.arithmatex
   - pymdownx.betterem:
       smart_enable: all
@@ -76,7 +77,8 @@ markdown_extensions:
   - pymdownx.critic
   - pymdownx.details
   - pymdownx.emoji:
-      emoji_generator: !!python/name:pymdownx.emoji.to_svg
+      emoji_index: !!python/name:material.extensions.emoji.twemoji     
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
   - pymdownx.inlinehilite
   - pymdownx.magiclink
   - pymdownx.mark
@@ -95,3 +97,14 @@ extra_javascript:
 
 extra_css:
   - stylesheets/extra.css
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/JeonghunLee
+      name: GitHub
+
+
+copyright: >
+  © 2025 Jeonghun Lee.
+  All rights reserved.

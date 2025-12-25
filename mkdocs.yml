@@ -4,7 +4,9 @@ site_author: Jeonghun Lee
 repo_url: https://github.com/JeonghunLee/wifisniffer
 repo_name: JeonghunLee/wifisniffer
 
-
+# index.md 가 없으면, (내부용 )
+# 1. Home 모든 404 오류 
+# 2. mkdocs build 후 링크가 다 깨짐  
 nav:
   - Home: index_mkdocs.md
   - Hardware Setup: board.md
@@ -64,6 +66,7 @@ theme:
     - toc.integrate         # 이 줄이 TOC(Table of Contents)를 왼쪽 내비(sidebar)로 통합해줌 
 
 markdown_extensions:
+  - admonition              # 
   - pymdownx.arithmatex
   - pymdownx.betterem:
       smart_enable: all
@@ -71,7 +74,8 @@ markdown_extensions:
   - pymdownx.critic
   - pymdownx.details
   - pymdownx.emoji:
-      emoji_generator: !!python/name:pymdownx.emoji.to_svg
+      emoji_index: !!python/name:material.extensions.emoji.twemoji     
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
   - pymdownx.inlinehilite
   - pymdownx.magiclink
   - pymdownx.mark
@@ -90,3 +94,14 @@ extra_javascript:
 
 extra_css:
   - stylesheets/extra.css
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/JeonghunLee
+      name: GitHub
+
+
+copyright: >
+  © 2025 Jeonghun Lee.
+  All rights reserved.

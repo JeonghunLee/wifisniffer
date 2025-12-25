@@ -2,8 +2,13 @@
 
 <br/>
 
-Hi! I specialize in Embedded Firmware, BSP (Linux, RTOS), and DSP systems.  
-I like learning the latest technologies and am interested in various things related to software and hardware.    
+Jeonghun Lee          
+*(also known as Jeonghun (James) Lee)*  
+
+[JeonghunLee Profile](https://github.com/JeonghunLee)     
+
+```{note} Quick access
+Icon links to my platforms are available at the bottom of this page.
 
 <br/>
 
@@ -11,6 +16,9 @@ I like learning the latest technologies and am interested in various things rela
 ## Interests
 
 <br/>
+
+Hi! I specialize in Embedded Firmware, BSP (Linux, RTOS), and DSP systems.  
+I like learning the latest technologies and am interested in various things related to software and hardware.  
 
 
 - Embedded systems and firmware development (BSP, RTOS, drivers, System Optimization)
@@ -25,19 +33,10 @@ I like learning the latest technologies and am interested in various things rela
 
 <br/>
 
-
-
-* GitHub Profile:https://github.com/JeonghunLee   
-  * WiFi Sniffer-GIT:https://github.com/JeonghunLee/wifisniffer   
-
-<br/>
-
-
-## Main Github Page    
-
-<br/>
-
-* Main GitHub Page: https://jeonghunlee.github.io/project_esp_series.html#wifi-sniffer-esp32-s3  
+* Go Back 
+  * [Main GitHub Page](https://jeonghunlee.github.io/project_esp_series.html#wifi-sniffer-esp32-s3)  
+  * [WIFI Sniffer-WEB](https://jeonghunlee.github.io/wifisniffer)     
+  * [WiFi Sniffer-GIT](https://github.com/JeonghunLee/wifisniffer)   
 
 
 <br/>
@@ -46,7 +45,7 @@ I like learning the latest technologies and am interested in various things rela
 
 <br/>
 
-**Please use tags below to find more useful information**   
+
 **My Technical Blog (Tag-based Categories)** 
 
 | Information   | Tags |  
@@ -59,3 +58,11 @@ I like learning the latest technologies and am interested in various things rela
 | DevOps DOCs| [DevOps-Sphinx](https://ahyuo79.blogspot.com/search/label/DevOps-Sphinx) / [DevOps-MkDocs](https://ahyuo79.blogspot.com/search/label/DevOps-Mkdocs) / [DevOps-ReadTheDocs](https://ahyuo79.blogspot.com/2021/06/readthedoc-doc-host.html)     |
 | USB | [IF-USB-CDC](https://ahyuo79.blogspot.com/search/label/IF-USB-CDC) / [IF-USB](https://ahyuo79.blogspot.com/search/label/IF-USB) |
 | Seucirty | [Security-SecureBoot](https://ahyuo79.blogspot.com/search/label/Security-SecureBoot) / [Security](https://ahyuo79.blogspot.com/search/label/Security)   |
+
+
+.. admonition:: How to use these links
+   :class: tip
+
+   Click each **Tag link** to view all related posts at once.  
+   All links redirect to my technical blog (Blogger), organized using **tag-based categories**.  
+   The blog is primarily written in Korean, with **English support available via Google Translate**.
