@@ -7,8 +7,7 @@ Jeonghun Lee
 
 [JeonghunLee Profile](https://github.com/JeonghunLee)     
 
-```{note} Quick access
-Icon links to my platforms are available at the bottom of this page.
+
 
 <br/>
 
