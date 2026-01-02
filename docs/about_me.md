@@ -59,9 +59,7 @@ I like learning the latest technologies and am interested in various things rela
 | Seucirty | [Security-SecureBoot](https://ahyuo79.blogspot.com/search/label/Security-SecureBoot) / [Security](https://ahyuo79.blogspot.com/search/label/Security)   |
 
 
-.. admonition:: How to use these links
-   :class: tip
 
-   Click each **Tag link** to view all related posts at once.  
-   All links redirect to my technical blog (Blogger), organized using **tag-based categories**.  
-   The blog is primarily written in Korean, with **English support available via Google Translate**.
+Click each **Tag link** to view all related posts at once.  
+All links redirect to my technical blog (Blogger), organized using **tag-based categories**.  
+The blog is primarily written in Korean, with **English support available via Google Translate**.
