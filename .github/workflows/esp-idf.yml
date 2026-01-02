@@ -75,8 +75,13 @@ jobs:
             ------------------------------------------
             * **Version**: ${{ github.ref_name }}
             * **Target**: **${{ env.IDF_TARGET }}**
+            * **Build System**: ESP-IDF v5.4 (Docker)
+            * **Release Date**: ${{ github.event.head_commit.timestamp }}
+             
+            <br/>
 
-            📦 Included in ZIP: release-${{ github.ref_name }}-${{ env.IDF_TARGET }}.zip
+            📦 **A. Included in ZIP:**    
+              release-${{ github.ref_name }}-${{ env.IDF_TARGET }}.zip
             ```
             - bootloader.bin
             - partition-table.bin
@@ -84,18 +89,22 @@ jobs:
             - flash_project_args ( for flashing )
             - ELF file(s)   (for debugging)
             ```
+            <br/>
 
-            🛠 Flash Guide: (Need ESP-IDF)  
+            🛠 **B. Flash Guide: (Need ESP-IDF)**  
             Flashing parameters are already included in **flash_project_args**
             ```
             esptool.py @flash_project_args
             ```
-            
-            📄 Documentation: 
-              [GitHub Pages](https://jeonghunlee.github.io/wifisniffer/)
-              [ReadTheDocs](https://esp32-wifi-sniffer.readthedocs.io/) 
+            <br/>
 
-            ☑️ Check it below if you find this project useful! 
+            📄 **C. Documentation: (Supported Mkdocs and Sphinx)**   
+              1. [GitHub Pages: Mkdocs ](https://jeonghunlee.github.io/wifisniffer/)
+              2. [ReadTheDocs : Sphinx ](https://wifisniffer.readthedocs.io/) 
+            
+            <br/>
+
+            ☑️ D. Check it below if you find this project useful! 
           generate_release_notes: true          
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}                  
